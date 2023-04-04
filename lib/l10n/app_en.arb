@@ -1,3 +1,53 @@
 {
-    "appName": "DailyUs"
+    "appName": "DailyUs",
+    "onBoardingHeading": "DailyUs"
+    "onBoardingSubHeading": "Express Your Memories By Sharing Them With The World",
+    
+    "homeGreetingUser": "Hello, {user}!",
+    "homeGreetingUserExample: "Hello, Rully!",
+    "homeGreetingHeadline: "Share Your Memories Today.",
+
+    "titleRegister": "Register",
+    "titleLogin": "Login",
+    "titleHome": "Home",
+    "titleDetail": "Detail",
+    "titlePost": "Post",
+    "titleSettings": "Settings",
+
+    "buttonRegister: "Register",
+    "buttonLogin: "Login",
+    "buttonLogout: "Logout",
+    "buttonUpload: "Upload",
+    "buttonChangeLanguage: "Change language",
+    "buttonTakePicture: "Camera",
+    "buttonPickFromGallery: "Gallery",
+    "buttonRefresh: "Refresh",
+
+    "nameHint": "Name",
+    "emailHint": "E-mail",
+    "passwordHint": "Password",
+    "descriptionHint": "Give it some description",
+
+    "dialogTitleRegisterSuccess: "Succesfully registered",
+    "dialogMessageRegisterSuccess: "You have been registered! \nPlease login and make your amazing story right now",
+    "dialogPositiveActionRegisterSuccess: "Oke",
+    "dialogTitleLogoutConfirm: "Are you sure want to leave?",
+    "dialogMessageLogoutConfirm: "You will need to login again in order to access the application if you continue this process.",
+    "dialogPositiveActionLogoutConfirm: "Oke",
+    "dialogNegativeActionLogoutConfirm: "Cancel",
+
+    "nameEmptyMessage: "Name must not be empty",
+    "emailEmptyMessage: "E-mail must not be empty",
+    "passwordEmptyMessage: "Password must not be empty",
+    "descriptionEmptyMessage: "Description must not be empty",
+    "photoEmptyMessage: "Upload a photo first",
+    "nameInvalidMessage: "Name is not valid",
+    "emailInvalidMessage: "E-mail is not valid",
+    "passwordInvalidMessage: "Password is not valid",
+    "wrongCredentialMessage: "Wrong email or password",
+    "emailAlreadyTakenMessage: "Email has already taken",
+    "internalErrorMessage": "Sorry, it went wrong internally",
+    "loginSuccessMessage": "Succesfully logged in",
+    "uploadSuccessMessage": "Succesfully added new stories",
+    "uploadFailedMessage": "Failed to add new stories"
 }
