@@ -24,3 +24,9 @@ var getDetailStoryFailedJson = '{"error": true, "message": "failed"}';
 // UploadNewStoryResponse
 var uploadNewStorySuccessJson = '{"error": false, "message": "success"}';
 var uploadNewStoryFailedJson = '{"error": true, "message": "failed"}';
+
+// AuthInfo
+var exampleUser =
+    '{"id": "user-1", "name": "username-1", "token": "example-token-user-1"}';
+var authInfoLoggedInJson = '{"isAlreadyLoggedIn": true, "user": $exampleUser}';
+var authInfoNotLoggedInJson = '{"isAlreadyLoggedIn": false, "user": null}';
