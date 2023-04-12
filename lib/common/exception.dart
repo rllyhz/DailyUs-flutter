@@ -12,8 +12,19 @@ class NoInternetConnectionException extends DailyUsException {
   NoInternetConnectionException() : super("No internet connection");
 }
 
-class ServerFailureException extends DailyUsException {
-  ServerFailureException() : super("Connection error to host");
+class ServerException extends DailyUsException {
+  ServerException() : super("Connection error to host");
+}
+
+class MissingParametersException extends DailyUsException {
+  final List<String> requiredParameters;
+
+  MissingParametersException(this.requiredParameters)
+      : super("Missing the required parameter(s)");
+}
+
+class EmailAlreadyTakenException extends DailyUsException {
+  EmailAlreadyTakenException() : super("Email is already taken");
 }
 
 class RequestNotAllowedException extends DailyUsException {

@@ -12,11 +12,13 @@ abstract class DailyUsRepository {
 
   bool logout();
 
-  AuthInfo? getAuthInfo();
+  AuthInfo getAuthInfo();
+
+  Future<bool> updateAuthInfo(AuthInfo authInfo);
 
   Future<Either<Failure, List<Story>>> getAllStories();
 
-  Future<Either<Failure, Story>> getDetailStoryById(String id);
+  Future<Either<Failure, Story?>> getDetailStoryById(String id);
 
   Future<Either<Failure, bool>> uploadNewStory(List<int> photoBytes,
       String description, double? latitude, double? longitude);

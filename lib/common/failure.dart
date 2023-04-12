@@ -22,6 +22,7 @@ class ServerFailure extends Failure {
 }
 
 class RequestNotAllowedFailure extends Failure {
-  const RequestNotAllowedFailure()
-      : super("You're not allowed to perform the request");
+  final String description;
+
+  const RequestNotAllowedFailure(this.description) : super(description);
 }

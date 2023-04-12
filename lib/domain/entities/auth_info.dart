@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:daily_us/domain/entities/user.dart';
 import 'package:equatable/equatable.dart';
 
