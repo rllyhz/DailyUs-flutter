@@ -38,6 +38,7 @@ dependencies:
   dio: ^5.1.1
   get_it: ^7.2.0
   equatable: ^2.0.5
+  dartz: ^0.10.1
 
   # UI-related
   fade_shimmer: ^2.2.0
