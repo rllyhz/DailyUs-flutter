@@ -16,10 +16,15 @@ abstract class DailyUsRepository {
 
   Future<bool> updateAuthInfo(AuthInfo authInfo);
 
-  Future<Either<Failure, List<Story>>> getAllStories();
+  Future<Either<Failure, List<Story>>> getAllStories(String token);
 
-  Future<Either<Failure, Story?>> getDetailStoryById(String id);
+  Future<Either<Failure, Story?>> getDetailStoryById(String token, String id);
 
-  Future<Either<Failure, bool>> uploadNewStory(List<int> photoBytes,
-      String description, double? latitude, double? longitude);
+  Future<Either<Failure, bool>> uploadNewStory(
+    String token,
+    List<int> photoBytes,
+    String description,
+    double? latitude,
+    double? longitude,
+  );
 }

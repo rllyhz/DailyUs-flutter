@@ -8,12 +8,14 @@ class UploadNewStory {
   const UploadNewStory(this.repository);
 
   Future<Either<Failure, bool>> execute(
+    String token,
     List<int> photoBytes,
     String description,
     double? latitude,
     double? longitude,
   ) {
     return repository.uploadNewStory(
+      token,
       photoBytes,
       description,
       latitude,

@@ -70,9 +70,9 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   }
 
   @override
-  Future<Either<Failure, List<Story>>> getAllStories() async {
+  Future<Either<Failure, List<Story>>> getAllStories(String token) async {
     try {
-      final result = await remoteDataSource.getAllStories();
+      final result = await remoteDataSource.getAllStories(token);
       return Right(result);
     } on ServerException {
       return const Left(ServerFailure());
@@ -82,9 +82,12 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   }
 
   @override
-  Future<Either<Failure, Story?>> getDetailStoryById(String id) async {
+  Future<Either<Failure, Story?>> getDetailStoryById(
+    String token,
+    String id,
+  ) async {
     try {
-      final result = await remoteDataSource.getDetailStoryById(id);
+      final result = await remoteDataSource.getDetailStoryById(token, id);
       return Right(result);
     } on ServerException {
       return const Left(ServerFailure());
@@ -94,11 +97,20 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> uploadNewStory(List<int> photoBytes,
-      String description, double? latitude, double? longitude) async {
+  Future<Either<Failure, bool>> uploadNewStory(
+      String token,
+      List<int> photoBytes,
+      String description,
+      double? latitude,
+      double? longitude) async {
     try {
       final result = await remoteDataSource.uploadNewStory(
-          photoBytes, description, latitude, longitude);
+        token,
+        photoBytes,
+        description,
+        latitude,
+        longitude,
+      );
       return Right(result);
     } on ServerException {
       return const Left(ServerFailure());

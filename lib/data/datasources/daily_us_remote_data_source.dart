@@ -14,11 +14,12 @@ abstract class DailyUsRemoteDataSource {
 
   Future<User?> login(String email, String password);
 
-  Future<List<Story>> getAllStories();
+  Future<List<Story>> getAllStories(String token);
 
-  Future<Story?> getDetailStoryById(String id);
+  Future<Story?> getDetailStoryById(String token, String id);
 
   Future<bool> uploadNewStory(
+    String token,
     List<int> photoBytes,
     String description,
     double? latitude,
@@ -99,7 +100,8 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   }
 
   @override
-  Future<List<Story>> getAllStories() async {
+  Future<List<Story>> getAllStories(String token) async {
+    apiClient.options.headers["Authorization"] = "Bearer $token";
     final response = await apiClient.get("/stories");
     final responseData =
         GetAllStoriesResponse.fromJson(json.decode(response.data));
@@ -118,7 +120,8 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   }
 
   @override
-  Future<Story?> getDetailStoryById(String id) async {
+  Future<Story?> getDetailStoryById(String token, String id) async {
+    apiClient.options.headers["Authorization"] = "Bearer $token";
     final response = await apiClient.get("/detail/$id");
 
     final responseData =
@@ -138,8 +141,13 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   }
 
   @override
-  Future<bool> uploadNewStory(List<int> photoBytes, String description,
-      double? latitude, double? longitude) async {
+  Future<bool> uploadNewStory(
+    String token,
+    List<int> photoBytes,
+    String description,
+    double? latitude,
+    double? longitude,
+  ) async {
     final formData = {
       "description": description,
       "photo": MultipartFile.fromBytes(photoBytes),
@@ -151,6 +159,7 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
       formData["lon"] = longitude;
     }
 
+    apiClient.options.headers["Authorization"] = "Bearer $token";
     final response = await apiClient.post("/stories", data: formData);
     final responseData =
         GetDetailStoryResponse.fromJson(json.decode(response.data));

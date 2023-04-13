@@ -8,7 +8,7 @@ class GetDetailStory {
 
   const GetDetailStory(this.repository);
 
-  Future<Either<Failure, Story?>> execute(String id) {
-    return repository.getDetailStoryById(id);
+  Future<Either<Failure, Story?>> execute(String token, String id) {
+    return repository.getDetailStoryById(token, id);
   }
 }
