@@ -16,18 +16,16 @@ void main() {
       const expectedUserToken = "example-token-user-1";
 
       expect(authInfo.isAlreadyLoggedIn, true);
-      expect(authInfo.user, isNotNull);
       expect(authInfo.user, isA<User>());
-      expect(authInfo.user!.id, expectedUserId);
-      expect(authInfo.user!.name, expectedUserName);
-      expect(authInfo.user!.token, expectedUserToken);
+      expect(authInfo.user.id, expectedUserId);
+      expect(authInfo.user.name, expectedUserName);
+      expect(authInfo.user.token, expectedUserToken);
     });
 
     test("Should successfully parse the not logged in json test", () {
       final authInfo = AuthInfo.fromJson(json.decode(authInfoNotLoggedInJson));
 
       expect(authInfo.isAlreadyLoggedIn, false);
-      expect(authInfo.user, isNull);
     });
 
     test(
@@ -43,22 +41,21 @@ void main() {
         json.decode(generatedAuthInfoLoggedInJson),
       );
 
-      expect(actualLoggedInResponse.user, isNotNull);
       expect(
         actualLoggedInResponse.isAlreadyLoggedIn,
         expectedLoggedInResponse.isAlreadyLoggedIn,
       );
       expect(
-        actualLoggedInResponse.user!.id,
-        expectedLoggedInResponse.user!.id,
+        actualLoggedInResponse.user.id,
+        expectedLoggedInResponse.user.id,
       );
       expect(
-        actualLoggedInResponse.user!.name,
-        expectedLoggedInResponse.user!.name,
+        actualLoggedInResponse.user.name,
+        expectedLoggedInResponse.user.name,
       );
       expect(
-        actualLoggedInResponse.user!.token,
-        expectedLoggedInResponse.user!.token,
+        actualLoggedInResponse.user.token,
+        expectedLoggedInResponse.user.token,
       );
     });
 
@@ -80,7 +77,6 @@ void main() {
         actualNotLoggedInResponse.isAlreadyLoggedIn,
         expectedNotLoggedInResponse.isAlreadyLoggedIn,
       );
-      expect(actualNotLoggedInResponse.user, isNull);
     });
   });
 }

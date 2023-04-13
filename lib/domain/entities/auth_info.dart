@@ -3,35 +3,20 @@ import 'package:equatable/equatable.dart';
 
 class AuthInfo extends Equatable {
   final bool isAlreadyLoggedIn;
-  final User? user;
+  final User user;
 
   const AuthInfo({
     required this.isAlreadyLoggedIn,
     required this.user,
   });
 
-  factory AuthInfo.fromJson(Map<String, dynamic> authJson) {
-    User? authUser;
+  factory AuthInfo.fromJson(Map<String, dynamic> authJson) => AuthInfo(
+        isAlreadyLoggedIn: authJson["isAlreadyLoggedIn"] ?? false,
+        user: User.fromJson(authJson["user"]),
+      );
 
-    if (authJson["user"] != null) {
-      authUser = User.fromJson(authJson["user"]);
-    }
-
-    return AuthInfo(
-      isAlreadyLoggedIn: authJson["isAlreadyLoggedIn"] ?? false,
-      user: authUser,
-    );
-  }
-
-  String toJson() {
-    String? userJson;
-
-    if (user != null) {
-      userJson = user!.toJson();
-    }
-
-    return '{"isAlreadyLoggedIn": $isAlreadyLoggedIn, "user": $userJson}';
-  }
+  String toJson() =>
+      '{"isAlreadyLoggedIn": $isAlreadyLoggedIn, "user": ${user.toJson()}}';
 
   @override
   List<Object?> get props => [isAlreadyLoggedIn, user];

@@ -1,9 +1,7 @@
-import 'dart:convert';
-
+import 'package:daily_us/data/datasources/local/local_cache_client.dart';
+import 'package:daily_us/data/datasources/local/local_cache_model.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
-import 'package:flutter/material.dart' show debugPrint;
-import 'package:shared_preferences/shared_preferences.dart'
-    show SharedPreferences;
+import 'package:daily_us/domain/entities/user.dart';
 
 abstract class DailyUsLocalCacheDataSource {
   AuthInfo getAuthInfo();
@@ -14,48 +12,38 @@ abstract class DailyUsLocalCacheDataSource {
 }
 
 class DailyUsLocalCacheDataSourceImpl implements DailyUsLocalCacheDataSource {
-  final SharedPreferences pref;
-  final String _key = "daily_us_local_cache_key";
+  final DailyUsLocalCacheClient localCacheClient;
 
-  DailyUsLocalCacheDataSourceImpl({required this.pref});
+  DailyUsLocalCacheDataSourceImpl({required this.localCacheClient});
 
   @override
   AuthInfo getAuthInfo() {
-    try {
-      var authInfoJson = pref.getString(_key);
+    var cachedData = localCacheClient.getLocalCacheData();
 
-      if (authInfoJson != null) {
-        return AuthInfo.fromJson(json.decode(authInfoJson));
-      } else {
-        return const AuthInfo(
-          isAlreadyLoggedIn: false,
-          user: null,
-        );
-      }
-    } catch (e) {
-      return const AuthInfo(
-        isAlreadyLoggedIn: false,
-        user: null,
-      );
-    }
+    return AuthInfo(
+      isAlreadyLoggedIn: cachedData.isAlreadyLoggedIn,
+      user: User(
+        id: cachedData.userId,
+        token: cachedData.userToken,
+        name: cachedData.userName,
+      ),
+    );
   }
 
   @override
   Future<bool> updateAuthInfo(AuthInfo authInfo) async {
-    try {
-      await pref.setString(_key, authInfo.toJson());
-      return true;
-    } catch (exception) {
-      return false;
-    }
+    var cacheModel = LocalCacheModel(
+      isAlreadyLoggedIn: authInfo.isAlreadyLoggedIn,
+      userId: authInfo.user.id,
+      userName: authInfo.user.name,
+      userToken: authInfo.user.token,
+    );
+
+    return localCacheClient.updateLocalCacheData(cacheModel);
   }
 
   @override
   void clearAuthInfo() async {
-    try {
-      await pref.clear();
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    localCacheClient.clearLocalCacheData();
   }
 }
