@@ -23,7 +23,13 @@ class MyApp extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const SplashPage(),
+      home: SplashPage(
+        onAnimationEnd: () {
+          // check if user already logged in
+
+          // redirect to the corresponsing user state.
+        },
+      ),
     );
   }
 }
