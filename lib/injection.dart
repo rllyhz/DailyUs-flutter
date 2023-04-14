@@ -18,15 +18,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+Future<void> init() async {
+  var pref = await SharedPreferences.getInstance();
+  var appSecret = await AppSecretLoader.load();
+
   // client
-  locator.registerLazySingletonAsync<DailyUsLocalCacheClient>(
-    () async => DailyUsLocalCacheClient(
-      pref: await SharedPreferences.getInstance(),
-    ),
+  locator.registerLazySingleton<DailyUsLocalCacheClient>(
+    () => DailyUsLocalCacheClient(pref: pref),
   );
-  locator.registerLazySingletonAsync<Dio>(
-    () async => DailyUsApiClient.getInstance(await AppSecretLoader.load()),
+
+  locator.registerLazySingleton<Dio>(
+    () => DailyUsApiClient.getInstance(appSecret),
   );
 
   // data source

@@ -17,7 +17,7 @@ class DailyUsLocalCacheClient {
       if (cachedData != null) {
         return LocalCacheModel.fromJson(json.decode(cachedData));
       } else {
-        return LocalCacheModel(
+        return const LocalCacheModel(
           isAlreadyLoggedIn: false,
           userId: "",
           userName: "",
@@ -25,7 +25,7 @@ class DailyUsLocalCacheClient {
         );
       }
     } catch (e) {
-      return LocalCacheModel(
+      return const LocalCacheModel(
         isAlreadyLoggedIn: false,
         userId: "",
         userName: "",

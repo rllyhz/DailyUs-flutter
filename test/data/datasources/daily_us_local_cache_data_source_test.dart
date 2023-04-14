@@ -24,7 +24,7 @@ void main() {
         'Should return true-state authInfo when retrieving cachedData is success',
         () {
       when(mockLocalCacheClient.getLocalCacheData()).thenAnswer(
-        (_) => LocalCacheModel(
+        (_) => const LocalCacheModel(
             isAlreadyLoggedIn: true,
             userId: id,
             userName: name,
@@ -42,7 +42,7 @@ void main() {
     });
 
     test('Should return true when updating authinfo is success', () async {
-      var cachedModel = LocalCacheModel(
+      var cachedModel = const LocalCacheModel(
         isAlreadyLoggedIn: true,
         userId: id,
         userName: name,
