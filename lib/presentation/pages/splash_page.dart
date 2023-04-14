@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashPage extends StatefulWidget {
+  static String routeName = "/splash";
+
   const SplashPage({
     super.key,
     required this.onAnimationEnd,
@@ -22,7 +24,7 @@ class _SplashPageState extends State<SplashPage>
   double startPos = 0.3;
   double endPos = 0;
   final duration = const Duration(milliseconds: 1500);
-  final delay = const Duration(microseconds: 500);
+  final delay = const Duration(seconds: 1);
 
   @override
   Widget build(BuildContext context) {
