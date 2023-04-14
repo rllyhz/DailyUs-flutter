@@ -4,6 +4,13 @@
     "onBoardingSubHeading": "Express Your Memories By Sharing Them With The World",
     
     "homeGreetingUser": "Hello, {user}!",
+    "@homeGreetingUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
     "homeGreetingUserExample": "Hello, Rully!",
     "homeGreetingHeadline": "Share Your Memories Today.",
 

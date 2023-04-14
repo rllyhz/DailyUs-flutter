@@ -4,6 +4,13 @@
     "onBoardingSubHeading": "Ekspresikan Kenanganmu Dengan Membagikannya Pada Dunia",
 
     "homeGreetingUser": "Halo, {user}!",
+    "@homeGreetingUser": {
+        "placeholders": {
+            "user": {
+                "type": "String"
+            }
+        }
+    },
     "homeGreetingUserExample": "Halo, Rully!",
     "homeGreetingHeadline": "Bagikan Kenanganmu Hari Ini.",
 
