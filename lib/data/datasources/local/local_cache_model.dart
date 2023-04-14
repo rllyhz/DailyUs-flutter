@@ -13,7 +13,7 @@ class LocalCacheModel extends Equatable {
   static String userNameKey = "2";
   static String userTokenKey = "3";
 
-  LocalCacheModel({
+  const LocalCacheModel({
     required this.isAlreadyLoggedIn,
     required this.userId,
     required this.userName,
