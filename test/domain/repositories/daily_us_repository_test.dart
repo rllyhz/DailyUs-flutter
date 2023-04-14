@@ -1,5 +1,4 @@
 import 'package:daily_us/common/failure.dart';
-import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/domain/entities/user.dart';
 import 'package:daily_us/domain/repositories/daily_us_repository.dart';
@@ -8,42 +7,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../utils/data_helpers.dart' as data_helpers;
 import 'daily_us_repository_test.mocks.dart';
 
 @GenerateMocks([DailyUsRepository])
 void main() {
   group("DailyUsRepository Usecases", () {
-    const id = "user-test";
-    const name = "nameTest";
-    const email = "nameTest@mail.com";
-    const password = "nameTest123";
-    const token = "example-user-token";
-
-    const story = Story(
-      id: id,
-      name: name,
-      description: "description",
-      photoUrl: "url",
-      createdAt: "21-06-43",
-      latitude: 034.5454,
-      longitude: 032.2227,
-    );
-
-    const authInfo = AuthInfo(
-      isAlreadyLoggedIn: true,
-      user: User(id: id, token: token, name: name),
-    );
-
     test("Should be able to perform register contract", () async {
       final repository = MockDailyUsRepository();
 
       when(
-        repository.register(name, email, password),
+        repository.register(
+          data_helpers.name,
+          data_helpers.email,
+          data_helpers.password,
+        ),
       ).thenAnswer(
         (_) => Future.value(const Right(true)),
       );
 
-      final result = await repository.register(name, email, password);
+      final result = await repository.register(
+        data_helpers.name,
+        data_helpers.email,
+        data_helpers.password,
+      );
 
       result.fold(
         (left) => {
@@ -60,14 +47,21 @@ void main() {
       final repository = MockDailyUsRepository();
 
       when(
-        repository.login(email, password),
+        repository.login(data_helpers.email, data_helpers.password),
       ).thenAnswer(
         (_) => Future.value(
-          const Right(User(id: id, token: token, name: name)),
+          const Right(User(
+            id: data_helpers.id,
+            token: data_helpers.token,
+            name: data_helpers.name,
+          )),
         ),
       );
 
-      final result = await repository.login(email, password);
+      final result = await repository.login(
+        data_helpers.email,
+        data_helpers.password,
+      );
 
       result.fold(
         (left) => {
@@ -75,7 +69,14 @@ void main() {
         },
         (right) => {
           expect(right, isA<User>()),
-          expect(right, const User(id: id, token: token, name: name)),
+          expect(
+            right,
+            const User(
+              id: data_helpers.id,
+              token: data_helpers.token,
+              name: data_helpers.name,
+            ),
+          ),
         },
       );
     });
@@ -117,10 +118,13 @@ void main() {
       final repository = MockDailyUsRepository();
 
       when(
-        repository.getDetailStoryById(token, id),
-      ).thenAnswer((_) => Future.value(const Right(story)));
+        repository.getDetailStoryById(data_helpers.token, data_helpers.id),
+      ).thenAnswer((_) => Future.value(const Right(data_helpers.story)));
 
-      final result = await repository.getDetailStoryById(token, id);
+      final result = await repository.getDetailStoryById(
+        data_helpers.token,
+        data_helpers.id,
+      );
 
       result.fold(
         (left) => {
@@ -129,7 +133,7 @@ void main() {
         (right) => {
           expect(right, isA<Story>()),
           expect(right, isNotNull),
-          expect(right!.id, id),
+          expect(right!.id, data_helpers.id),
         },
       );
     });
@@ -137,13 +141,13 @@ void main() {
     test("Should be able to perform uploadNewStory contract", () async {
       final repository = MockDailyUsRepository();
 
-      final description = story.description;
-      final lat = story.latitude;
-      final lon = story.longitude;
+      final description = data_helpers.story.description;
+      final lat = data_helpers.story.latitude;
+      final lon = data_helpers.story.longitude;
 
       when(
         repository.uploadNewStory(
-          token,
+          data_helpers.token,
           List<int>.filled(20, 2),
           description,
           lat,
@@ -152,7 +156,7 @@ void main() {
       ).thenAnswer((_) => Future.value(const Right(true)));
 
       final result = await repository.uploadNewStory(
-        token,
+        data_helpers.token,
         List<int>.filled(20, 2),
         description,
         lat,
@@ -174,22 +178,22 @@ void main() {
 
       when(
         repository.getAuthInfo(),
-      ).thenAnswer((_) => authInfo);
+      ).thenAnswer((_) => data_helpers.authInfo);
 
       final result = repository.getAuthInfo();
 
       expect(result.isAlreadyLoggedIn, true);
-      expect(result.user.id, id);
+      expect(result.user.id, data_helpers.id);
     });
 
     test("Should be able to perform updateAuthInfo contract", () async {
       final repository = MockDailyUsRepository();
 
       when(
-        repository.updateAuthInfo(authInfo),
+        repository.updateAuthInfo(data_helpers.authInfo),
       ).thenAnswer((_) => Future.value(true));
 
-      final result = await repository.updateAuthInfo(authInfo);
+      final result = await repository.updateAuthInfo(data_helpers.authInfo);
 
       expect(result, true);
     });

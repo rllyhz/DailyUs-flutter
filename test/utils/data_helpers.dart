@@ -1,4 +1,8 @@
 // AuthResponse
+import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/domain/entities/story.dart';
+import 'package:daily_us/domain/entities/user.dart';
+
 var exampleLoginResult =
     '{"userId": "userId-example","name": "user_example", "token": "token-example-1234"}';
 var authSuccessJson =
@@ -31,3 +35,25 @@ var exampleUser =
 var authInfoLoggedInJson = '{"isAlreadyLoggedIn": true, "user": $exampleUser}';
 var authInfoNotLoggedInJson =
     '{"isAlreadyLoggedIn": false, "user": $exampleUser}';
+
+// dummy data
+const id = "user-test";
+const name = "nameTest";
+const email = "nameTest@mail.com";
+const password = "nameTest123";
+const token = "example-user-token";
+
+const story = Story(
+  id: id,
+  name: name,
+  description: "description",
+  photoUrl: "url",
+  createdAt: "21-06-43",
+  latitude: 034.5454,
+  longitude: 032.2227,
+);
+
+const authInfo = AuthInfo(
+  isAlreadyLoggedIn: true,
+  user: User(id: id, token: token, name: name),
+);
