@@ -1,3 +1,5 @@
+import 'package:daily_us/data/datasources/local/local_cache_client.dart';
+import 'package:daily_us/data/datasources/remote/api_client.dart';
 import 'package:daily_us/domain/repositories/daily_us_repository.dart';
 import 'package:daily_us/domain/usecases/get_all_stories.dart';
 import 'package:daily_us/domain/usecases/get_auth_info.dart';
@@ -17,5 +19,7 @@ import 'package:mockito/annotations.dart';
   Logout,
   Register,
   UploadNewStory,
+  DailyUsLocalCacheClient,
+  DailyUsApiClient,
 ])
 void main() {}

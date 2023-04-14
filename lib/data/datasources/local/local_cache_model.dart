@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class LocalCacheModel {
+import 'package:equatable/equatable.dart';
+
+class LocalCacheModel extends Equatable {
   final bool isAlreadyLoggedIn;
   final String userId;
   final String userName;
@@ -32,4 +34,7 @@ class LocalCacheModel {
         LocalCacheModel.userNameKey: userName,
         LocalCacheModel.userTokenKey: userToken,
       });
+
+  @override
+  List<Object?> get props => [isAlreadyLoggedIn, userId, userName, userToken];
 }
