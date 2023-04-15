@@ -4,6 +4,17 @@ import 'package:daily_us/common/ui/theme.dart' show appTextStyle;
 import 'package:flutter/material.dart'
     show TextStyle, FontWeight, Color, Colors;
 
+TextStyle buttonTextStyle({
+  double fontSize = 18.0,
+  FontWeight? fontWeight,
+  Color? color,
+}) =>
+    appTextStyle(
+      fontSize: fontSize,
+      fontWeight: fontWeight ?? regularFontWeight,
+      color: color ?? surfaceColor,
+    );
+
 TextStyle splashTextStyle({
   double fontSize = 28.0,
   FontWeight? fontWeight,
