@@ -1,7 +1,8 @@
 import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/ui/colors.dart';
+import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:flutter/material.dart'
-    show ThemeData, ColorScheme, TextTheme, TextStyle, Colors;
+    show ThemeData, ColorScheme, TextTheme, TextStyle, Colors, InkWell;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,4 +27,57 @@ TextStyle appTextStyle({
       color: color ?? defaultTextColor,
       fontSize: fontSize ?? lightFontSize,
       fontWeight: fontWeight ?? lightFontWeight,
+    );
+
+InkWell appButton({
+  String? text,
+  void Function()? onPressed,
+  EdgeInsets? padding,
+  Color? backgroundColor,
+  Color? color,
+}) =>
+    InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: padding ?? const EdgeInsets.all(14.0),
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          color: backgroundColor ?? secondaryColor,
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        ),
+        child: Center(
+          child: Text(
+            text ?? "",
+            style: buttonTextStyle(color: color),
+          ),
+        ),
+      ),
+    );
+
+InkWell appOutlinedButton({
+  String? text,
+  void Function()? onPressed,
+  EdgeInsets? padding,
+  Color? borderColor,
+  Color? color,
+}) =>
+    InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: padding ?? const EdgeInsets.all(14.0),
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 0.5,
+            color: borderColor ?? primaryColor,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        ),
+        child: Center(
+          child: Text(
+            text ?? "",
+            style: buttonTextStyle(color: color ?? secondaryColor),
+          ),
+        ),
+      ),
     );
