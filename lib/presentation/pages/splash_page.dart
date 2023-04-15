@@ -11,8 +11,10 @@ class SplashPage extends StatefulWidget {
   const SplashPage({
     super.key,
     required this.onAnimationEnd,
+    this.runPreparationCallback,
   });
 
+  final Future<void> Function()? runPreparationCallback;
   final void Function()? onAnimationEnd;
 
   @override
@@ -21,10 +23,18 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage>
     with SingleTickerProviderStateMixin {
-  double startPos = 0.3;
-  double endPos = 0;
-  final duration = const Duration(milliseconds: 1500);
-  final delay = const Duration(seconds: 1);
+  double _startPos = 0.3;
+  double _endPos = 0;
+  final _duration = const Duration(milliseconds: 1500);
+  final _delay = const Duration(seconds: 1);
+
+  bool _isForwardAnimLifeCycle = true;
+
+  Tween<Offset> _createAnimTween(double startPos, double endPos) =>
+      Tween<Offset>(
+        begin: Offset(0, startPos),
+        end: Offset(0, endPos),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +43,9 @@ class _SplashPageState extends State<SplashPage>
         color: Theme.of(context).colorScheme.background,
         child: Center(
           child: TweenAnimationBuilder(
-            tween: Tween<Offset>(
-              begin: Offset(0, startPos),
-              end: Offset(0, endPos),
-            ),
+            tween: _createAnimTween(_startPos, _endPos),
             curve: Curves.easeInQuad,
-            duration: duration,
+            duration: _duration,
             builder: (context, offset, child) => FractionalTranslation(
               translation: offset,
               child: SizedBox(
@@ -46,7 +53,7 @@ class _SplashPageState extends State<SplashPage>
                 child: Center(
                   child: AnimatedOpacity(
                     opacity: _calculateLevelOpacity(offset.dy),
-                    duration: duration,
+                    duration: _duration,
                     child: child,
                   ),
                 ),
@@ -78,8 +85,25 @@ class _SplashPageState extends State<SplashPage>
               ],
             ),
             onEnd: () {
+              // end forward animation
+              if (_isForwardAnimLifeCycle) {
+                Future.delayed(_delay, () async {
+                  // run background
+                  if (widget.runPreparationCallback != null) {
+                    await widget.runPreparationCallback!();
+                    // finish preparation stuff
+                  }
+                  // trigger backward animation
+                  setState(() {
+                    _startPos = _endPos;
+                    _endPos = -1.5;
+                    _isForwardAnimLifeCycle = false;
+                  });
+                });
+              }
+
               // end animation
-              Future.delayed(delay, () {
+              Future.delayed(_duration + _delay, () {
                 if (widget.onAnimationEnd != null) widget.onAnimationEnd!();
               });
             },
@@ -90,12 +114,25 @@ class _SplashPageState extends State<SplashPage>
   }
 
   double _calculateLevelOpacity(double currentPosition) {
-    if (currentPosition <= endPos + 0.15) {
-      return 1.0;
-    } else if (currentPosition == startPos) {
-      return 0.0;
+    if (_isForwardAnimLifeCycle) {
+      if (currentPosition <= _endPos + 0.15) {
+        return 1.0;
+      } else if (currentPosition == _startPos) {
+        return 0.0;
+      } else {
+        return currentPosition;
+      }
     } else {
-      return currentPosition;
+      if (currentPosition.abs() <= _endPos.abs() - 0.5) {
+        return 0.0;
+      } else if (currentPosition.abs() == _startPos) {
+        return 1.0;
+      } else {
+        var current = currentPosition.abs();
+        var tempPos = (current - 0) / (1 - 0);
+        var pos = tempPos.abs() > 1.0 ? 1.0 : tempPos.abs();
+        return pos;
+      }
     }
   }
 }
