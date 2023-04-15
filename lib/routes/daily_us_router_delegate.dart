@@ -1,3 +1,5 @@
+import 'package:daily_us/data/models/page_configuration.dart';
+import 'package:daily_us/presentation/pages/detail_page.dart';
 import 'package:daily_us/presentation/pages/login_page.dart';
 import 'package:daily_us/presentation/pages/main_page.dart';
 import 'package:daily_us/presentation/pages/on_boarding_page.dart';
@@ -5,16 +7,18 @@ import 'package:daily_us/presentation/pages/register_page.dart';
 import 'package:daily_us/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 
-class DailyUsRouterDelegate extends RouterDelegate
+class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey;
 
   DailyUsRouterDelegate() : _navigatorKey = GlobalKey<NavigatorState>();
 
   List<Page> historyStack = [];
+  bool? isUnknown;
   bool? isLoggedIn;
   bool onBoarding = false;
   bool isRegister = false;
+  String? storyId;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
@@ -48,8 +52,46 @@ class DailyUsRouterDelegate extends RouterDelegate
   }
 
   @override
-  Future<void> setNewRoutePath(configuration) async {
-    /* Do Nothing */
+  Future<void> setNewRoutePath(PageConfiguration configuration) async {
+    if (configuration.isUnknownPage) {
+      isUnknown = true;
+      isRegister = false;
+    } else if (configuration.isRegisterPage) {
+      isRegister = true;
+    } else if (configuration.isMainPage ||
+        configuration.isLoginPage ||
+        configuration.isSplashPage) {
+      isUnknown = false;
+      storyId = null;
+      isRegister = false;
+    } else if (configuration.isDetailPage) {
+      isUnknown = false;
+      isRegister = false;
+      storyId = configuration.storyId.toString();
+    } else {
+      debugPrint(' Could not set new route');
+    }
+
+    notifyListeners();
+  }
+
+  @override
+  PageConfiguration? get currentConfiguration {
+    if (isLoggedIn == null) {
+      return PageConfiguration.splash();
+    } else if (isRegister == true) {
+      return PageConfiguration.register();
+    } else if (isLoggedIn == false) {
+      return PageConfiguration.login();
+    } else if (isUnknown == true) {
+      return PageConfiguration.unknown();
+    } else if (storyId == null) {
+      return PageConfiguration.main();
+    } else if (storyId != null) {
+      return PageConfiguration.detail(storyId!);
+    } else {
+      return null;
+    }
   }
 
   List<Page> get _splashStack => [
@@ -119,6 +161,10 @@ class DailyUsRouterDelegate extends RouterDelegate
         MaterialPage(
           key: const ValueKey("MainPage"),
           child: MainPage(
+            onDetail: (id) {
+              storyId = id;
+              notifyListeners();
+            },
             onLogout: () {
               isLoggedIn = false;
               isRegister = false;
@@ -127,5 +173,16 @@ class DailyUsRouterDelegate extends RouterDelegate
             },
           ),
         ),
+        if (storyId != null)
+          MaterialPage(
+            key: const ValueKey("DetailPage"),
+            child: DetailPage(
+              onNavigateBack: () {
+                storyId = null;
+                notifyListeners();
+              },
+              storyId: storyId!,
+            ),
+          ),
       ];
 }

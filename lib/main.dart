@@ -1,5 +1,5 @@
 import 'package:daily_us/common/localizations.dart';
-import 'package:daily_us/presentation/pages/splash_page.dart';
+import 'package:daily_us/routes/daily_us_route_information_parser.dart';
 import 'package:daily_us/routes/daily_us_router_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:daily_us/injection.dart' as di;
@@ -9,39 +9,39 @@ void main() async {
 
   await di.init();
 
-  runApp(const MyApp());
+  runApp(const DailUsApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class DailUsApp extends StatefulWidget {
+  const DailUsApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<DailUsApp> createState() => _DailUsAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _DailUsAppState extends State<DailUsApp> {
   late DailyUsRouterDelegate appRouterDelegate;
+  late DailyUsRouteInformationParser appRouteInformationParser;
 
   @override
   void initState() {
     super.initState();
 
     appRouterDelegate = DailyUsRouterDelegate();
+    appRouteInformationParser = DailyUsRouteInformationParser();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         useMaterial3: true,
       ),
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: Router(
-        routerDelegate: appRouterDelegate,
-        backButtonDispatcher: RootBackButtonDispatcher(),
-      ),
+      routerDelegate: appRouterDelegate,
+      routeInformationParser: appRouteInformationParser,
+      backButtonDispatcher: RootBackButtonDispatcher(),
     );
   }
 }
