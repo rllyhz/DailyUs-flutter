@@ -34,10 +34,12 @@ class _DailUsAppState extends State<DailUsApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         useMaterial3: true,
+        brightness: Brightness.light,
       ),
       routerDelegate: appRouterDelegate,
       routeInformationParser: appRouteInformationParser,
