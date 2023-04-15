@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage>
   double _startPos = 0.3;
   double _endPos = 0;
   final _duration = const Duration(milliseconds: 1500);
-  final _delay = const Duration(seconds: 1);
+  final _delay = const Duration(milliseconds: 500);
 
   bool _isForwardAnimLifeCycle = true;
 
@@ -84,28 +84,27 @@ class _SplashPageState extends State<SplashPage>
                 ),
               ],
             ),
-            onEnd: () {
+            onEnd: () async {
               // end forward animation
               if (_isForwardAnimLifeCycle) {
-                Future.delayed(_delay, () async {
-                  // run background
-                  if (widget.runPreparationCallback != null) {
-                    await widget.runPreparationCallback!();
-                    // finish preparation stuff
-                  }
-                  // trigger backward animation
+                // run background
+                if (widget.runPreparationCallback != null) {
+                  await widget.runPreparationCallback!();
+                  // finish preparation stuff
+                }
+
+                // trigger backward animation
+                await Future.delayed(_delay, () {
                   setState(() {
                     _startPos = _endPos;
-                    _endPos = -1.5;
+                    _endPos = -1.3;
                     _isForwardAnimLifeCycle = false;
                   });
                 });
-              }
-
-              // end backwards animation in duration approximately
-              Future.delayed(_duration + _delay, () {
+              } else {
+                // end backwards animation in duration approximately
                 if (widget.onAnimationEnd != null) widget.onAnimationEnd!();
-              });
+              }
             },
           ),
         ),
