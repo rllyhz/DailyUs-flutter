@@ -1,4 +1,5 @@
 import 'package:daily_us/data/models/page_configuration.dart';
+import 'package:daily_us/presentation/pages/anim/slide_animation_page.dart';
 import 'package:daily_us/presentation/pages/detail_page.dart';
 import 'package:daily_us/presentation/pages/login_page.dart';
 import 'package:daily_us/presentation/pages/main_page.dart';
@@ -19,6 +20,8 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   bool onBoarding = false;
   bool isRegister = false;
   String? storyId;
+
+  bool isLauchMainFromSplash = true;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
@@ -112,7 +115,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
 
   List<Page> get _splashStack => [
         MaterialPage(
-          key: const ValueKey("SplashPage"),
+          key: SplashPage.valueKey,
           child: SplashPage(
             runPreparationCallback: () async {
               // run task to check if user already logged in
@@ -129,8 +132,9 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
       ];
 
   List<Page> get _loggedOutStack => [
-        MaterialPage(
-          key: const ValueKey("OnBoardingPage"),
+        SlideAnimationPage(
+          direction: SlideAnimationPage.bottomToTop,
+          key: OnBoardingPage.valueKey,
           child: OnBoardingPage(
             onLogin: () {
               isRegister = false;
@@ -148,11 +152,12 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
         ),
         if (onBoarding == false && isRegister == false && isLoggedIn == false)
           MaterialPage(
-            key: const ValueKey("LoginPage"),
+            key: LoginPage.valueKey,
             child: LoginPage(
               onSuccessLogin: () {
                 isLoggedIn = true;
                 onBoarding = false;
+                isLauchMainFromSplash = false;
                 notifyListeners();
               },
               onRegister: () {
@@ -164,7 +169,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           ),
         if (onBoarding == false && isLoggedIn == false && isRegister == true)
           MaterialPage(
-            key: const ValueKey("RegisterPage"),
+            key: RegisterPage.valueKey,
             child: RegisterPage(
               onSuccessRegister: () {
                 isRegister = false;
@@ -181,24 +186,42 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
       ];
 
   List<Page> get _loggedInStack => [
-        MaterialPage(
-          key: const ValueKey("MainPage"),
-          child: MainPage(
-            onDetail: (id) {
-              storyId = id;
-              notifyListeners();
-            },
-            onLogout: () {
-              isLoggedIn = false;
-              isRegister = false;
-              onBoarding = true;
-              notifyListeners();
-            },
+        if (isLauchMainFromSplash)
+          SlideAnimationPage(
+            direction: SlideAnimationPage.bottomToTop,
+            key: MainPage.valueKey,
+            child: MainPage(
+              onDetail: (id) {
+                storyId = id;
+                notifyListeners();
+              },
+              onLogout: () {
+                isLoggedIn = false;
+                isRegister = false;
+                onBoarding = true;
+                notifyListeners();
+              },
+            ),
           ),
-        ),
+        if (isLauchMainFromSplash == false)
+          MaterialPage(
+            key: MainPage.valueKey,
+            child: MainPage(
+              onDetail: (id) {
+                storyId = id;
+                notifyListeners();
+              },
+              onLogout: () {
+                isLoggedIn = false;
+                isRegister = false;
+                onBoarding = true;
+                notifyListeners();
+              },
+            ),
+          ),
         if (storyId != null)
           MaterialPage(
-            key: const ValueKey("DetailPage"),
+            key: DetailPage.valueKey,
             child: DetailPage(
               onNavigateBack: () {
                 storyId = null;
