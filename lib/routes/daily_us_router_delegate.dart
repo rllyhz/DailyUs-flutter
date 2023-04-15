@@ -37,13 +37,24 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
       key: navigatorKey,
       pages: historyStack,
       onPopPage: (route, result) {
-        final didPop = route.didPop(result);
-        if (!didPop) {
+        final page = route.settings as MaterialPage;
+
+        if (page.key == SplashPage.valueKey) {
           return false;
         }
+        if (page.key == LoginPage.valueKey) {
+          isLoggedIn = false;
+          onBoarding = true;
+        }
+        if (page.key == RegisterPage.valueKey) {
+          isLoggedIn = false;
+          isRegister = false;
+          onBoarding = true;
+        }
+        if (page.key == DetailPage.valueKey) {
+          storyId = null;
+        }
 
-        isRegister = false;
-        onBoarding = true;
         notifyListeners();
 
         return true;
@@ -55,12 +66,13 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   Future<void> setNewRoutePath(PageConfiguration configuration) async {
     if (configuration.isUnknownPage) {
       isUnknown = true;
-      isRegister = false;
+    } else if (configuration.isOnBoardingPage) {
+      onBoarding = true;
     } else if (configuration.isRegisterPage) {
       isRegister = true;
-    } else if (configuration.isMainPage ||
-        configuration.isLoginPage ||
-        configuration.isSplashPage) {
+    } else if (configuration.isLoginPage) {
+      isLoggedIn = false;
+    } else if (configuration.isMainPage) {
       isUnknown = false;
       storyId = null;
       isRegister = false;
@@ -79,6 +91,8 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   PageConfiguration? get currentConfiguration {
     if (isLoggedIn == null) {
       return PageConfiguration.splash();
+    } else if (onBoarding == true) {
+      return PageConfiguration.onBoarding();
     } else if (isRegister == true) {
       return PageConfiguration.register();
     } else if (isLoggedIn == false) {
@@ -133,10 +147,12 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             child: LoginPage(
               onSuccessLogin: () {
                 isLoggedIn = true;
+                onBoarding = false;
                 notifyListeners();
               },
               onRegister: () {
                 isRegister = true;
+                onBoarding = false;
                 notifyListeners();
               },
             ),
@@ -147,10 +163,12 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             child: RegisterPage(
               onSuccessRegister: () {
                 isRegister = false;
+                onBoarding = false;
                 notifyListeners();
               },
               onLogin: () {
                 isRegister = false;
+                onBoarding = false;
                 notifyListeners();
               },
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OnBoardingPage extends StatelessWidget {
-  static String routeName = "/boarding";
+  static const valueKey = ValueKey("OnBoardingPage");
 
   const OnBoardingPage({
     super.key,

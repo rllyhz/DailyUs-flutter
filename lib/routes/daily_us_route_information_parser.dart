@@ -15,12 +15,14 @@ class DailyUsRouteInformationParser
     } else if (uri.pathSegments.length == 1) {
       // path parameter => "/aaa"
       final first = uri.pathSegments[0].toLowerCase();
-      if (first == 'login') {
+      if (first == 'splash') {
+        return PageConfiguration.splash();
+      } else if (first == 'onboarding') {
+        return PageConfiguration.onBoarding();
+      } else if (first == 'login') {
         return PageConfiguration.login();
       } else if (first == 'register') {
         return PageConfiguration.register();
-      } else if (first == 'splash') {
-        return PageConfiguration.splash();
       } else {
         return PageConfiguration.unknown();
       }
@@ -48,6 +50,8 @@ class DailyUsRouteInformationParser
       return const RouteInformation(location: '/register');
     } else if (configuration.isLoginPage) {
       return const RouteInformation(location: '/login');
+    } else if (configuration.isOnBoardingPage) {
+      return const RouteInformation(location: '/onboarding');
     } else if (configuration.isMainPage) {
       return const RouteInformation(location: '/');
     } else if (configuration.isDetailPage) {

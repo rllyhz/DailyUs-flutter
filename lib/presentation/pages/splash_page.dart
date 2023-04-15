@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashPage extends StatefulWidget {
-  static String routeName = "/splash";
+  static const valueKey = ValueKey("SplashPage");
 
   const SplashPage({
     super.key,

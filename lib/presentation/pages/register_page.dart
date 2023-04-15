@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
-  static String routeName = "/register";
+  static const valueKey = ValueKey("RegisterPage");
 
   const RegisterPage({
     super.key,

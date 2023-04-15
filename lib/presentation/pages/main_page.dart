@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatelessWidget {
-  static String routeName = "/";
+  static const valueKey = ValueKey("MainPage");
 
   const MainPage({
     super.key,

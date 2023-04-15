@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  static String routeName = "/login";
+  static const valueKey = ValueKey("LoginPage");
 
   const LoginPage({
     super.key,

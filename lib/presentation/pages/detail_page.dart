@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatelessWidget {
+  static const valueKey = ValueKey("DetailPage");
+
   const DetailPage({
     super.key,
     required this.storyId,
