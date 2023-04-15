@@ -114,8 +114,11 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
         MaterialPage(
           key: const ValueKey("SplashPage"),
           child: SplashPage(
+            runPreparationCallback: () async {
+              // run task to check if user already logged in
+            },
             onAnimationEnd: () {
-              // check if user already logged in
+              // change state correspondingly to the user's login state
               isLoggedIn = false;
               isRegister = false;
               onBoarding = true;
