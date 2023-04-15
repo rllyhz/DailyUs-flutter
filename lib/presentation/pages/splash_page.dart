@@ -102,7 +102,7 @@ class _SplashPageState extends State<SplashPage>
                 });
               }
 
-              // end animation
+              // end backwards animation in duration approximately
               Future.delayed(_duration + _delay, () {
                 if (widget.onAnimationEnd != null) widget.onAnimationEnd!();
               });
@@ -123,15 +123,16 @@ class _SplashPageState extends State<SplashPage>
         return currentPosition;
       }
     } else {
-      if (currentPosition.abs() <= _endPos.abs() - 0.5) {
+      if (currentPosition.abs() <= _endPos.abs() - 0.45) {
         return 0.0;
       } else if (currentPosition.abs() == _startPos) {
         return 1.0;
       } else {
         var current = currentPosition.abs();
-        var tempPos = (current - 0) / (1 - 0);
-        var pos = tempPos.abs() > 1.0 ? 1.0 : tempPos.abs();
-        return pos;
+        var tempLevel = (current - 0) / (1 - 0);
+        // opacity level only between 0 and 1
+        var level = tempLevel.abs() > 1.0 ? 1.0 : tempLevel.abs();
+        return level;
       }
     }
   }
