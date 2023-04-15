@@ -1,6 +1,4 @@
-import 'package:daily_us/presentation/pages/home_page.dart';
-import 'package:daily_us/presentation/pages/post_story_page.dart';
-import 'package:daily_us/presentation/pages/profile_page.dart';
+import 'package:daily_us/routes/main_page_router_delegate.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,56 +18,80 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedPageIndex = 0;
+  late MainPageRouterDelegate _navBarRouterDelegate;
+  late ChildBackButtonDispatcher _backButtonDispatcher;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _navBarRouterDelegate = MainPageRouterDelegate(
+      widget.onDetail,
+      widget.onLogout,
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    var outerBackButtonDispatcher = Router.of(context).backButtonDispatcher;
+    _backButtonDispatcher =
+        outerBackButtonDispatcher!.createChildBackButtonDispatcher();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedPageIndex,
-        onTap: (newIndex) {
-          setState(() => _selectedPageIndex = newIndex);
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: "PostStory",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.verified_user),
-            label: "Profile",
-          ),
-        ],
-      ),
-      body: Center(
-        child: _createSelectedPage(
-          _selectedPageIndex,
-          widget.onLogout,
-          widget.onDetail,
+    _backButtonDispatcher.takePriority();
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (newIndex) {
+            setState(() {
+              _navBarRouterDelegate.selectedPageIndex = newIndex;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: "PostStory",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.verified_user),
+              label: "Profile",
+            ),
+          ],
+        ),
+        body: Router(
+          routerDelegate: _navBarRouterDelegate,
+          backButtonDispatcher: _backButtonDispatcher,
         ),
       ),
     );
   }
 
-  Widget _createSelectedPage(
-    int index,
-    void Function() onLogout,
-    void Function(String) onDetail,
-  ) {
-    if (index == 1) {
-      return const PostStoryPage();
-    } else if (index == 2) {
-      return ProfilePage(
-        onLogout: onLogout,
-      );
-    } else {
-      return HomePage(
-        onDetail: onDetail,
-      );
-    }
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('Do you want to exit the app.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    ));
   }
 }
