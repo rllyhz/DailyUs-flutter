@@ -40,6 +40,11 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
       key: navigatorKey,
       pages: historyStack,
       onPopPage: (route, result) {
+        var didPop = route.didPop(result);
+        if (!didPop) {
+          return true;
+        }
+
         final page = route.settings as MaterialPage;
 
         if (page.key == SplashPage.valueKey) {
