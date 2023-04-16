@@ -43,6 +43,11 @@
     "dialogPositiveActionLogoutConfirm": "Oke",
     "dialogNegativeActionLogoutConfirm": "Cancel",
 
+    "dialogTitleQuitConfirm": "Close the app!",
+    "dialogMessageQuitConfirm": "Are you sure want to exit the app?",
+    "dialogPositiveActionQuitConfirm": "Oke",
+    "dialogNegativeActionQuitConfirm": "Cancel",
+
     "nameEmptyMessage": "Name must not be empty",
     "emailEmptyMessage": "E-mail must not be empty",
     "passwordEmptyMessage": "Password must not be empty",

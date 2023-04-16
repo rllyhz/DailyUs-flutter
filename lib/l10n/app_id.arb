@@ -43,6 +43,11 @@
     "dialogPositiveActionLogoutConfirm": "Baik",
     "dialogNegativeActionLogoutConfirm": "Batal",
 
+    "dialogTitleQuitConfirm": "Keluar dari aplikasi!",
+    "dialogMessageQuitConfirm": "Apakah kamu yakin ingin keluar dari aplikasi?",
+    "dialogPositiveActionQuitConfirm": "Baik",
+    "dialogNegativeActionQuitConfirm": "Batal",
+
     "nameEmptyMessage": "Nama tidak boleh kosong",
     "emailEmptyMessage": "E-mail tidak boleh kosong",
     "passwordEmptyMessage": "Password tidak boleh kosong",
