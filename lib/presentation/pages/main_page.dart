@@ -1,5 +1,9 @@
+import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/common/ui/colors.dart';
+import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:daily_us/routes/main_page_router_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MainPage extends StatefulWidget {
   static const valueKey = ValueKey("MainPage");
@@ -46,26 +50,59 @@ class _MainPageState extends State<MainPage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: (newIndex) {
-            setState(() {
-              _navBarRouterDelegate.selectedPageIndex = newIndex;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: "PostStory",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.verified_user),
-              label: "Profile",
-            ),
-          ],
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+              color: primaryColor,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12.0),
+                topRight: Radius.circular(12.0),
+              )),
+          child: BottomNavigationBar(
+            backgroundColor: Colors.transparent,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            elevation: 0.0,
+            onTap: (newIndex) {
+              setState(() {
+                _navBarRouterDelegate.selectedPageIndex = newIndex;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  _navBarRouterDelegate.selectedPageIndex == 0
+                      ? 'assets/icon_home_filled.svg'
+                      : 'assets/icon_home_outlined.svg',
+                  width: 32.0,
+                  colorFilter:
+                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                ),
+                label: AppLocalizations.of(context)!.titleHome,
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  _navBarRouterDelegate.selectedPageIndex == 1
+                      ? 'assets/icon_post_filled.svg'
+                      : 'assets/icon_post_outlined.svg',
+                  width: 32.0,
+                  colorFilter:
+                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                ),
+                label: AppLocalizations.of(context)!.titlePost,
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  _navBarRouterDelegate.selectedPageIndex == 2
+                      ? 'assets/icon_settings_filled.svg'
+                      : 'assets/icon_settings_outlined.svg',
+                  width: 32.0,
+                  colorFilter:
+                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                ),
+                label: AppLocalizations.of(context)!.titleSettings,
+              ),
+            ],
+          ),
         ),
         body: Router(
           routerDelegate: _navBarRouterDelegate,
@@ -79,16 +116,30 @@ class _MainPageState extends State<MainPage> {
     return (await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to exit the app.'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('No'),
+        title: Text(
+          AppLocalizations.of(context)!.dialogTitleQuitConfirm,
+          style: titleTextStyle(),
+        ),
+        content: Text(
+          AppLocalizations.of(context)!.dialogMessageQuitConfirm,
+          style: homeCardDescriptionTextStyle(
+            fontSize: 14.0,
           ),
-          TextButton(
+        ),
+        actions: <Widget>[
+          OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              AppLocalizations.of(context)!.dialogNegativeActionQuitConfirm,
+              style: homeCardDescriptionTextStyle(fontSize: 14.0),
+            ),
+          ),
+          OutlinedButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Yes'),
+            child: Text(
+              AppLocalizations.of(context)!.dialogPositiveActionQuitConfirm,
+              style: homeCardDescriptionTextStyle(fontSize: 14.0),
+            ),
           ),
         ],
       ),

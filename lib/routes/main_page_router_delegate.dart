@@ -37,7 +37,8 @@ class MainPageRouterDelegate extends RouterDelegate
     notifyListeners();
   }
 
-  get isLastIndexReached => _isLastHistoryReached;
+  int get selectedPageIndex => _selectedPageIndex;
+  bool get isLastIndexReached => _isLastHistoryReached;
 
   @override
   Widget build(BuildContext context) {
