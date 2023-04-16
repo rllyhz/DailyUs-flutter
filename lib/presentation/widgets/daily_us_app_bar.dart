@@ -31,7 +31,7 @@ class DailyUsAppBar extends StatelessWidget {
               child: SvgPicture.asset(
                 'assets/icon_back.svg',
                 width: backIconSize,
-                color: purple700Color,
+                colorFilter: ColorFilter.mode(purple700Color, BlendMode.srcIn),
               ),
             ),
             const SizedBox(
