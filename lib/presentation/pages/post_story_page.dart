@@ -8,7 +8,7 @@ class PostStoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.purple,
+      color: Colors.white,
       child: const Center(
         child: Text("PostStory UI"),
       ),

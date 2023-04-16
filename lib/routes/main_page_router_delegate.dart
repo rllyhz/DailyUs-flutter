@@ -38,6 +38,7 @@ class MainPageRouterDelegate extends RouterDelegate
   }
 
   int get selectedPageIndex => _selectedPageIndex;
+
   bool get isLastIndexReached => _isLastHistoryReached;
 
   @override

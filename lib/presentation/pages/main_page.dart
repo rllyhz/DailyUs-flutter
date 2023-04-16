@@ -1,5 +1,5 @@
 import 'package:daily_us/common/localizations.dart';
-import 'package:daily_us/common/ui/colors.dart';
+import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:daily_us/routes/main_page_router_delegate.dart';
 import 'package:flutter/material.dart';
@@ -50,59 +50,49 @@ class _MainPageState extends State<MainPage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
-              )),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.transparent,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            elevation: 0.0,
-            onTap: (newIndex) {
-              setState(() {
-                _navBarRouterDelegate.selectedPageIndex = newIndex;
-              });
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  _navBarRouterDelegate.selectedPageIndex == 0
-                      ? 'assets/icon_home_filled.svg'
-                      : 'assets/icon_home_outlined.svg',
-                  width: 32.0,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                label: AppLocalizations.of(context)!.titleHome,
+        bottomNavigationBar: DailyUsBottomNavBar(
+          backgroundColor: Colors.transparent,
+          showLabel: false,
+          onTap: (newIndex) {
+            setState(() {
+              _navBarRouterDelegate.selectedPageIndex = newIndex;
+            });
+          },
+          items: [
+            DailyUsBottomNavBarItem(
+              icon: SvgPicture.asset(
+                _navBarRouterDelegate.selectedPageIndex == 0
+                    ? 'assets/icon_home_filled.svg'
+                    : 'assets/icon_home_outlined.svg',
+                width: 30.0,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  _navBarRouterDelegate.selectedPageIndex == 1
-                      ? 'assets/icon_post_filled.svg'
-                      : 'assets/icon_post_outlined.svg',
-                  width: 32.0,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                label: AppLocalizations.of(context)!.titlePost,
+              label: AppLocalizations.of(context)!.titleHome,
+            ),
+            DailyUsBottomNavBarItem(
+              icon: SvgPicture.asset(
+                _navBarRouterDelegate.selectedPageIndex == 1
+                    ? 'assets/icon_post_filled.svg'
+                    : 'assets/icon_post_outlined.svg',
+                width: 32.0,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  _navBarRouterDelegate.selectedPageIndex == 2
-                      ? 'assets/icon_settings_filled.svg'
-                      : 'assets/icon_settings_outlined.svg',
-                  width: 32.0,
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
-                label: AppLocalizations.of(context)!.titleSettings,
+              label: AppLocalizations.of(context)!.titlePost,
+            ),
+            DailyUsBottomNavBarItem(
+              icon: SvgPicture.asset(
+                _navBarRouterDelegate.selectedPageIndex == 2
+                    ? 'assets/icon_settings_filled.svg'
+                    : 'assets/icon_settings_outlined.svg',
+                width: 32.0,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
-            ],
-          ),
+              label: AppLocalizations.of(context)!.titleSettings,
+            ),
+          ],
         ),
         body: Router(
           routerDelegate: _navBarRouterDelegate,
