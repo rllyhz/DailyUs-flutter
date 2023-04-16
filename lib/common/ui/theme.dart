@@ -8,9 +8,12 @@ import 'package:flutter/material.dart'
         TextTheme,
         TextStyle,
         Colors,
-        InkWell,
-        Ink,
-        CircularProgressIndicator;
+        CircularProgressIndicator,
+        MaterialStateProperty,
+        RoundedRectangleBorder,
+        OutlinedButton,
+        TextButton,
+        ButtonStyle;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,7 +40,7 @@ TextStyle appTextStyle({
       fontWeight: fontWeight ?? lightFontWeight,
     );
 
-InkWell appButton({
+TextButton appButton({
   String? text,
   void Function()? onPressed,
   EdgeInsets? padding,
@@ -45,17 +48,19 @@ InkWell appButton({
   Color? color,
   bool showLoadingState = false,
 }) =>
-    InkWell(
-      onTap: showLoadingState ? null : onPressed,
-      splashColor: Colors.white.withOpacity(0.3),
-      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      child: Ink(
-        padding: padding ?? const EdgeInsets.all(14.0),
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          color: backgroundColor ?? secondaryColor,
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+    TextButton(
+      onPressed: showLoadingState ? null : onPressed,
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all(backgroundColor ?? secondaryColor),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
         ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Center(
           child: showLoadingState
               ? CircularProgressIndicator(
@@ -70,26 +75,27 @@ InkWell appButton({
       ),
     );
 
-InkWell appOutlinedButton({
+OutlinedButton appOutlinedButton({
   String? text,
   void Function()? onPressed,
   EdgeInsets? padding,
   Color? borderColor,
   Color? color,
 }) =>
-    InkWell(
-      onTap: onPressed,
-      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      child: Ink(
-        padding: padding ?? const EdgeInsets.all(14.0),
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 0.5,
-            color: borderColor ?? primaryColor,
+    OutlinedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+            side: BorderSide(
+              color: borderColor ?? greyColor,
+            ),
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Center(
           child: Text(
             text ?? "",
