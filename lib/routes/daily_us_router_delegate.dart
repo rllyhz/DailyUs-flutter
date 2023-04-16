@@ -165,11 +165,6 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
                 isLauchMainFromSplash = false;
                 notifyListeners();
               },
-              onRegister: () {
-                isRegister = true;
-                onBoarding = false;
-                notifyListeners();
-              },
             ),
           ),
         if (onBoarding == false && isLoggedIn == false && isRegister == true)
@@ -177,11 +172,6 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             key: RegisterPage.valueKey,
             child: RegisterPage(
               onSuccessRegister: () {
-                isRegister = false;
-                onBoarding = false;
-                notifyListeners();
-              },
-              onLogin: () {
                 isRegister = false;
                 onBoarding = false;
                 notifyListeners();

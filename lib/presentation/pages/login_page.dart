@@ -1,3 +1,8 @@
+import 'package:daily_us/common/constants.dart';
+import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/common/ui/theme.dart';
+import 'package:daily_us/presentation/widgets/daily_us_app_bar.dart';
+import 'package:daily_us/presentation/widgets/daily_us_text_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -6,31 +11,58 @@ class LoginPage extends StatelessWidget {
   const LoginPage({
     super.key,
     required this.onSuccessLogin,
-    required this.onRegister,
   });
 
   final void Function() onSuccessLogin;
-  final void Function() onRegister;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            const Text("LoginPage"),
-            const SizedBox(
-              height: 24.0,
+      body: SizedBox.expand(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: screenPaddingSize),
+            child: Stack(
+              alignment: AlignmentDirectional.topCenter,
+              children: <Widget>[
+                SizedBox.expand(
+                  child: Column(
+                    children: <Widget>[
+                      DailyUsAppBar(
+                        onBack: () {
+                          Navigator.of(context).pop();
+                        },
+                        title: AppLocalizations.of(context)!.titleLogin,
+                      ),
+                      const SizedBox(
+                        height: 32.0,
+                      ),
+                      DailyUsTextField(
+                        hintText: AppLocalizations.of(context)!.emailHint,
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      DailyUsTextField(
+                        hintText: AppLocalizations.of(context)!.passwordHint,
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: screenPaddingSize,
+                  left: 0,
+                  right: 0,
+                  child: appButton(
+                    text: AppLocalizations.of(context)!.buttonLogin,
+                    onPressed: () {
+                      onSuccessLogin();
+                    },
+                  ),
+                ),
+              ],
             ),
-            OutlinedButton(
-              onPressed: onRegister,
-              child: const Text("Register"),
-            ),
-            OutlinedButton(
-              onPressed: onSuccessLogin,
-              child: const Text("Login"),
-            ),
-          ],
+          ),
         ),
       ),
     );

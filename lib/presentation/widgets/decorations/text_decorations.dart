@@ -15,6 +15,17 @@ TextStyle buttonTextStyle({
       color: color ?? surfaceColor,
     );
 
+TextStyle hintTextStyle({
+  double fontSize = 18.0,
+  FontWeight? fontWeight,
+  Color? color,
+}) =>
+    appTextStyle(
+      fontSize: fontSize,
+      fontWeight: fontWeight ?? regularFontWeight,
+      color: color ?? surfaceColor,
+    );
+
 TextStyle splashTextStyle({
   double fontSize = 28.0,
   FontWeight? fontWeight,

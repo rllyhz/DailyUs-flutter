@@ -2,7 +2,15 @@ import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:flutter/material.dart'
-    show ThemeData, ColorScheme, TextTheme, TextStyle, Colors, InkWell;
+    show
+        ThemeData,
+        ColorScheme,
+        TextTheme,
+        TextStyle,
+        Colors,
+        InkWell,
+        Ink,
+        CircularProgressIndicator;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -35,10 +43,13 @@ InkWell appButton({
   EdgeInsets? padding,
   Color? backgroundColor,
   Color? color,
+  bool showLoadingState = false,
 }) =>
     InkWell(
-      onTap: onPressed,
-      child: Container(
+      onTap: showLoadingState ? null : onPressed,
+      splashColor: Colors.white.withOpacity(0.3),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      child: Ink(
         padding: padding ?? const EdgeInsets.all(14.0),
         width: double.maxFinite,
         decoration: BoxDecoration(
@@ -46,10 +57,15 @@ InkWell appButton({
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
         child: Center(
-          child: Text(
-            text ?? "",
-            style: buttonTextStyle(color: color),
-          ),
+          child: showLoadingState
+              ? CircularProgressIndicator(
+                  strokeWidth: 3.0,
+                  color: color ?? surfaceColor,
+                )
+              : Text(
+                  text ?? "",
+                  style: buttonTextStyle(color: color),
+                ),
         ),
       ),
     );
@@ -63,7 +79,8 @@ InkWell appOutlinedButton({
 }) =>
     InkWell(
       onTap: onPressed,
-      child: Container(
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      child: Ink(
         padding: padding ?? const EdgeInsets.all(14.0),
         width: double.maxFinite,
         decoration: BoxDecoration(

@@ -1,3 +1,4 @@
+import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
@@ -23,7 +24,7 @@ class OnBoardingPage extends StatelessWidget {
       body: SizedBox.expand(
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: screenPaddingSize),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
