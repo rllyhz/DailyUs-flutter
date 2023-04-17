@@ -2,18 +2,16 @@ import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:flutter/material.dart';
 
-class DailyUsTextField extends StatelessWidget {
-  const DailyUsTextField({
+class DailyUsTextArea extends StatelessWidget {
+  const DailyUsTextArea({
     super.key,
     required this.hintText,
     this.controller,
-    this.keyboardType,
     this.validator,
   });
 
   final String hintText;
   final TextEditingController? controller;
-  final TextInputType? keyboardType;
   final String? Function(String?)? validator;
 
   @override
@@ -25,8 +23,9 @@ class DailyUsTextField extends StatelessWidget {
         color: greyColor,
       ),
       child: TextFormField(
-        keyboardType: keyboardType,
+        keyboardType: TextInputType.text,
         controller: controller,
+        maxLines: 3,
         cursorColor: secondaryColor,
         validator: validator,
         style: hintTextStyle(color: purple700Color),
