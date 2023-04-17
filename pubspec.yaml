@@ -42,7 +42,6 @@ dependencies:
 
   # UI-related
   fade_shimmer: ^2.2.0
-  ionicons: ^0.2.2
   google_fonts: ^4.0.3
   flutter_svg: ^2.0.5
 
