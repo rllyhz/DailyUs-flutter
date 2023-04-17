@@ -1,4 +1,5 @@
 import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:daily_us/routes/main_page_router_delegate.dart';
@@ -12,10 +13,12 @@ class MainPage extends StatefulWidget {
     super.key,
     required this.onLogout,
     required this.onDetail,
+    required this.authInfo,
   });
 
   final void Function() onLogout;
   final void Function(String) onDetail;
+  final AuthInfo authInfo;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -33,6 +36,7 @@ class _MainPageState extends State<MainPage> {
     _bottomNavController = DailyUsBottomNavBarController();
 
     _navBarRouterDelegate = MainPageRouterDelegate(
+      authInfo: widget.authInfo,
       onDetail: widget.onDetail,
       onLogout: widget.onLogout,
       onGoHome: () {

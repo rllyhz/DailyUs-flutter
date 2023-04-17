@@ -1,6 +1,8 @@
 import 'package:daily_us/common/constants.dart';
+import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
+import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/presentation/widgets/daily_us_story_item.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
@@ -11,9 +13,14 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   static const valueKey = ValueKey("HomePage");
 
-  const HomePage({super.key, required this.onDetail});
+  const HomePage({
+    super.key,
+    required this.onDetail,
+    required this.authInfo,
+  });
 
   final void Function(String) onDetail;
+  final AuthInfo authInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,9 @@ class HomePage extends StatelessWidget {
               height: 24.0,
             ),
             Text(
-              AppLocalizations.of(context)!.homeGreetingUserExample,
+              AppLocalizations.of(context)!.homeGreetingUser(
+                getFirstName(authInfo.user.name),
+              ),
               style: homeGreetingUserTextStyle(),
             ),
             const SizedBox(

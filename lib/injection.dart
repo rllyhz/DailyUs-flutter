@@ -11,7 +11,9 @@ import 'package:daily_us/domain/usecases/get_detail_story.dart';
 import 'package:daily_us/domain/usecases/login.dart';
 import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:daily_us/domain/usecases/register.dart';
+import 'package:daily_us/domain/usecases/update_auth_info.dart';
 import 'package:daily_us/domain/usecases/upload_new_story.dart';
+import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,6 +56,9 @@ Future<void> init() async {
   locator.registerLazySingleton<GetAuthInfo>(
     () => GetAuthInfo(locator()),
   );
+  locator.registerLazySingleton<UpdateAuthInfo>(
+    () => UpdateAuthInfo(locator()),
+  );
   locator.registerLazySingleton<GetDetailStory>(
     () => GetDetailStory(locator()),
   );
@@ -68,5 +73,10 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<UploadNewStory>(
     () => UploadNewStory(locator()),
+  );
+
+  // bloc
+  locator.registerFactory(
+    () => LoginBloc(locator(), locator()),
   );
 }

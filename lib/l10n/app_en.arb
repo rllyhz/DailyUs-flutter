@@ -85,6 +85,7 @@
     "nameInvalidMessage": "Name is not valid",
     "emailInvalidMessage": "E-mail is not valid",
     "passwordInvalidMessage": "Password is not valid",
+    "passwordInvalidFormatMessage": "Password must have at least 6 chars",
     "wrongCredentialMessage": "Wrong email or password",
     "emailAlreadyTakenMessage": "Email has already taken",
     "internalErrorMessage": "Sorry, it went wrong internally",

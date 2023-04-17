@@ -85,6 +85,7 @@
     "nameInvalidMessage": "Nama tidak valid",
     "emailInvalidMessage": "E-mail tidak valid",
     "passwordInvalidMessage": "Password tidak valid",
+    "passwordInvalidFormatMessage": "Password harus setidaknya 6 karakter",
     "wrongCredentialMessage": "Email atau password salah",
     "emailAlreadyTakenMessage": "Email sudah terdaftar",
     "internalErrorMessage": "Maaf, telah terjadi kesalahan",

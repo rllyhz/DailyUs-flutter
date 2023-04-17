@@ -1,3 +1,4 @@
+import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
@@ -12,11 +13,13 @@ class MainPageRouterDelegate extends RouterDelegate
     required this.onDetail,
     required this.onLogout,
     required this.onGoHome,
+    required this.authInfo,
   });
 
   final void Function(String) onDetail;
   final void Function() onLogout;
   final void Function() onGoHome;
+  final AuthInfo authInfo;
 
   int _selectedPageIndex = 0;
   bool _isLastHistoryReached = true;
@@ -50,7 +53,10 @@ class MainPageRouterDelegate extends RouterDelegate
       pages: [
         FadeAnimationPage(
           key: HomePage.valueKey,
-          child: HomePage(onDetail: onDetail),
+          child: HomePage(
+            authInfo: authInfo,
+            onDetail: onDetail,
+          ),
         ),
         if (_selectedPageIndex == 1)
           FadeAnimationPage(
@@ -62,7 +68,10 @@ class MainPageRouterDelegate extends RouterDelegate
         if (_selectedPageIndex == 2)
           FadeAnimationPage(
             key: ProfilePage.valueKey,
-            child: ProfilePage(onLogout: onLogout),
+            child: ProfilePage(
+              authInfo: authInfo,
+              onLogout: onLogout,
+            ),
           ),
       ],
       onPopPage: (route, result) {

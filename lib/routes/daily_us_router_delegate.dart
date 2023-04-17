@@ -15,10 +15,10 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   final GlobalKey<NavigatorState> _navigatorKey;
 
   DailyUsRouterDelegate({
-    required this.getAuthInfo,
+    required this.getAuthInfoUsecase,
   }) : _navigatorKey = GlobalKey<NavigatorState>();
 
-  final GetAuthInfo getAuthInfo;
+  final GetAuthInfo getAuthInfoUsecase;
 
   List<Page> historyStack = [];
   bool? isUnknown;
@@ -131,7 +131,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           child: SplashPage(
             runPreparationCallback: () async {
               // run task to check if user already logged in
-              authInfo = getAuthInfo.execute();
+              authInfo = getAuthInfoUsecase.execute();
 
               if (authInfo != null && authInfo!.isAlreadyLoggedIn) {
                 isRegister = false;
@@ -174,10 +174,11 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           MaterialPage(
             key: LoginPage.valueKey,
             child: LoginPage(
-              onSuccessLogin: () {
+              onSuccessLogin: (newAuthInfo) {
                 isLoggedIn = true;
                 onBoarding = false;
                 isLauchMainFromSplash = false;
+                authInfo = newAuthInfo;
                 notifyListeners();
               },
             ),
@@ -201,6 +202,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             direction: SlideAnimationPage.bottomToTop,
             key: MainPage.valueKey,
             child: MainPage(
+              authInfo: authInfo!,
               onDetail: (id) {
                 storyId = id;
                 notifyListeners();
@@ -217,6 +219,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           MaterialPage(
             key: MainPage.valueKey,
             child: MainPage(
+              authInfo: authInfo!,
               onDetail: (id) {
                 storyId = id;
                 notifyListeners();

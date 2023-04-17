@@ -2,15 +2,21 @@ import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
+import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
   static const valueKey = ValueKey("ProfilePage");
 
-  const ProfilePage({super.key, required this.onLogout});
+  const ProfilePage({
+    super.key,
+    required this.onLogout,
+    required this.authInfo,
+  });
 
   final void Function() onLogout;
+  final AuthInfo authInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                       style: profileEmailTextStyle(),
                     ),
                     Text(
-                      'Rully Ihza Mahendra',
+                      authInfo.user.name,
                       style: profileFullNameTextStyle(),
                     ),
                     const SizedBox(

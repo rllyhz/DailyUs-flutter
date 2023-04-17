@@ -43,7 +43,6 @@ TextStyle appTextStyle({
 TextButton appButton({
   String? text,
   void Function()? onPressed,
-  EdgeInsets? padding,
   Color? backgroundColor,
   Color? color,
   bool showLoadingState = false,
@@ -59,18 +58,26 @@ TextButton appButton({
           ),
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Center(
-          child: showLoadingState
-              ? CircularProgressIndicator(
-                  strokeWidth: 3.0,
-                  color: color ?? surfaceColor,
-                )
-              : Text(
-                  text ?? "",
-                  style: buttonTextStyle(color: color),
-                ),
+      child: SizedBox(
+        width: double.maxFinite,
+        height: 42.0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Center(
+            child: showLoadingState
+                ? SizedBox(
+                    width: 28.0,
+                    height: 28.0,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                      color: color ?? surfaceColor,
+                    ),
+                  )
+                : Text(
+                    text ?? "",
+                    style: buttonTextStyle(color: color),
+                  ),
+          ),
         ),
       ),
     );
