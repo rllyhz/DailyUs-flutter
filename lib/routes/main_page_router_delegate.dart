@@ -2,19 +2,22 @@ import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
 import 'package:daily_us/presentation/pages/profile_page.dart';
+import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class MainPageRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
-  MainPageRouterDelegate(
-    this.onDetail,
-    this.onLogout,
-  );
+  MainPageRouterDelegate({
+    required this.onDetail,
+    required this.onLogout,
+    required this.onGoHome,
+  });
 
   final void Function(String) onDetail;
   final void Function() onLogout;
+  final void Function() onGoHome;
 
   int _selectedPageIndex = 0;
   bool _isLastHistoryReached = true;
@@ -51,9 +54,11 @@ class MainPageRouterDelegate extends RouterDelegate
           child: HomePage(onDetail: onDetail),
         ),
         if (_selectedPageIndex == 1)
-          const FadeAnimationPage(
+          FadeAnimationPage(
             key: PostStoryPage.valueKey,
-            child: PostStoryPage(),
+            child: PostStoryPage(
+              onUploadSuccess: onGoHome,
+            ),
           ),
         if (_selectedPageIndex == 2)
           FadeAnimationPage(
