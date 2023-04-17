@@ -8,9 +8,11 @@ class DailyUsBottomNavBar extends StatefulWidget {
     required this.onTap,
     required this.backgroundColor,
     this.showLabel = true,
+    this.controller,
   });
 
   final List<DailyUsBottomNavBarItem> items;
+  final DailyUsBottomNavBarController? controller;
   final void Function(int) onTap;
   final Color backgroundColor;
   final bool showLabel;
@@ -19,7 +21,24 @@ class DailyUsBottomNavBar extends StatefulWidget {
   State<DailyUsBottomNavBar> createState() => _DailyUsBottomNavBarState();
 }
 
-class _DailyUsBottomNavBarState extends State<DailyUsBottomNavBar> {
+class _DailyUsBottomNavBarState extends State<DailyUsBottomNavBar>
+    with DailyUsBottomNavBarController {
+  final List<int> buttonItems = List.empty(growable: true);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      widget.controller?.clickItem = clickItemCallback;
+    }
+  }
+
+  void clickItemCallback(int index) {
+    if (buttonItems.contains(index)) {
+      widget.onTap(index);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,35 +55,42 @@ class _DailyUsBottomNavBarState extends State<DailyUsBottomNavBar> {
         children: widget.items.asMap().entries.map((entry) {
           int idx = entry.key;
           DailyUsBottomNavBarItem item = entry.value;
+          buttonItems.add(idx);
 
           return Semantics(
             label: item.label,
-            child: IconButton(
-              padding: const EdgeInsets.all(20.0),
-              onPressed: () {
-                widget.onTap(idx);
-              },
-              icon: widget.showLabel
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        item.icon,
-                        const SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          item.label,
-                          style: item.labelStyle,
-                        ),
-                      ],
-                    )
-                  : item.icon,
-            ),
+            child: _createButtonItem(idx, item),
           );
         }).toList(),
       ),
     );
   }
+
+  IconButton _createButtonItem(
+    int idx,
+    DailyUsBottomNavBarItem item,
+  ) =>
+      IconButton(
+        padding: const EdgeInsets.all(20.0),
+        onPressed: () {
+          widget.onTap(idx);
+        },
+        icon: widget.showLabel
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  item.icon,
+                  const SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    item.label,
+                    style: item.labelStyle,
+                  ),
+                ],
+              )
+            : item.icon,
+      );
 }
 
 class DailyUsBottomNavBarItem {
@@ -77,4 +103,10 @@ class DailyUsBottomNavBarItem {
   final Widget icon;
   final String label;
   TextStyle? labelStyle;
+}
+
+typedef ClickedItemType = void Function(int index);
+
+class DailyUsBottomNavBarController {
+  late ClickedItemType clickItem;
 }
