@@ -89,9 +89,13 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
     try {
       final result = await remoteDataSource.getAllStories(token);
       return Right(result);
+    } on UnknownException {
+      return const Left(UnknownFailure());
+    } on InternalException {
+      return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
-    } on SocketException {
+    } on NoInternetConnectionException {
       return const Left(NoInternetConnectionFailure());
     }
   }
@@ -104,9 +108,13 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
     try {
       final result = await remoteDataSource.getDetailStoryById(token, id);
       return Right(result);
+    } on UnknownException {
+      return const Left(UnknownFailure());
+    } on InternalException {
+      return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
-    } on SocketException {
+    } on NoInternetConnectionException {
       return const Left(NoInternetConnectionFailure());
     }
   }
@@ -127,9 +135,13 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
         longitude,
       );
       return Right(result);
+    } on UnknownException {
+      return const Left(UnknownFailure());
+    } on InternalException {
+      return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
-    } on SocketException {
+    } on NoInternetConnectionException {
       return const Left(NoInternetConnectionFailure());
     }
   }

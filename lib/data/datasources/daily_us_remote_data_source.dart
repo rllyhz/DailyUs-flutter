@@ -147,22 +147,30 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
     try {
       apiClient.options.headers["Authorization"] = "Bearer $token";
       final response = await apiClient.get("/stories");
-      final responseData =
-          GetAllStoriesResponse.fromJson(json.decode(response.data));
+      final responseData = GetAllStoriesResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
         throw ServerException();
       } else if (response.statusCode! >= 200 &&
           response.statusCode! < 300 &&
           !responseData.error) {
+        Logger.logWithTag("GetAllStories Success", response.data.toString());
         return (responseData.stories.isNotEmpty)
             ? storiesResponseToEntities(responseData.stories)
             : List<Story>.empty();
       } else {
         throw RequestNotAllowedException();
       }
-    } catch (e) {
-      throw RequestNotAllowedException();
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    } on DioError catch (e) {
+      if (e.response == null || e.response!.statusCode == null) {
+        throw InternalException();
+      }
+
+      Logger.logWithTag("GetAllStories Failed", e.response!.data.toString());
+
+      throw ServerException();
     }
   }
 
@@ -172,31 +180,31 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
       apiClient.options.headers["Authorization"] = "Bearer $token";
       final response = await apiClient.get("/detail/$id");
 
-      final responseData =
-          GetDetailStoryResponse.fromJson(json.decode(response.data));
+      final responseData = GetDetailStoryResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
         throw ServerException();
       } else if (response.statusCode! >= 200 &&
           response.statusCode! < 300 &&
           !responseData.error) {
+        Logger.logWithTag("GetDetailStory Success", response.data.toString());
         return detailResponseToEntity(responseData.story);
       } else {
         throw ServerException();
       }
-    } catch (e) {
-      if (e is DioError) {
-        if (e.response == null || e.response!.statusCode == null) {
-          throw ServerException();
-        }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    } on DioError catch (e) {
+      if (e.response == null || e.response!.statusCode == null) {
+        throw ServerException();
+      }
 
-        final statusCode = e.response!.statusCode;
+      Logger.logWithTag("GetDetailStory Failed", e.response!.data.toString());
 
-        if (statusCode! >= 400 && statusCode < 500) {
-          return null;
-        } else {
-          throw ServerException();
-        }
+      final statusCode = e.response!.statusCode;
+
+      if (statusCode! >= 400 && statusCode < 500) {
+        return null;
       } else {
         throw ServerException();
       }
@@ -221,31 +229,31 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
     try {
       apiClient.options.headers["Authorization"] = "Bearer $token";
       final response = await apiClient.post("/stories", data: formData);
-      final responseData =
-          UploadNewStoryResponse.fromJson(json.decode(response.data));
+      final responseData = UploadNewStoryResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
         throw ServerException();
       } else if (response.statusCode! >= 200 &&
           response.statusCode! < 300 &&
           !responseData.error) {
+        Logger.logWithTag("UploadNewStory Success", response.data.toString());
         return true;
       } else {
         throw ServerException();
       }
-    } catch (e) {
-      if (e is DioError) {
-        if (e.response == null || e.response!.statusCode == null) {
-          throw ServerException();
-        }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    } on DioError catch (e) {
+      if (e.response == null || e.response!.statusCode == null) {
+        throw ServerException();
+      }
 
-        final statusCode = e.response!.statusCode;
+      Logger.logWithTag("UploadNewStory Failed", e.response!.data.toString());
 
-        if (statusCode! >= 400 && statusCode < 500) {
-          return false;
-        } else {
-          throw ServerException();
-        }
+      final statusCode = e.response!.statusCode;
+
+      if (statusCode! >= 400 && statusCode < 500) {
+        return false;
       } else {
         throw ServerException();
       }
