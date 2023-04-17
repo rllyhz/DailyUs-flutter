@@ -21,8 +21,22 @@ class ServerFailure extends Failure {
   const ServerFailure() : super("Connection error to host");
 }
 
-class RequestNotAllowedFailure extends Failure {
-  final String description;
+class InternalFailure extends Failure {
+  const InternalFailure() : super("Something went wrong");
+}
 
-  const RequestNotAllowedFailure(this.description) : super(description);
+class EmailAlreadyTakenFailure extends Failure {
+  const EmailAlreadyTakenFailure() : super("Email is already taken");
+}
+
+class UserWithGivenEmailNotFoundFailure extends Failure {
+  const UserWithGivenEmailNotFoundFailure() : super("User not found");
+}
+
+class InvalidEmailFailure extends Failure {
+  const InvalidEmailFailure() : super("Invalid email");
+}
+
+class InvalidPasswordFailure extends Failure {
+  const InvalidPasswordFailure() : super("Invalid password");
 }

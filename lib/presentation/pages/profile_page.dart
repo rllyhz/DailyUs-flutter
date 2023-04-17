@@ -1,4 +1,5 @@
 import 'package:daily_us/common/constants.dart';
+import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
@@ -30,8 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     context.read<ProfileBloc>().stream.listen((state) async {
-      if (state is ProfileStateLogoutError) {
-        showSnacbar(context, state.message);
+      if (state is ProfileStateLogoutError && mounted) {
+        showToast(
+          getFailureMessage(context, state.failure),
+        );
       } else if (state is ProfileStateLogoutSuccess) {
         widget.onLogout();
       }
@@ -87,11 +90,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: appOutlinedButton(
                 text: AppLocalizations.of(context)!.buttonLogout,
                 onPressed: () async {
-                  var shouldLogout = await _showLogoutDialog(context);
-
-                  if (shouldLogout && context.mounted) {
+                  await _showLogoutDialog(context, () {
                     context.read<ProfileBloc>().add(OnLogoutEvent());
-                  }
+                  });
                 },
                 borderColor: secondaryColor,
                 color: secondaryColor,
@@ -103,7 +104,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Future<bool> _showLogoutDialog(BuildContext context) async => await appDialog(
+  Future<void> _showLogoutDialog(
+          BuildContext context, void Function() onLogout) async =>
+      await appDialog(
         context: context,
         title: AppLocalizations.of(context)!.dialogTitleLogoutConfirm,
         message: AppLocalizations.of(context)!.dialogMessageLogoutConfirm,
@@ -111,5 +114,6 @@ class _ProfilePageState extends State<ProfilePage> {
             AppLocalizations.of(context)!.dialogNegativeActionLogoutConfirm,
         positiveActionText:
             AppLocalizations.of(context)!.dialogPositiveActionLogoutConfirm,
+        postiveActionCallback: onLogout,
       );
 }

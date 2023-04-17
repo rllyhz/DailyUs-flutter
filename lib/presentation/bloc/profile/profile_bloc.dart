@@ -1,3 +1,4 @@
+import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(
         success
             ? ProfileStateLogoutSuccess()
-            : ProfileStateLogoutError('Error internally'),
+            : ProfileStateLogoutError(const InternalFailure()),
       );
     });
   }

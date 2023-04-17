@@ -91,5 +91,6 @@
     "internalErrorMessage": "Maaf, telah terjadi kesalahan",
     "loginSuccessMessage": "Berhasil masuk",
     "uploadSuccessMessage": "Berhasil menambahkan story baru",
-    "uploadFailedMessage": "Gagal menambahkan story"
+    "uploadFailedMessage": "Gagal menambahkan story",
+    "noConnectionMessage": "Tidak ada koneksi internet"
 }

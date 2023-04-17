@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:daily_us/common/exception.dart';
+import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/common/mapper.dart';
 import 'package:daily_us/data/models/auth_response.dart';
 import 'package:daily_us/data/models/get_all_stories_response.dart';
@@ -43,46 +45,41 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
         "email": email,
         "password": password,
       });
-      final responseData = AuthResponse.fromJson(json.decode(response.data));
+
+      final responseData = AuthResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
-        throw ServerException();
+        throw InternalException();
       } else if (response.statusCode! >= 200 &&
           response.statusCode! < 300 &&
           !responseData.error) {
+        Logger.logWithTag("Register Success", response.data.toString());
         return true;
       } else {
         throw ServerException();
       }
-    } catch (e) {
-      if (e is DioError) {
-        if (e.response == null || e.response!.statusCode == null) {
-          throw ServerException();
-        }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    } on DioError catch (e) {
+      if (e.response == null || e.response!.statusCode == null) {
+        throw InternalException();
+      }
 
-        final statusCode = e.response!.statusCode;
+      final statusCode = e.response!.statusCode;
 
-        final responseData = AuthResponse.fromJson(
-          json.decode(e.response!.data),
-        );
+      final responseData = AuthResponse.fromJson(
+        e.response!.data,
+      );
 
-        if (statusCode! >= 400 && statusCode < 500) {
-          if (responseData.message == "Email is already taken") {
-            throw EmailAlreadyTakenException();
-          }
-          if (responseData.message == "\"name\" is required") {
-            throw MissingParametersException(["name"]);
-          }
-          if (responseData.message == "\"email\" is required") {
-            throw MissingParametersException(["email"]);
-          }
-          if (responseData.message == "\"password\" is required") {
-            throw MissingParametersException(["password"]);
-          } else {
-            throw MissingParametersException(["unknown"]);
-          }
+      Logger.logWithTag("Register Failed", e.response!.data.toString());
+
+      if (statusCode! >= 400 && statusCode < 500) {
+        if (responseData.message == "Email is already taken") {
+          throw EmailAlreadyTakenException();
+        } else if (responseData.message == '"email" must be a valid email') {
+          throw InvalidEmailException();
         } else {
-          throw ServerException();
+          throw UnknownException();
         }
       } else {
         throw ServerException();
@@ -97,13 +94,14 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
         "email": email,
         "password": password,
       });
-      final responseData = AuthResponse.fromJson(json.decode(response.data));
+      final responseData = AuthResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
-        throw ServerException();
+        throw InternalException();
       } else if (response.statusCode! >= 200 &&
           response.statusCode! < 300 &&
           !responseData.error) {
+        Logger.logWithTag("Login Success", response.data.toString());
         return User(
           id: responseData.loginResult.userId,
           token: responseData.loginResult.token,
@@ -113,29 +111,30 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
       } else {
         throw ServerException();
       }
-    } catch (e) {
-      if (e is DioError) {
-        if (e.response == null || e.response!.statusCode == null) {
-          throw ServerException();
-        }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    } on DioError catch (e) {
+      if (e.response == null || e.response!.statusCode == null) {
+        throw InternalException();
+      }
 
-        final statusCode = e.response!.statusCode;
+      final statusCode = e.response!.statusCode;
 
-        final responseData = AuthResponse.fromJson(
-          json.decode(e.response!.data),
-        );
+      Logger.logWithTag("Login Failed", e.response!.data.toString());
 
-        if (statusCode! >= 400 && statusCode < 500) {
-          if (responseData.message == "\"email\" is required") {
-            throw MissingParametersException(["email"]);
-          }
-          if (responseData.message == "\"password\" is required") {
-            throw MissingParametersException(["password"]);
-          } else {
-            throw MissingParametersException(["unknown"]);
-          }
+      final responseData = AuthResponse.fromJson(
+        e.response!.data,
+      );
+
+      if (statusCode! >= 400 && statusCode < 500) {
+        if (responseData.message == 'Invalid password') {
+          throw InvalidPasswordException();
+        } else if (responseData.message == 'User not found') {
+          throw UserWithGivenEmailNotFoundException();
+        } else if (responseData.message == '"email" must be a valid email') {
+          throw InvalidEmailException();
         } else {
-          throw ServerException();
+          throw UnknownException();
         }
       } else {
         throw ServerException();

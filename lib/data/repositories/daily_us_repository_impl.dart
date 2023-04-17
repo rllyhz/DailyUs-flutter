@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:daily_us/common/exception.dart';
+import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/data/datasources/daily_us_local_cache_data_source.dart';
 import 'package:daily_us/data/datasources/daily_us_remote_data_source.dart';
 import 'package:daily_us/domain/entities/user.dart';
@@ -25,31 +26,45 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
     String email,
     String password,
   ) async {
+    Logger.log("Register in Repository being executed!", showPadding: true);
     try {
       final result = await remoteDataSource.register(name, email, password);
       return Right(result);
+    } on UnknownException {
+      return const Left(UnknownFailure());
+    } on InternalException {
+      return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
+    } on InvalidEmailException {
+      return const Left(InvalidEmailFailure());
     } on EmailAlreadyTakenException {
-      return const Left(RequestNotAllowedFailure("Email is already taken"));
-    } on MissingParametersException {
-      return const Left(
-        RequestNotAllowedFailure("Missing required parameters"),
-      );
+      return const Left(EmailAlreadyTakenFailure());
+    } on NoInternetConnectionException {
+      return const Left(NoInternetConnectionFailure());
     }
   }
 
   @override
   Future<Either<Failure, User?>> login(String email, String password) async {
+    Logger.log("login in Repository being executed!", showPadding: true);
     try {
       final result = await remoteDataSource.login(email, password);
       return Right(result);
+    } on UnknownException {
+      return const Left(UnknownFailure());
+    } on InternalException {
+      return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
-    } on MissingParametersException {
-      return const Left(
-        RequestNotAllowedFailure("Missing required parameters"),
-      );
+    } on InvalidPasswordException {
+      return const Left(InvalidPasswordFailure());
+    } on InvalidEmailException {
+      return const Left(InvalidEmailFailure());
+    } on UserWithGivenEmailNotFoundException {
+      return const Left(UserWithGivenEmailNotFoundFailure());
+    } on NoInternetConnectionException {
+      return const Left(NoInternetConnectionFailure());
     }
   }
 

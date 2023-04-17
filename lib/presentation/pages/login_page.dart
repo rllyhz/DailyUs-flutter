@@ -44,15 +44,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         Tween<double>(begin: 0.0, end: 1.0).animate(_animController);
 
     context.read<LoginBloc>().stream.listen((state) {
-      if (state is LoginStateError) {
-        showSnacbar(context, state.message);
-      } else if (state is LoginStateSuccess) {
-        _emailController.clear();
-        _passwordController.clear();
-
-        showSnacbar(
-          context,
+      if (state is LoginStateError && mounted) {
+        showToast(
+          getFailureMessage(context, state.failure),
+        );
+      } else if (state is LoginStateSuccess && mounted) {
+        showToast(
           AppLocalizations.of(context)!.loginSuccessMessage,
+          isError: false,
         );
 
         widget.onSuccessLogin(state.authInfo);
@@ -112,6 +111,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                           ),
                           DailyUsTextField(
                             controller: _passwordController,
+                            obscureText: true,
                             hintText:
                                 AppLocalizations.of(context)!.passwordHint,
                           ),
@@ -147,29 +147,25 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   void _validateForm(BuildContext context, String email, String password) {
     if (email.isEmpty) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.emailEmptyMessage,
       );
       return;
     }
     if (!validateEmailFormat(email)) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.emailInvalidMessage,
       );
       return;
     }
     if (password.isEmpty) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.passwordEmptyMessage,
       );
       return;
     }
     if (!validatePasswordFormat(password)) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.passwordInvalidFormatMessage,
       );
       return;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/usecases/login.dart';
 import 'package:daily_us/domain/usecases/update_auth_info.dart';
@@ -40,9 +41,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final result = await _loginUsecase.execute(email, password);
 
     emit(
-      result.fold((failure) => LoginStateError(failure.message), (user) {
+      result.fold((failure) => LoginStateError(failure), (user) {
         if (user == null) {
-          return LoginStateError('Error internally');
+          return LoginStateError(const UnknownFailure());
         } else {
           var newAuthInfo = AuthInfo(isAlreadyLoggedIn: true, user: user);
           _updateAuthInfoUsecase.execute(newAuthInfo);

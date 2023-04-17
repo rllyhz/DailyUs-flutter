@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/localizations.dart';
@@ -45,15 +47,17 @@ class _RegisterPageState extends State<RegisterPage>
         Tween<double>(begin: 0.0, end: 1.0).animate(_animController);
 
     context.read<RegisterBloc>().stream.listen((state) async {
-      if (state is RegisterStateError) {
-        showSnacbar(context, state.message);
-      } else if (state is RegisterStateSuccess) {
-        _emailController.clear();
-        _passwordController.clear();
-
-        await _showDialog(context);
-
-        widget.onSuccessRegister();
+      if (state is RegisterStateError && mounted) {
+        showToast(
+          getFailureMessage(context, state.failure),
+        );
+      } else if (state is RegisterStateSuccess && mounted) {
+        if (mounted) {
+          await _showDialog(context, () {
+            Navigator.of(context, rootNavigator: true).pop();
+            widget.onSuccessRegister();
+          });
+        }
       }
     });
 
@@ -113,6 +117,7 @@ class _RegisterPageState extends State<RegisterPage>
                         ),
                         DailyUsTextField(
                           hintText: AppLocalizations.of(context)!.passwordHint,
+                          obscureText: true,
                           controller: _passwordController,
                         ),
                       ],
@@ -154,36 +159,31 @@ class _RegisterPageState extends State<RegisterPage>
     String password,
   ) {
     if (name.isEmpty) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.nameEmptyMessage,
       );
       return;
     }
     if (email.isEmpty) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.emailEmptyMessage,
       );
       return;
     }
     if (!validateEmailFormat(email)) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.emailInvalidMessage,
       );
       return;
     }
     if (password.isEmpty) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.passwordEmptyMessage,
       );
       return;
     }
     if (!validatePasswordFormat(password)) {
-      showSnacbar(
-        context,
+      showToast(
         AppLocalizations.of(context)!.passwordInvalidFormatMessage,
       );
       return;
@@ -194,13 +194,15 @@ class _RegisterPageState extends State<RegisterPage>
         .add(OnSubmitRegisterEvent(name, email, password));
   }
 
-  Future<void> _showDialog(BuildContext context) async {
+  FutureOr<void> _showDialog(
+      BuildContext context, void Function()? onGoLogin) async {
     await appDialog(
       context: context,
       title: AppLocalizations.of(context)!.dialogTitleRegisterSuccess,
       message: AppLocalizations.of(context)!.dialogMessageRegisterSuccess,
       positiveActionText:
           AppLocalizations.of(context)!.dialogPositiveActionRegisterSuccess,
+      postiveActionCallback: onGoLogin,
     );
   }
 }

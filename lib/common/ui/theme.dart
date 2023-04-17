@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
@@ -14,8 +16,6 @@ import 'package:flutter/material.dart'
         OutlinedButton,
         TextButton,
         ButtonStyle,
-        ScaffoldMessenger,
-        SnackBar,
         showDialog,
         AlertDialog;
 import 'package:flutter/widgets.dart';
@@ -116,14 +116,15 @@ OutlinedButton appOutlinedButton({
       ),
     );
 
-Future<bool> appDialog({
+Future<bool?> appDialog({
   required BuildContext context,
   required String title,
   required String message,
   String? negativeActionText,
   String? positiveActionText,
+  void Function()? postiveActionCallback,
 }) async =>
-    (await showDialog(
+    await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(
@@ -139,7 +140,9 @@ Future<bool> appDialog({
         actions: <Widget>[
           if (negativeActionText != null)
             OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(false);
+              },
               child: Text(
                 negativeActionText,
                 style: homeCardDescriptionTextStyle(fontSize: 14.0),
@@ -147,7 +150,7 @@ Future<bool> appDialog({
             ),
           if (positiveActionText != null)
             OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(true),
+              onPressed: postiveActionCallback,
               child: Text(
                 positiveActionText,
                 style: homeCardDescriptionTextStyle(fontSize: 14.0),
@@ -155,17 +158,19 @@ Future<bool> appDialog({
             ),
         ],
       ),
-    ));
+    );
 
-void showSnacbar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-        backgroundColor: primaryColor,
-        content: Text(
-          message,
-          style: appTextStyle(
-            color: Colors.white,
-          ),
-        )),
+void showToast(
+  String message, {
+  isError = true,
+  gravity = ToastGravity.CENTER,
+}) {
+  Fluttertoast.showToast(
+    backgroundColor: isError ? greyColor : primaryColor,
+    textColor: isError ? secondaryColor : Colors.white,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: gravity,
+    fontSize: regularFontSize,
+    msg: message,
   );
 }

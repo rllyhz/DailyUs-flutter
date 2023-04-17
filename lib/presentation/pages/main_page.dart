@@ -114,7 +114,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<bool> _onWillPop() async {
-    return appDialog(
+    var result = await appDialog(
       context: context,
       title: AppLocalizations.of(context)!.dialogTitleQuitConfirm,
       message: AppLocalizations.of(context)!.dialogMessageQuitConfirm,
@@ -122,6 +122,15 @@ class _MainPageState extends State<MainPage> {
           AppLocalizations.of(context)!.dialogNegativeActionQuitConfirm,
       positiveActionText:
           AppLocalizations.of(context)!.dialogPositiveActionQuitConfirm,
+      postiveActionCallback: () {
+        Navigator.of(context).pop(true);
+      },
     );
+
+    if (result == null) {
+      return Future.value(false);
+    } else {
+      return Future.value(result);
+    }
   }
 }

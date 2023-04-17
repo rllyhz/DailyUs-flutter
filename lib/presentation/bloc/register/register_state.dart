@@ -13,12 +13,12 @@ class RegisterStateLoading extends RegisterState {
 }
 
 class RegisterStateError extends RegisterState {
-  final String message;
+  final Failure failure;
 
-  RegisterStateError(this.message);
+  RegisterStateError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
 
 class RegisterStateSuccess extends RegisterState {

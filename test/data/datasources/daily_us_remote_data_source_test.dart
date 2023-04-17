@@ -50,7 +50,7 @@ void main() {
       });
 
       test(
-          'Should throw MissingParametersException when status code >= 400 && status code < 500',
+          'Should throw EmailAlreadyTakenException when status code >= 400 && status code < 500',
           () async {
         dioAdapter.onPost(
           "/register",
@@ -61,14 +61,14 @@ void main() {
           },
           (server) => server.reply(
             404,
-            json.encode({"error": true, "message": "\"email\" is required"}),
+            json.encode({"error": true, "message": "Email is already taken"}),
             delay: const Duration(seconds: 1),
           ),
         );
 
         expect(
           () async => await dataSource.register(name, email, password),
-          throwsA(isA<MissingParametersException>()),
+          throwsA(isA<EmailAlreadyTakenException>()),
         );
       });
 
@@ -130,14 +130,17 @@ void main() {
           },
           (server) => server.reply(
             404,
-            json.encode({"error": true, "message": "\"email\" is required"}),
+            json.encode({
+              "error": true,
+              "message": '"email" must be a valid email',
+            }),
             delay: const Duration(seconds: 1),
           ),
         );
 
         expect(
           () async => await dataSource.login(email, password),
-          throwsA(isA<MissingParametersException>()),
+          throwsA(isA<InvalidEmailException>()),
         );
       });
 

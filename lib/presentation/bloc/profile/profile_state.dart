@@ -8,12 +8,12 @@ class ProfileStateInitial extends ProfileState {
 }
 
 class ProfileStateLogoutError extends ProfileState {
-  final String message;
+  final Failure failure;
 
-  ProfileStateLogoutError(this.message);
+  ProfileStateLogoutError(this.failure);
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [failure];
 }
 
 class ProfileStateLogoutSuccess extends ProfileState {

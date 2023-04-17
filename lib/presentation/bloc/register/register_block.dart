@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/domain/usecases/register.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,10 +37,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     emit(
       result.fold(
-        (failure) => RegisterStateError(failure.message),
+        (failure) => RegisterStateError(failure),
         (success) => success
             ? RegisterStateSuccess()
-            : RegisterStateError('Error internally'),
+            : RegisterStateError(const UnknownFailure()),
       ),
     );
   }

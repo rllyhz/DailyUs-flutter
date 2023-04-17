@@ -9,11 +9,13 @@ class DailyUsTextField extends StatelessWidget {
     this.controller,
     this.keyboardType,
     this.validator,
+    this.obscureText = false,
   });
 
   final String hintText;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final bool obscureText;
   final String? Function(String?)? validator;
 
   @override
@@ -27,6 +29,7 @@ class DailyUsTextField extends StatelessWidget {
       child: TextFormField(
         keyboardType: keyboardType,
         controller: controller,
+        obscureText: obscureText,
         cursorColor: secondaryColor,
         validator: validator,
         style: hintTextStyle(color: purple700Color),
