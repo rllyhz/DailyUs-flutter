@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 
 class Logger {
   static void log(String data, {bool showPadding = false}) {
+    if (!kDebugMode) {
+      return;
+    }
+
     if (showPadding) {
       debugPrint("\n");
     }
@@ -12,6 +16,10 @@ class Logger {
   }
 
   static void logWithTag(String tag, String data, {bool showPadding = false}) {
+    if (!kDebugMode) {
+      return;
+    }
+
     if (showPadding) {
       debugPrint("\n");
     }
