@@ -1,5 +1,32 @@
 {
     "appName": "DailyUs",
+
+    "dateInJustNow": "Just now",
+    "dateInSeconds": "{second}s ago",
+    "@dateInSeconds": {
+        "placeholders": {
+            "second": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInMinutes": "{minute}m ago",
+    "@dateInMinutes": {
+        "placeholders": {
+            "minute": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInDays": "{day}d ago",
+    "@dateInDays": {
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+
     "onBoardingHeading": "DailyUs",
     "onBoardingSubHeading": "Express Your Memories By Sharing Them With The World",
     

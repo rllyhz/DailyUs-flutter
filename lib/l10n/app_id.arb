@@ -1,5 +1,32 @@
 {
     "appName": "DailyUs",
+
+    "dateInJustNow": "Baru saja",
+    "dateInSeconds": "{second}d yang lalu",
+    "@dateInSeconds": {
+        "placeholders": {
+            "second": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInMinutes": "{minute}m yang lalu",
+    "@dateInMinutes": {
+        "placeholders": {
+            "minute": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInDays": "{day}h yang lalu",
+    "@dateInDays": {
+        "placeholders": {
+            "day": {
+                "type": "int"
+            }
+        }
+    },
+
     "onBoardingHeading": "DailyUs",
     "onBoardingSubHeading": "Ekspresikan Kenanganmu Dengan Membagikannya Pada Dunia",
 
