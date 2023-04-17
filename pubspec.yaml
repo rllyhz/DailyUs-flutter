@@ -41,6 +41,9 @@ dependencies:
   get_it: ^7.2.0
   equatable: ^2.0.5
   dartz: ^0.10.1
+  image_picker: ^0.8.7+3
+  image_picker_windows: ^0.1.0+6
+  image: ^4.0.15
 
   # UI-related
   fade_shimmer: ^2.2.0

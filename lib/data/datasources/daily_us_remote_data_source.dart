@@ -228,7 +228,7 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   ) async {
     final formData = FormData.fromMap({
       "description": description,
-      "photo": MultipartFile.fromBytes(photoBytes),
+      "photo": MultipartFile.fromBytes(photoBytes, filename: 'temp_name.jpg'),
       "lat": latitude,
       "lon": longitude,
     });

@@ -3,6 +3,7 @@ import 'package:daily_us/domain/usecases/get_auth_info.dart';
 import 'package:daily_us/presentation/bloc/detail/detail_bloc.dart';
 import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
+import 'package:daily_us/presentation/bloc/post/post_bloc.dart';
 import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
 import 'package:daily_us/presentation/bloc/register/register_block.dart';
 import 'package:daily_us/routes/daily_us_route_information_parser.dart';
@@ -58,6 +59,9 @@ class _DailUsAppState extends State<DailUsApp> {
         ),
         BlocProvider<ProfileBloc>(
           create: (_) => di.locator<ProfileBloc>(),
+        ),
+        BlocProvider<PostBloc>(
+          create: (_) => di.locator<PostBloc>(),
         ),
       ],
       child: MaterialApp.router(

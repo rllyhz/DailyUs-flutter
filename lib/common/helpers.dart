@@ -1,7 +1,9 @@
 import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 
 bool validateEmailFormat(String email) => RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -86,4 +88,25 @@ String getFailureMessage(BuildContext context, Failure failure) {
   }
 
   return message;
+}
+
+Future<List<int>> compressImage(Uint8List bytes) async {
+  int imageLength = bytes.length;
+  if (imageLength < 1000000) return bytes;
+
+  final img.Image image = img.decodeImage(bytes)!;
+  int compressQuality = 100;
+  int length = imageLength;
+  Uint8List newByte;
+
+  do {
+    compressQuality -= 10;
+    newByte = img.encodeJpg(
+      image,
+      quality: compressQuality,
+    );
+    length = newByte.length;
+  } while (length > 1000000);
+
+  return newByte;
 }

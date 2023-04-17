@@ -16,6 +16,7 @@ import 'package:daily_us/domain/usecases/upload_new_story.dart';
 import 'package:daily_us/presentation/bloc/detail/detail_bloc.dart';
 import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
+import 'package:daily_us/presentation/bloc/post/post_bloc.dart';
 import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
 import 'package:daily_us/presentation/bloc/register/register_block.dart';
 import 'package:dio/dio.dart';
@@ -94,5 +95,8 @@ Future<void> init() async {
   );
   locator.registerFactory(
     () => ProfileBloc(locator()),
+  );
+  locator.registerFactory(
+    () => PostBloc(locator()),
   );
 }

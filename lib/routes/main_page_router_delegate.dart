@@ -62,6 +62,7 @@ class MainPageRouterDelegate extends RouterDelegate
           FadeAnimationPage(
             key: PostStoryPage.valueKey,
             child: PostStoryPage(
+              authInfo: authInfo,
               onUploadSuccess: onGoHome,
             ),
           ),
