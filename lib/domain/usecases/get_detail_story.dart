@@ -4,11 +4,11 @@ import 'package:daily_us/domain/repositories/daily_us_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class GetDetailStory {
-  final DailyUsRepository repository;
+  final DailyUsRepository _repository;
 
-  const GetDetailStory(this.repository);
+  const GetDetailStory(this._repository);
 
   Future<Either<Failure, Story?>> execute(String token, String id) {
-    return repository.getDetailStoryById(token, id);
+    return _repository.getDetailStoryById(token, id);
   }
 }

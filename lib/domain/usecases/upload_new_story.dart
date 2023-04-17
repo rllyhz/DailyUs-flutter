@@ -3,9 +3,9 @@ import 'package:daily_us/domain/repositories/daily_us_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class UploadNewStory {
-  final DailyUsRepository repository;
+  final DailyUsRepository _repository;
 
-  const UploadNewStory(this.repository);
+  const UploadNewStory(this._repository);
 
   Future<Either<Failure, bool>> execute(
     String token,
@@ -14,7 +14,7 @@ class UploadNewStory {
     double? latitude,
     double? longitude,
   ) {
-    return repository.uploadNewStory(
+    return _repository.uploadNewStory(
       token,
       photoBytes,
       description,

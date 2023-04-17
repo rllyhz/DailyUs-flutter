@@ -3,15 +3,15 @@ import 'package:daily_us/domain/repositories/daily_us_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class Register {
-  final DailyUsRepository repository;
+  final DailyUsRepository _repository;
 
-  const Register(this.repository);
+  const Register(this._repository);
 
   Future<Either<Failure, bool>> execute(
     String name,
     String email,
     String password,
   ) {
-    return repository.register(name, email, password);
+    return _repository.register(name, email, password);
   }
 }
