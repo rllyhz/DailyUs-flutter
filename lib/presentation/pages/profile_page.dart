@@ -60,7 +60,13 @@ class ProfilePage extends StatelessWidget {
               right: 0,
               child: appOutlinedButton(
                 text: AppLocalizations.of(context)!.buttonLogout,
-                onPressed: onLogout,
+                onPressed: () async {
+                  var shouldLogout = await _showLogoutDialog(context);
+
+                  if (shouldLogout) {
+                    onLogout();
+                  }
+                },
                 borderColor: secondaryColor,
                 color: secondaryColor,
               ),
@@ -70,4 +76,37 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
+
+  Future<bool> _showLogoutDialog(BuildContext context) async =>
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)!.dialogTitleLogoutConfirm,
+            style: titleTextStyle(),
+          ),
+          content: Text(
+            AppLocalizations.of(context)!.dialogMessageLogoutConfirm,
+            style: homeCardDescriptionTextStyle(
+              fontSize: 14.0,
+            ),
+          ),
+          actions: <Widget>[
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                AppLocalizations.of(context)!.dialogNegativeActionLogoutConfirm,
+                style: homeCardDescriptionTextStyle(fontSize: 14.0),
+              ),
+            ),
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                AppLocalizations.of(context)!.dialogPositiveActionLogoutConfirm,
+                style: homeCardDescriptionTextStyle(fontSize: 14.0),
+              ),
+            ),
+          ],
+        ),
+      );
 }
