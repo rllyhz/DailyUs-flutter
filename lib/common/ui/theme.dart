@@ -13,7 +13,9 @@ import 'package:flutter/material.dart'
         RoundedRectangleBorder,
         OutlinedButton,
         TextButton,
-        ButtonStyle;
+        ButtonStyle,
+        ScaffoldMessenger,
+        SnackBar;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -111,3 +113,16 @@ OutlinedButton appOutlinedButton({
         ),
       ),
     );
+
+void showSnacbar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        backgroundColor: primaryColor,
+        content: Text(
+          message,
+          style: appTextStyle(
+            color: Colors.white,
+          ),
+        )),
+  );
+}

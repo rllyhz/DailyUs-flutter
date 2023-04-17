@@ -25,6 +25,7 @@ class DailyUsLocalCacheDataSourceImpl implements DailyUsLocalCacheDataSource {
       user: User(
         id: cachedData.userId,
         token: cachedData.userToken,
+        email: cachedData.userEmail,
         name: cachedData.userName,
       ),
     );
@@ -37,6 +38,7 @@ class DailyUsLocalCacheDataSourceImpl implements DailyUsLocalCacheDataSource {
       userId: authInfo.user.id,
       userName: authInfo.user.name,
       userToken: authInfo.user.token,
+      userEmail: authInfo.user.email,
     );
 
     return localCacheClient.updateLocalCacheData(cacheModel);

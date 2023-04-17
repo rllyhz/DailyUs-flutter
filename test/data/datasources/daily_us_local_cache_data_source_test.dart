@@ -25,10 +25,12 @@ void main() {
         () {
       when(mockLocalCacheClient.getLocalCacheData()).thenAnswer(
         (_) => const LocalCacheModel(
-            isAlreadyLoggedIn: true,
-            userId: id,
-            userName: name,
-            userToken: token),
+          isAlreadyLoggedIn: true,
+          userId: id,
+          userName: name,
+          userToken: token,
+          userEmail: email,
+        ),
       );
 
       final result = dataSource.getAuthInfo();
@@ -47,6 +49,7 @@ void main() {
         userId: id,
         userName: name,
         userToken: token,
+        userEmail: email,
       );
 
       when(mockLocalCacheClient.updateLocalCacheData(cachedModel))
@@ -59,6 +62,7 @@ void main() {
               id: cachedModel.userId,
               token: cachedModel.userToken,
               name: cachedModel.userName,
+              email: cachedModel.userEmail,
             )),
       );
 

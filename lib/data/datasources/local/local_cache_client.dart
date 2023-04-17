@@ -22,6 +22,7 @@ class DailyUsLocalCacheClient {
           userId: "",
           userName: "",
           userToken: "",
+          userEmail: "",
         );
       }
     } catch (e) {
@@ -30,6 +31,7 @@ class DailyUsLocalCacheClient {
         userId: "",
         userName: "",
         userToken: "",
+        userEmail: "",
       );
     }
   }

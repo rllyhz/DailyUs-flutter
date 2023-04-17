@@ -108,6 +108,7 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
           id: responseData.loginResult.userId,
           token: responseData.loginResult.token,
           name: responseData.loginResult.name,
+          email: email,
         );
       } else {
         throw ServerException();

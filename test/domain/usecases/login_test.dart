@@ -26,6 +26,7 @@ void main() {
           id: data_helpers.id,
           token: data_helpers.token,
           name: data_helpers.name,
+          email: data_helpers.email,
         ),
       ),
     );

@@ -55,5 +55,10 @@ const story = Story(
 
 const authInfo = AuthInfo(
   isAlreadyLoggedIn: true,
-  user: User(id: id, token: token, name: name),
+  user: User(
+    id: id,
+    token: token,
+    name: name,
+    email: email,
+  ),
 );
