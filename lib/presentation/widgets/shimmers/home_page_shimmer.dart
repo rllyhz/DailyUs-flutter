@@ -21,7 +21,10 @@ class HomePageShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var totalWidth = MediaQuery.of(context).size.width;
-    var height = totalWidth * 1 / 3;
+    var height = totalWidth * 1 / 2;
+    if (totalWidth > 720) {
+      height = totalWidth * 1 / 3;
+    }
 
     return SizedBox.expand(
       child: ListView.builder(

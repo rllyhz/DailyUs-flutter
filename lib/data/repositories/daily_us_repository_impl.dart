@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:daily_us/common/exception.dart';
 import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/data/datasources/daily_us_local_cache_data_source.dart';
@@ -101,7 +99,7 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   }
 
   @override
-  Future<Either<Failure, Story?>> getDetailStoryById(
+  Future<Either<Failure, Story>> getDetailStoryById(
     String token,
     String id,
   ) async {
@@ -114,6 +112,8 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
       return const Left(InternalFailure());
     } on ServerException {
       return const Left(ServerFailure());
+    } on StoryNotFoundException {
+      return const Left(StoryNotFoundFailure());
     } on NoInternetConnectionException {
       return const Left(NoInternetConnectionFailure());
     }

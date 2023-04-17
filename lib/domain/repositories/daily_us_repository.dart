@@ -18,7 +18,7 @@ abstract class DailyUsRepository {
 
   Future<Either<Failure, List<Story>>> getAllStories(String token);
 
-  Future<Either<Failure, Story?>> getDetailStoryById(String token, String id);
+  Future<Either<Failure, Story>> getDetailStoryById(String token, String id);
 
   Future<Either<Failure, bool>> uploadNewStory(
     String token,

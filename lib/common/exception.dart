@@ -36,7 +36,6 @@ class InvalidEmailException extends DailyUsException {
   InvalidEmailException() : super("Invalid email");
 }
 
-class RequestNotAllowedException extends DailyUsException {
-  RequestNotAllowedException()
-      : super("You're not allowed to perform the request");
+class StoryNotFoundException extends DailyUsException {
+  StoryNotFoundException() : super("Story not found");
 }

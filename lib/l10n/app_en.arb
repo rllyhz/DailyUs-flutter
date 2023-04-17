@@ -1,6 +1,7 @@
 {
     "appName": "DailyUs",
 
+    "dateUnknown": "UnknownTime",
     "dateInJustNow": "Just now",
     "dateInSeconds": "{second}s ago",
     "@dateInSeconds": {
@@ -14,6 +15,14 @@
     "@dateInMinutes": {
         "placeholders": {
             "minute": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInHours": "{hour}h ago",
+    "@dateInHours": {
+        "placeholders": {
+            "hour": {
                 "type": "int"
             }
         }
@@ -92,5 +101,6 @@
     "loginSuccessMessage": "Succesfully logged in",
     "uploadSuccessMessage": "Succesfully added new stories",
     "uploadFailedMessage": "Failed to add new stories",
-    "noConnectionMessage": "No internet connection"
+    "noConnectionMessage": "No internet connection",
+    "storyNotFoundMessage": "Story not found"
 }

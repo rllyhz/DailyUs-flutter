@@ -13,6 +13,8 @@ import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:daily_us/domain/usecases/register.dart';
 import 'package:daily_us/domain/usecases/update_auth_info.dart';
 import 'package:daily_us/domain/usecases/upload_new_story.dart';
+import 'package:daily_us/presentation/bloc/detail/detail_bloc.dart';
+import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
 import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
 import 'package:daily_us/presentation/bloc/register/register_block.dart';
@@ -83,6 +85,12 @@ Future<void> init() async {
   );
   locator.registerFactory(
     () => RegisterBloc(locator()),
+  );
+  locator.registerFactory(
+    () => HomeBloc(locator()),
+  );
+  locator.registerFactory(
+    () => DetailBloc(locator()),
   );
   locator.registerFactory(
     () => ProfileBloc(locator()),

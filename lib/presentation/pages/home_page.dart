@@ -2,15 +2,17 @@ import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
+import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
-import 'package:daily_us/domain/entities/story.dart';
+import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/widgets/daily_us_story_item.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:daily_us/presentation/widgets/shimmers/home_page_shimmer.dart';
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const valueKey = ValueKey("HomePage");
 
   const HomePage({
@@ -23,9 +25,29 @@ class HomePage extends StatelessWidget {
   final AuthInfo authInfo;
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    _onRefresh(context);
+  }
+
+  void _onRefresh(BuildContext context) {
+    if (mounted) {
+      context.read<HomeBloc>().add(
+            OnFetchAllStoriesEvent(
+              widget.authInfo.user.token,
+            ),
+          );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     var totalWidth = MediaQuery.of(context).size.width;
-    var isLoading = false;
 
     return SafeArea(
       child: Container(
@@ -42,7 +64,7 @@ class HomePage extends StatelessWidget {
             ),
             Text(
               AppLocalizations.of(context)!.homeGreetingUser(
-                getFirstName(authInfo.user.name),
+                getFirstName(widget.authInfo.user.name),
               ),
               style: homeGreetingUserTextStyle(),
             ),
@@ -67,8 +89,10 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 12.0,
             ),
-            isLoading
-                ? const Expanded(
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is HomeStateLoading) {
+                  return const Expanded(
                     child: HomePageShimmer(
                       padding: EdgeInsets.only(
                         top: 12.0,
@@ -78,39 +102,65 @@ class HomePage extends StatelessWidget {
                       fadeTheme: FadeTheme.light,
                       totalItem: 10,
                     ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(
-                        top: 12.0,
-                        bottom: 12.0,
+                  );
+                } else if (state is HomeStateError) {
+                  return Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 32.0,
                       ),
-                      itemCount: 30,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: DailyUsStoryItem(
-                            padding: const EdgeInsets.all(12.0),
-                            story: Story(
-                              id: 'index-$index',
-                              name: 'Rully Ihza M',
-                              createdAt:
-                                  AppLocalizations.of(context)!.dateInJustNow,
-                              description:
-                                  "Hari yang sangat indah untuk membagikan suasana hati.",
-                              photoUrl:
-                                  'https://picsum.photos/id/${101 + index}/300/200',
-                              latitude: 0,
-                              longitude: 0,
-                            ),
-                            onClick: (story) {
-                              onDetail(story.id);
-                            },
+                      Center(
+                        child: Text(
+                          getFailureMessage(
+                            context,
+                            state.failure,
                           ),
-                        );
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 32.0,
+                      ),
+                      appOutlinedButton(
+                        text: AppLocalizations.of(context)!.buttonRefresh,
+                        onPressed: () {
+                          _onRefresh(context);
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  var stories = (state as HomeStateHasData).stories;
+
+                  return Expanded(
+                    child: RefreshIndicator(
+                      color: secondaryColor,
+                      onRefresh: () async {
+                        _onRefresh(context);
                       },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(
+                          top: 12.0,
+                          bottom: 12.0,
+                        ),
+                        itemCount: stories.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: DailyUsStoryItem(
+                              padding: const EdgeInsets.all(12.0),
+                              story: stories[index],
+                              onClick: (story) {
+                                widget.onDetail(story.id);
+                              },
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

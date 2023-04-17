@@ -192,7 +192,7 @@ void main() {
       });
 
       test(
-          'Should throw RequestNotAllowedException when status code >= 400 && status code < 599',
+          'Should throw ServerException when status code >= 400 && status code < 599',
           () async {
         dioAdapter.onGet(
           "/stories",
@@ -208,7 +208,7 @@ void main() {
 
         expect(
           () async => await dataSource.getAllStories(token),
-          throwsA(isA<RequestNotAllowedException>()),
+          throwsA(isA<ServerException>()),
         );
       });
     });
@@ -238,7 +238,7 @@ void main() {
         final result = await dataSource.getDetailStoryById(token, storyId);
 
         expect(result, isNotNull);
-        expect(result!.id, storyId);
+        expect(result.id, storyId);
         expect(result.name, expectedStory.name);
         expect(result.createdAt, expectedStory.createdAt);
       });

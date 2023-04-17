@@ -1,6 +1,7 @@
 {
     "appName": "DailyUs",
 
+    "dateUnknown": "WaktuTidakDiketahui",
     "dateInJustNow": "Baru saja",
     "dateInSeconds": "{second}d yang lalu",
     "@dateInSeconds": {
@@ -14,6 +15,14 @@
     "@dateInMinutes": {
         "placeholders": {
             "minute": {
+                "type": "int"
+            }
+        }
+    },
+    "dateInHours": "{hour} jam yg lalu",
+    "@dateInHours": {
+        "placeholders": {
+            "hour": {
                 "type": "int"
             }
         }
@@ -92,5 +101,6 @@
     "loginSuccessMessage": "Berhasil masuk",
     "uploadSuccessMessage": "Berhasil menambahkan story baru",
     "uploadFailedMessage": "Gagal menambahkan story",
-    "noConnectionMessage": "Tidak ada koneksi internet"
+    "noConnectionMessage": "Tidak ada koneksi internet",
+    "storyNotFoundMessage": "Cerita tidak ditemukan"
 }

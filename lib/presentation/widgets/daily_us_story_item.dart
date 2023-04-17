@@ -1,3 +1,4 @@
+import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/presentation/widgets/cards/daily_us_card.dart';
@@ -63,7 +64,7 @@ class DailyUsStoryItem extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  story.name,
+                  getFormattedName(story.name),
                   style: homeCardFullNameTextStyle(),
                 ),
                 const SizedBox(
@@ -83,7 +84,7 @@ class DailyUsStoryItem extends StatelessWidget {
                   width: 8.0,
                 ),
                 Text(
-                  story.createdAt,
+                  getFormattedDate(context, story.createdAt),
                   style: homeCardDateTextStyle(),
                 ),
               ],

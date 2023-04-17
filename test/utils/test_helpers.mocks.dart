@@ -3,29 +3,27 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i8;
+import 'dart:async' as _i7;
 
-import 'package:daily_us/common/failure.dart' as _i9;
-import 'package:daily_us/common/secrets.dart' as _i21;
+import 'package:daily_us/common/failure.dart' as _i8;
 import 'package:daily_us/data/datasources/local/local_cache_client.dart'
-    as _i19;
-import 'package:daily_us/data/datasources/local/local_cache_model.dart' as _i6;
-import 'package:daily_us/data/datasources/remote/api_client.dart' as _i20;
+    as _i18;
+import 'package:daily_us/data/datasources/local/local_cache_model.dart' as _i5;
+import 'package:daily_us/data/datasources/remote/api_client.dart' as _i19;
 import 'package:daily_us/domain/entities/auth_info.dart' as _i3;
-import 'package:daily_us/domain/entities/story.dart' as _i11;
-import 'package:daily_us/domain/entities/user.dart' as _i10;
-import 'package:daily_us/domain/repositories/daily_us_repository.dart' as _i4;
-import 'package:daily_us/domain/usecases/get_all_stories.dart' as _i12;
-import 'package:daily_us/domain/usecases/get_auth_info.dart' as _i13;
-import 'package:daily_us/domain/usecases/get_detail_story.dart' as _i14;
-import 'package:daily_us/domain/usecases/login.dart' as _i15;
-import 'package:daily_us/domain/usecases/logout.dart' as _i16;
-import 'package:daily_us/domain/usecases/register.dart' as _i17;
-import 'package:daily_us/domain/usecases/upload_new_story.dart' as _i18;
+import 'package:daily_us/domain/entities/story.dart' as _i10;
+import 'package:daily_us/domain/entities/user.dart' as _i9;
+import 'package:daily_us/domain/repositories/daily_us_repository.dart' as _i6;
+import 'package:daily_us/domain/usecases/get_all_stories.dart' as _i11;
+import 'package:daily_us/domain/usecases/get_auth_info.dart' as _i12;
+import 'package:daily_us/domain/usecases/get_detail_story.dart' as _i13;
+import 'package:daily_us/domain/usecases/login.dart' as _i14;
+import 'package:daily_us/domain/usecases/logout.dart' as _i15;
+import 'package:daily_us/domain/usecases/register.dart' as _i16;
+import 'package:daily_us/domain/usecases/upload_new_story.dart' as _i17;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:dio/dio.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:shared_preferences/shared_preferences.dart' as _i5;
+import 'package:shared_preferences/shared_preferences.dart' as _i4;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -58,9 +56,9 @@ class _FakeAuthInfo_1 extends _i1.SmartFake implements _i3.AuthInfo {
         );
 }
 
-class _FakeDailyUsRepository_2 extends _i1.SmartFake
-    implements _i4.DailyUsRepository {
-  _FakeDailyUsRepository_2(
+class _FakeSharedPreferences_2 extends _i1.SmartFake
+    implements _i4.SharedPreferences {
+  _FakeSharedPreferences_2(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -69,30 +67,9 @@ class _FakeDailyUsRepository_2 extends _i1.SmartFake
         );
 }
 
-class _FakeSharedPreferences_3 extends _i1.SmartFake
-    implements _i5.SharedPreferences {
-  _FakeSharedPreferences_3(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeLocalCacheModel_4 extends _i1.SmartFake
-    implements _i6.LocalCacheModel {
-  _FakeLocalCacheModel_4(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeDio_5 extends _i1.SmartFake implements _i7.Dio {
-  _FakeDio_5(
+class _FakeLocalCacheModel_3 extends _i1.SmartFake
+    implements _i5.LocalCacheModel {
+  _FakeLocalCacheModel_3(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -104,13 +81,13 @@ class _FakeDio_5 extends _i1.SmartFake implements _i7.Dio {
 /// A class which mocks [DailyUsRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
+class MockDailyUsRepository extends _i1.Mock implements _i6.DailyUsRepository {
   MockDailyUsRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i8.Future<_i2.Either<_i9.Failure, bool>> register(
+  _i7.Future<_i2.Either<_i8.Failure, bool>> register(
     String? name,
     String? email,
     String? password,
@@ -124,8 +101,8 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             password,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, bool>>.value(
-            _FakeEither_0<_i9.Failure, bool>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, bool>>.value(
+            _FakeEither_0<_i8.Failure, bool>(
           this,
           Invocation.method(
             #register,
@@ -136,9 +113,9 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, bool>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, bool>>);
   @override
-  _i8.Future<_i2.Either<_i9.Failure, _i10.User?>> login(
+  _i7.Future<_i2.Either<_i8.Failure, _i9.User?>> login(
     String? email,
     String? password,
   ) =>
@@ -150,8 +127,8 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             password,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, _i10.User?>>.value(
-            _FakeEither_0<_i9.Failure, _i10.User?>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, _i9.User?>>.value(
+            _FakeEither_0<_i8.Failure, _i9.User?>(
           this,
           Invocation.method(
             #login,
@@ -161,7 +138,7 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, _i10.User?>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, _i9.User?>>);
   @override
   bool logout() => (super.noSuchMethod(
         Invocation.method(
@@ -185,16 +162,16 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
         ),
       ) as _i3.AuthInfo);
   @override
-  _i8.Future<bool> updateAuthInfo(_i3.AuthInfo? authInfo) =>
+  _i7.Future<bool> updateAuthInfo(_i3.AuthInfo? authInfo) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateAuthInfo,
           [authInfo],
         ),
-        returnValue: _i8.Future<bool>.value(false),
-      ) as _i8.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
-  _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>> getAllStories(
+  _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>> getAllStories(
           String? token) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -202,17 +179,17 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
           [token],
         ),
         returnValue:
-            _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>>.value(
-                _FakeEither_0<_i9.Failure, List<_i11.Story>>(
+            _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>>.value(
+                _FakeEither_0<_i8.Failure, List<_i10.Story>>(
           this,
           Invocation.method(
             #getAllStories,
             [token],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>>);
   @override
-  _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>> getDetailStoryById(
+  _i7.Future<_i2.Either<_i8.Failure, _i10.Story>> getDetailStoryById(
     String? token,
     String? id,
   ) =>
@@ -224,8 +201,8 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             id,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>>.value(
-            _FakeEither_0<_i9.Failure, _i11.Story?>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, _i10.Story>>.value(
+            _FakeEither_0<_i8.Failure, _i10.Story>(
           this,
           Invocation.method(
             #getDetailStoryById,
@@ -235,9 +212,9 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, _i10.Story>>);
   @override
-  _i8.Future<_i2.Either<_i9.Failure, bool>> uploadNewStory(
+  _i7.Future<_i2.Either<_i8.Failure, bool>> uploadNewStory(
     String? token,
     List<int>? photoBytes,
     String? description,
@@ -255,8 +232,8 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             longitude,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, bool>>.value(
-            _FakeEither_0<_i9.Failure, bool>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, bool>>.value(
+            _FakeEither_0<_i8.Failure, bool>(
           this,
           Invocation.method(
             #uploadNewStory,
@@ -269,27 +246,19 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, bool>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, bool>>);
 }
 
 /// A class which mocks [GetAllStories].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAllStories extends _i1.Mock implements _i12.GetAllStories {
+class MockGetAllStories extends _i1.Mock implements _i11.GetAllStories {
   MockGetAllStories() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
-  @override
-  _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>> execute(
+  _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>> execute(
           String? token) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -297,53 +266,36 @@ class MockGetAllStories extends _i1.Mock implements _i12.GetAllStories {
           [token],
         ),
         returnValue:
-            _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>>.value(
-                _FakeEither_0<_i9.Failure, List<_i11.Story>>(
+            _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>>.value(
+                _FakeEither_0<_i8.Failure, List<_i10.Story>>(
           this,
           Invocation.method(
             #execute,
             [token],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, List<_i11.Story>>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, List<_i10.Story>>>);
 }
 
 /// A class which mocks [GetAuthInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAuthInfo extends _i1.Mock implements _i13.GetAuthInfo {
+class MockGetAuthInfo extends _i1.Mock implements _i12.GetAuthInfo {
   MockGetAuthInfo() {
     _i1.throwOnMissingStub(this);
   }
-
-  @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
 }
 
 /// A class which mocks [GetDetailStory].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetDetailStory extends _i1.Mock implements _i14.GetDetailStory {
+class MockGetDetailStory extends _i1.Mock implements _i13.GetDetailStory {
   MockGetDetailStory() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
-  @override
-  _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>> execute(
+  _i7.Future<_i2.Either<_i8.Failure, _i10.Story?>> execute(
     String? token,
     String? id,
   ) =>
@@ -355,8 +307,8 @@ class MockGetDetailStory extends _i1.Mock implements _i14.GetDetailStory {
             id,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>>.value(
-            _FakeEither_0<_i9.Failure, _i11.Story?>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, _i10.Story?>>.value(
+            _FakeEither_0<_i8.Failure, _i10.Story?>(
           this,
           Invocation.method(
             #execute,
@@ -366,27 +318,19 @@ class MockGetDetailStory extends _i1.Mock implements _i14.GetDetailStory {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, _i11.Story?>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, _i10.Story?>>);
 }
 
 /// A class which mocks [Login].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogin extends _i1.Mock implements _i15.Login {
+class MockLogin extends _i1.Mock implements _i14.Login {
   MockLogin() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
-  @override
-  _i8.Future<_i2.Either<_i9.Failure, _i10.User?>> execute(
+  _i7.Future<_i2.Either<_i8.Failure, _i9.User?>> execute(
     String? email,
     String? password,
   ) =>
@@ -398,8 +342,8 @@ class MockLogin extends _i1.Mock implements _i15.Login {
             password,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, _i10.User?>>.value(
-            _FakeEither_0<_i9.Failure, _i10.User?>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, _i9.User?>>.value(
+            _FakeEither_0<_i8.Failure, _i9.User?>(
           this,
           Invocation.method(
             #execute,
@@ -409,25 +353,17 @@ class MockLogin extends _i1.Mock implements _i15.Login {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, _i10.User?>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, _i9.User?>>);
 }
 
 /// A class which mocks [Logout].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLogout extends _i1.Mock implements _i16.Logout {
+class MockLogout extends _i1.Mock implements _i15.Logout {
   MockLogout() {
     _i1.throwOnMissingStub(this);
   }
 
-  @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
   @override
   bool execute() => (super.noSuchMethod(
         Invocation.method(
@@ -441,21 +377,13 @@ class MockLogout extends _i1.Mock implements _i16.Logout {
 /// A class which mocks [Register].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRegister extends _i1.Mock implements _i17.Register {
+class MockRegister extends _i1.Mock implements _i16.Register {
   MockRegister() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
-  @override
-  _i8.Future<_i2.Either<_i9.Failure, bool>> execute(
+  _i7.Future<_i2.Either<_i8.Failure, bool>> execute(
     String? name,
     String? email,
     String? password,
@@ -469,8 +397,8 @@ class MockRegister extends _i1.Mock implements _i17.Register {
             password,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, bool>>.value(
-            _FakeEither_0<_i9.Failure, bool>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, bool>>.value(
+            _FakeEither_0<_i8.Failure, bool>(
           this,
           Invocation.method(
             #execute,
@@ -481,27 +409,19 @@ class MockRegister extends _i1.Mock implements _i17.Register {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, bool>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, bool>>);
 }
 
 /// A class which mocks [UploadNewStory].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUploadNewStory extends _i1.Mock implements _i18.UploadNewStory {
+class MockUploadNewStory extends _i1.Mock implements _i17.UploadNewStory {
   MockUploadNewStory() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.DailyUsRepository get repository => (super.noSuchMethod(
-        Invocation.getter(#repository),
-        returnValue: _FakeDailyUsRepository_2(
-          this,
-          Invocation.getter(#repository),
-        ),
-      ) as _i4.DailyUsRepository);
-  @override
-  _i8.Future<_i2.Either<_i9.Failure, bool>> execute(
+  _i7.Future<_i2.Either<_i8.Failure, bool>> execute(
     String? token,
     List<int>? photoBytes,
     String? description,
@@ -519,8 +439,8 @@ class MockUploadNewStory extends _i1.Mock implements _i18.UploadNewStory {
             longitude,
           ],
         ),
-        returnValue: _i8.Future<_i2.Either<_i9.Failure, bool>>.value(
-            _FakeEither_0<_i9.Failure, bool>(
+        returnValue: _i7.Future<_i2.Either<_i8.Failure, bool>>.value(
+            _FakeEither_0<_i8.Failure, bool>(
           this,
           Invocation.method(
             #execute,
@@ -533,49 +453,49 @@ class MockUploadNewStory extends _i1.Mock implements _i18.UploadNewStory {
             ],
           ),
         )),
-      ) as _i8.Future<_i2.Either<_i9.Failure, bool>>);
+      ) as _i7.Future<_i2.Either<_i8.Failure, bool>>);
 }
 
 /// A class which mocks [DailyUsLocalCacheClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockDailyUsLocalCacheClient extends _i1.Mock
-    implements _i19.DailyUsLocalCacheClient {
+    implements _i18.DailyUsLocalCacheClient {
   MockDailyUsLocalCacheClient() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.SharedPreferences get pref => (super.noSuchMethod(
+  _i4.SharedPreferences get pref => (super.noSuchMethod(
         Invocation.getter(#pref),
-        returnValue: _FakeSharedPreferences_3(
+        returnValue: _FakeSharedPreferences_2(
           this,
           Invocation.getter(#pref),
         ),
-      ) as _i5.SharedPreferences);
+      ) as _i4.SharedPreferences);
   @override
-  _i6.LocalCacheModel getLocalCacheData() => (super.noSuchMethod(
+  _i5.LocalCacheModel getLocalCacheData() => (super.noSuchMethod(
         Invocation.method(
           #getLocalCacheData,
           [],
         ),
-        returnValue: _FakeLocalCacheModel_4(
+        returnValue: _FakeLocalCacheModel_3(
           this,
           Invocation.method(
             #getLocalCacheData,
             [],
           ),
         ),
-      ) as _i6.LocalCacheModel);
+      ) as _i5.LocalCacheModel);
   @override
-  _i8.Future<bool> updateLocalCacheData(_i6.LocalCacheModel? cacheModel) =>
+  _i7.Future<bool> updateLocalCacheData(_i5.LocalCacheModel? cacheModel) =>
       (super.noSuchMethod(
         Invocation.method(
           #updateLocalCacheData,
           [cacheModel],
         ),
-        returnValue: _i8.Future<bool>.value(false),
-      ) as _i8.Future<bool>);
+        returnValue: _i7.Future<bool>.value(false),
+      ) as _i7.Future<bool>);
   @override
   void clearLocalCacheData() => super.noSuchMethod(
         Invocation.method(
@@ -589,23 +509,8 @@ class MockDailyUsLocalCacheClient extends _i1.Mock
 /// A class which mocks [DailyUsApiClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDailyUsApiClient extends _i1.Mock implements _i20.DailyUsApiClient {
+class MockDailyUsApiClient extends _i1.Mock implements _i19.DailyUsApiClient {
   MockDailyUsApiClient() {
     _i1.throwOnMissingStub(this);
   }
-
-  @override
-  _i7.Dio getInstance(_i21.AppSecret? appSecret) => (super.noSuchMethod(
-        Invocation.method(
-          #getInstance,
-          [appSecret],
-        ),
-        returnValue: _FakeDio_5(
-          this,
-          Invocation.method(
-            #getInstance,
-            [appSecret],
-          ),
-        ),
-      ) as _i7.Dio);
 }

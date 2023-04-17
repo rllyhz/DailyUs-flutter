@@ -135,7 +135,7 @@ void main() {
         (right) => {
           expect(right, isA<Story>()),
           expect(right, isNotNull),
-          expect(right!.id, data_helpers.id),
+          expect(right.id, data_helpers.id),
         },
       );
     });

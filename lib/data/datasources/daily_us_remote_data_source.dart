@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:daily_us/common/exception.dart';
@@ -19,7 +18,7 @@ abstract class DailyUsRemoteDataSource {
 
   Future<List<Story>> getAllStories(String token);
 
-  Future<Story?> getDetailStoryById(String token, String id);
+  Future<Story> getDetailStoryById(String token, String id);
 
   Future<bool> uploadNewStory(
     String token,
@@ -159,7 +158,7 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
             ? storiesResponseToEntities(responseData.stories)
             : List<Story>.empty();
       } else {
-        throw RequestNotAllowedException();
+        throw ServerException();
       }
     } on SocketException catch (_) {
       throw NoInternetConnectionException();
@@ -175,10 +174,10 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   }
 
   @override
-  Future<Story?> getDetailStoryById(String token, String id) async {
+  Future<Story> getDetailStoryById(String token, String id) async {
     try {
       apiClient.options.headers["Authorization"] = "Bearer $token";
-      final response = await apiClient.get("/detail/$id");
+      final response = await apiClient.get("/stories/$id");
 
       final responseData = GetDetailStoryResponse.fromJson(response.data);
 
@@ -199,12 +198,20 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
         throw ServerException();
       }
 
+      final responseData = GetDetailStoryResponse.fromJson(
+        e.response!.data,
+      );
+
       Logger.logWithTag("GetDetailStory Failed", e.response!.data.toString());
 
       final statusCode = e.response!.statusCode;
 
       if (statusCode! >= 400 && statusCode < 500) {
-        return null;
+        if (responseData.message == 'Story not found') {
+          throw StoryNotFoundException();
+        } else {
+          throw UnknownException();
+        }
       } else {
         throw ServerException();
       }

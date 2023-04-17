@@ -237,6 +237,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           MaterialPage(
             key: DetailPage.valueKey,
             child: DetailPage(
+              authInfo: authInfo!,
               onNavigateBack: () {
                 storyId = null;
                 notifyListeners();

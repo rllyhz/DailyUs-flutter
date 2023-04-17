@@ -154,7 +154,7 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
         )),
       ) as _i5.Future<_i2.Either<_i6.Failure, List<_i8.Story>>>);
   @override
-  _i5.Future<_i2.Either<_i6.Failure, _i8.Story?>> getDetailStoryById(
+  _i5.Future<_i2.Either<_i6.Failure, _i8.Story>> getDetailStoryById(
     String? token,
     String? id,
   ) =>
@@ -166,8 +166,8 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             id,
           ],
         ),
-        returnValue: _i5.Future<_i2.Either<_i6.Failure, _i8.Story?>>.value(
-            _FakeEither_0<_i6.Failure, _i8.Story?>(
+        returnValue: _i5.Future<_i2.Either<_i6.Failure, _i8.Story>>.value(
+            _FakeEither_0<_i6.Failure, _i8.Story>(
           this,
           Invocation.method(
             #getDetailStoryById,
@@ -177,7 +177,7 @@ class MockDailyUsRepository extends _i1.Mock implements _i4.DailyUsRepository {
             ],
           ),
         )),
-      ) as _i5.Future<_i2.Either<_i6.Failure, _i8.Story?>>);
+      ) as _i5.Future<_i2.Either<_i6.Failure, _i8.Story>>);
   @override
   _i5.Future<_i2.Either<_i6.Failure, bool>> uploadNewStory(
     String? token,

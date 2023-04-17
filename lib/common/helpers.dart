@@ -1,5 +1,6 @@
 import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/common/logger.dart';
 import 'package:flutter/material.dart';
 
 bool validateEmailFormat(String email) => RegExp(
@@ -9,6 +10,61 @@ bool validateEmailFormat(String email) => RegExp(
 bool validatePasswordFormat(String password) => password.length >= 6;
 
 String getFirstName(String name) => name.split(" ").first;
+String getFormattedName(String name) {
+  var formattedName = '';
+  var splittedNames = name.split(" ");
+
+  if (splittedNames.length < 3) {
+    formattedName = name;
+  } else {
+    formattedName = "${splittedNames[0]} ${splittedNames[1]}";
+    if (formattedName.length > 10) {
+      var firstName = '';
+      var lastName = '';
+      splittedNames.asMap().forEach((key, value) {
+        if (key == 0) {
+          firstName = value;
+        } else {
+          lastName += value[0];
+        }
+      });
+      formattedName = "$firstName $lastName";
+    }
+  }
+
+  return formattedName;
+}
+
+String getFormattedDate(BuildContext context, String date) {
+  try {
+    var createdDateTime = DateTime.parse(date);
+    var diff = DateTime.now().difference(createdDateTime);
+    var day = diff.inDays;
+    var hour = diff.inHours;
+    var min = diff.inMinutes;
+    var sec = diff.inSeconds;
+
+    var formattedDate = '';
+
+    if (day > 0) {
+      formattedDate = AppLocalizations.of(context)!.dateInDays(day);
+    } else if (hour > 0) {
+      formattedDate = AppLocalizations.of(context)!.dateInHours(hour);
+    } else if (min > 0) {
+      formattedDate = AppLocalizations.of(context)!.dateInMinutes(min);
+    } else if (sec > 0) {
+      formattedDate = AppLocalizations.of(context)!.dateInSeconds(sec);
+    } else {
+      formattedDate = AppLocalizations.of(context)!.dateInJustNow;
+    }
+
+    return formattedDate;
+    //
+  } catch (e) {
+    Logger.logWithTag("Parse Date String", e.toString());
+    return 'UnknownTime';
+  }
+}
 
 String getFailureMessage(BuildContext context, Failure failure) {
   var message = '';
@@ -23,6 +79,8 @@ String getFailureMessage(BuildContext context, Failure failure) {
     message = AppLocalizations.of(context)!.emailInvalidMessage;
   } else if (failure is InvalidPasswordFailure) {
     message = AppLocalizations.of(context)!.wrongCredentialMessage;
+  } else if (failure is StoryNotFoundFailure) {
+    message = AppLocalizations.of(context)!.storyNotFoundMessage;
   } else {
     message = AppLocalizations.of(context)!.internalErrorMessage;
   }

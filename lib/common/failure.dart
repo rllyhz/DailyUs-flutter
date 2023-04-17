@@ -40,3 +40,7 @@ class InvalidEmailFailure extends Failure {
 class InvalidPasswordFailure extends Failure {
   const InvalidPasswordFailure() : super("Invalid password");
 }
+
+class StoryNotFoundFailure extends Failure {
+  const StoryNotFoundFailure() : super("Story not found");
+}

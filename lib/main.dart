@@ -1,5 +1,7 @@
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/domain/usecases/get_auth_info.dart';
+import 'package:daily_us/presentation/bloc/detail/detail_bloc.dart';
+import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
 import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
 import 'package:daily_us/presentation/bloc/register/register_block.dart';
@@ -47,6 +49,12 @@ class _DailUsAppState extends State<DailUsApp> {
         ),
         BlocProvider<RegisterBloc>(
           create: (_) => di.locator<RegisterBloc>(),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (_) => di.locator<HomeBloc>(),
+        ),
+        BlocProvider<DetailBloc>(
+          create: (_) => di.locator<DetailBloc>(),
         ),
         BlocProvider<ProfileBloc>(
           create: (_) => di.locator<ProfileBloc>(),
