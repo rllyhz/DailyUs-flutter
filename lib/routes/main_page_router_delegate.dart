@@ -2,7 +2,6 @@ import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
 import 'package:daily_us/presentation/pages/profile_page.dart';
-import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class MainPageRouterDelegate extends RouterDelegate
