@@ -23,9 +23,10 @@ class DailyUsCard extends StatelessWidget {
       label: label,
       child: Card(
         color: backgroundColor ?? greyColor,
+        clipBehavior: Clip.antiAlias,
         elevation: elevation,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(8.0),
           side: const BorderSide(width: 0, color: Colors.transparent),
         ),
         child: Padding(

@@ -45,7 +45,7 @@ class DailyUsStoryItem extends StatelessWidget {
                 padding: const EdgeInsets.all(0.0),
                 child: Image.network(
                   story.photoUrl,
-                  errorBuilder: (contex, _, err) => Container(
+                  errorBuilder: (contex, err, track) => Container(
                     width: double.maxFinite,
                     height: double.maxFinite,
                     decoration: BoxDecoration(
@@ -53,6 +53,7 @@ class DailyUsStoryItem extends StatelessWidget {
                       color: primaryColor,
                     ),
                   ),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
