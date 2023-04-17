@@ -3,10 +3,12 @@ import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   static const valueKey = ValueKey("ProfilePage");
 
   const ProfilePage({
@@ -17,6 +19,24 @@ class ProfilePage extends StatelessWidget {
 
   final void Function() onLogout;
   final AuthInfo authInfo;
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    context.read<ProfileBloc>().stream.listen((state) async {
+      if (state is ProfileStateLogoutError) {
+        showSnacbar(context, state.message);
+      } else if (state is ProfileStateLogoutSuccess) {
+        widget.onLogout();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +59,11 @@ class ProfilePage extends StatelessWidget {
                       height: 24.0,
                     ),
                     Text(
-                      'rllyhz@mail.com',
+                      widget.authInfo.user.email,
                       style: profileEmailTextStyle(),
                     ),
                     Text(
-                      authInfo.user.name,
+                      widget.authInfo.user.name,
                       style: profileFullNameTextStyle(),
                     ),
                     const SizedBox(
@@ -69,8 +89,8 @@ class ProfilePage extends StatelessWidget {
                 onPressed: () async {
                   var shouldLogout = await _showLogoutDialog(context);
 
-                  if (shouldLogout) {
-                    onLogout();
+                  if (shouldLogout && context.mounted) {
+                    context.read<ProfileBloc>().add(OnLogoutEvent());
                   }
                 },
                 borderColor: secondaryColor,
@@ -83,36 +103,13 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Future<bool> _showLogoutDialog(BuildContext context) async =>
-      await showDialog(
+  Future<bool> _showLogoutDialog(BuildContext context) async => await appDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(
-            AppLocalizations.of(context)!.dialogTitleLogoutConfirm,
-            style: titleTextStyle(),
-          ),
-          content: Text(
-            AppLocalizations.of(context)!.dialogMessageLogoutConfirm,
-            style: homeCardDescriptionTextStyle(
-              fontSize: 14.0,
-            ),
-          ),
-          actions: <Widget>[
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(
-                AppLocalizations.of(context)!.dialogNegativeActionLogoutConfirm,
-                style: homeCardDescriptionTextStyle(fontSize: 14.0),
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(
-                AppLocalizations.of(context)!.dialogPositiveActionLogoutConfirm,
-                style: homeCardDescriptionTextStyle(fontSize: 14.0),
-              ),
-            ),
-          ],
-        ),
+        title: AppLocalizations.of(context)!.dialogTitleLogoutConfirm,
+        message: AppLocalizations.of(context)!.dialogMessageLogoutConfirm,
+        negativeActionText:
+            AppLocalizations.of(context)!.dialogNegativeActionLogoutConfirm,
+        positiveActionText:
+            AppLocalizations.of(context)!.dialogPositiveActionLogoutConfirm,
       );
 }

@@ -91,8 +91,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                         children: <Widget>[
                           DailyUsAppBar(
                             onBack: () {
-                              context.read<LoginBloc>().add(OnCancelLogin());
-                              Navigator.of(context).pop();
+                              if (context.mounted) {
+                                context
+                                    .read<LoginBloc>()
+                                    .add(OnCancelLoginEvent());
+                                Navigator.of(context).pop();
+                              }
                             },
                             title: AppLocalizations.of(context)!.titleLogin,
                           ),
@@ -171,6 +175,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       return;
     }
 
-    context.read<LoginBloc>().add(OnSubmitLogin(email, password));
+    context.read<LoginBloc>().add(OnSubmitLoginEvent(email, password));
   }
 }

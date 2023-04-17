@@ -208,9 +208,10 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
                 notifyListeners();
               },
               onLogout: () {
-                isLoggedIn = false;
+                isLoggedIn = null;
                 isRegister = false;
-                onBoarding = true;
+                onBoarding = false;
+                authInfo = null;
                 notifyListeners();
               },
             ),

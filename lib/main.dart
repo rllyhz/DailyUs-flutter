@@ -1,6 +1,8 @@
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/domain/usecases/get_auth_info.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
+import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
+import 'package:daily_us/presentation/bloc/register/register_block.dart';
 import 'package:daily_us/routes/daily_us_route_information_parser.dart';
 import 'package:daily_us/routes/daily_us_router_delegate.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +44,12 @@ class _DailUsAppState extends State<DailUsApp> {
       providers: [
         BlocProvider<LoginBloc>(
           create: (_) => di.locator<LoginBloc>(),
+        ),
+        BlocProvider<RegisterBloc>(
+          create: (_) => di.locator<RegisterBloc>(),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (_) => di.locator<ProfileBloc>(),
         ),
       ],
       child: MaterialApp.router(

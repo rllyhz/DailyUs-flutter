@@ -2,9 +2,11 @@ import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/helpers.dart';
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/theme.dart';
+import 'package:daily_us/presentation/bloc/register/register_block.dart';
 import 'package:daily_us/presentation/widgets/daily_us_app_bar.dart';
 import 'package:daily_us/presentation/widgets/daily_us_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterPage extends StatefulWidget {
   static const valueKey = ValueKey("RegisterPage");
@@ -42,6 +44,19 @@ class _RegisterPageState extends State<RegisterPage>
     _fadeInOpacityAnimValue =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animController);
 
+    context.read<RegisterBloc>().stream.listen((state) async {
+      if (state is RegisterStateError) {
+        showSnacbar(context, state.message);
+      } else if (state is RegisterStateSuccess) {
+        _emailController.clear();
+        _passwordController.clear();
+
+        await _showDialog(context);
+
+        widget.onSuccessRegister();
+      }
+    });
+
     Future.delayed(
       _animDelay,
       () => _animController.forward(),
@@ -70,7 +85,12 @@ class _RegisterPageState extends State<RegisterPage>
                       children: <Widget>[
                         DailyUsAppBar(
                           onBack: () {
-                            Navigator.of(context).pop();
+                            if (context.mounted) {
+                              context
+                                  .read<RegisterBloc>()
+                                  .add(OnCancelRegisterEvent());
+                              Navigator.of(context).pop();
+                            }
                           },
                           title: AppLocalizations.of(context)!.titleRegister,
                         ),
@@ -107,6 +127,8 @@ class _RegisterPageState extends State<RegisterPage>
                     opacity: _fadeInOpacityAnimValue,
                     child: appButton(
                       text: AppLocalizations.of(context)!.buttonRegister,
+                      showLoadingState: context.watch<RegisterBloc>().state
+                          is RegisterStateLoading,
                       onPressed: () {
                         var name = _nameController.text.toString();
                         var email = _emailController.text.toString();
@@ -132,6 +154,10 @@ class _RegisterPageState extends State<RegisterPage>
     String password,
   ) {
     if (name.isEmpty) {
+      showSnacbar(
+        context,
+        AppLocalizations.of(context)!.nameEmptyMessage,
+      );
       return;
     }
     if (email.isEmpty) {
@@ -162,5 +188,19 @@ class _RegisterPageState extends State<RegisterPage>
       );
       return;
     }
+
+    context
+        .read<RegisterBloc>()
+        .add(OnSubmitRegisterEvent(name, email, password));
+  }
+
+  Future<void> _showDialog(BuildContext context) async {
+    await appDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.dialogTitleRegisterSuccess,
+      message: AppLocalizations.of(context)!.dialogMessageRegisterSuccess,
+      positiveActionText:
+          AppLocalizations.of(context)!.dialogPositiveActionRegisterSuccess,
+    );
   }
 }

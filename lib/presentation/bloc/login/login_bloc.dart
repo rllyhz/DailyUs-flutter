@@ -17,19 +17,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   LoginBloc(this._loginUsecase, this._updateAuthInfoUsecase)
       : super(LoginStateInitial()) {
-    on<OnSubmitLogin>(_onSubmitLogin, transformer: restartable());
-    on<OnCancelLogin>(_onCancelLogin);
+    on<OnSubmitLoginEvent>(_onSubmitLogin, transformer: restartable());
+    on<OnCancelLoginEvent>(_onCancelLogin);
   }
 
   FutureOr<void> _onCancelLogin(
-    OnCancelLogin event,
+    OnCancelLoginEvent event,
     Emitter<LoginState> emit,
   ) async {
     emit(LoginStateInitial());
   }
 
   FutureOr<void> _onSubmitLogin(
-    OnSubmitLogin event,
+    OnSubmitLoginEvent event,
     Emitter<LoginState> emit,
   ) async {
     emit(LoginStateLoading());

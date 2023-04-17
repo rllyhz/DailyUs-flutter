@@ -15,7 +15,9 @@ import 'package:flutter/material.dart'
         TextButton,
         ButtonStyle,
         ScaffoldMessenger,
-        SnackBar;
+        SnackBar,
+        showDialog,
+        AlertDialog;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -104,7 +106,7 @@ OutlinedButton appOutlinedButton({
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        padding: const EdgeInsets.symmetric(vertical: 14.0),
         child: Center(
           child: Text(
             text ?? "",
@@ -113,6 +115,47 @@ OutlinedButton appOutlinedButton({
         ),
       ),
     );
+
+Future<bool> appDialog({
+  required BuildContext context,
+  required String title,
+  required String message,
+  String? negativeActionText,
+  String? positiveActionText,
+}) async =>
+    (await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          title,
+          style: titleTextStyle(),
+        ),
+        content: Text(
+          message,
+          style: homeCardDescriptionTextStyle(
+            fontSize: 14.0,
+          ),
+        ),
+        actions: <Widget>[
+          if (negativeActionText != null)
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                negativeActionText,
+                style: homeCardDescriptionTextStyle(fontSize: 14.0),
+              ),
+            ),
+          if (positiveActionText != null)
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(
+                positiveActionText,
+                style: homeCardDescriptionTextStyle(fontSize: 14.0),
+              ),
+            ),
+        ],
+      ),
+    ));
 
 void showSnacbar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(

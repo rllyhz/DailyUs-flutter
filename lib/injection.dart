@@ -14,6 +14,8 @@ import 'package:daily_us/domain/usecases/register.dart';
 import 'package:daily_us/domain/usecases/update_auth_info.dart';
 import 'package:daily_us/domain/usecases/upload_new_story.dart';
 import 'package:daily_us/presentation/bloc/login/login_bloc.dart';
+import 'package:daily_us/presentation/bloc/profile/profile_bloc.dart';
+import 'package:daily_us/presentation/bloc/register/register_block.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,5 +80,11 @@ Future<void> init() async {
   // bloc
   locator.registerFactory(
     () => LoginBloc(locator(), locator()),
+  );
+  locator.registerFactory(
+    () => RegisterBloc(locator()),
+  );
+  locator.registerFactory(
+    () => ProfileBloc(locator()),
   );
 }
