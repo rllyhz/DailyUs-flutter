@@ -1,4 +1,6 @@
 import 'package:daily_us/data/models/page_configuration.dart';
+import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/domain/usecases/get_auth_info.dart';
 import 'package:daily_us/presentation/pages/anim/slide_animation_page.dart';
 import 'package:daily_us/presentation/pages/detail_page.dart';
 import 'package:daily_us/presentation/pages/login_page.dart';
@@ -12,7 +14,11 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey;
 
-  DailyUsRouterDelegate() : _navigatorKey = GlobalKey<NavigatorState>();
+  DailyUsRouterDelegate({
+    required this.getAuthInfo,
+  }) : _navigatorKey = GlobalKey<NavigatorState>();
+
+  final GetAuthInfo getAuthInfo;
 
   List<Page> historyStack = [];
   bool? isUnknown;
@@ -20,6 +26,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   bool onBoarding = false;
   bool isRegister = false;
   String? storyId;
+  AuthInfo? authInfo;
 
   bool isLauchMainFromSplash = true;
 
@@ -124,12 +131,20 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           child: SplashPage(
             runPreparationCallback: () async {
               // run task to check if user already logged in
+              authInfo = getAuthInfo.execute();
+
+              if (authInfo != null && authInfo!.isAlreadyLoggedIn) {
+                isRegister = false;
+                onBoarding = false;
+                isLoggedIn = true;
+              } else {
+                isLoggedIn = false;
+                isRegister = false;
+                onBoarding = true;
+              }
             },
             onAnimationEnd: () {
-              // change state correspondingly to the user's login state
-              isLoggedIn = false;
-              isRegister = false;
-              onBoarding = true;
+              // notify state correspondingly to the auth info's state
               notifyListeners();
             },
           ),
