@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' show debugPrint;
 
 class Logger {
-  void log(String data, {bool showPadding = false}) {
+  static void log(String data, {bool showPadding = false}) {
     if (showPadding) {
       debugPrint("\n");
     }
@@ -11,7 +11,7 @@ class Logger {
     }
   }
 
-  void logWithTag(String tag, String data, {bool showPadding = false}) {
+  static void logWithTag(String tag, String data, {bool showPadding = false}) {
     if (showPadding) {
       debugPrint("\n");
     }
