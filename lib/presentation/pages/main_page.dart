@@ -24,14 +24,20 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late MainPageRouterDelegate _navBarRouterDelegate;
   late ChildBackButtonDispatcher _backButtonDispatcher;
+  late DailyUsBottomNavBarController _bottomNavController;
 
   @override
   void initState() {
     super.initState();
 
+    _bottomNavController = DailyUsBottomNavBarController();
+
     _navBarRouterDelegate = MainPageRouterDelegate(
-      widget.onDetail,
-      widget.onLogout,
+      onDetail: widget.onDetail,
+      onLogout: widget.onLogout,
+      onGoHome: () {
+        _bottomNavController.clickItem(0);
+      },
     );
   }
 
@@ -51,6 +57,7 @@ class _MainPageState extends State<MainPage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         bottomNavigationBar: DailyUsBottomNavBar(
+          controller: _bottomNavController,
           backgroundColor: Colors.transparent,
           showLabel: false,
           onTap: (newIndex) {
