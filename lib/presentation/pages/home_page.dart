@@ -19,19 +19,29 @@ class HomePage extends StatefulWidget {
     super.key,
     required this.onDetail,
     required this.authInfo,
+    this.controller,
   });
 
   final void Function(String) onDetail;
   final AuthInfo authInfo;
+  final HomePageController? controller;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.controller != null) {
+      widget.controller!.refresh = _refresh;
+      widget.controller!.scrollToTop = _scrollToTop;
+    }
+
     _onRefresh(context);
   }
 
@@ -42,6 +52,20 @@ class _HomePageState extends State<HomePage> {
               widget.authInfo.user.token,
             ),
           );
+    }
+  }
+
+  void _refresh() {
+    _onRefresh(context);
+  }
+
+  void _scrollToTop() {
+    if (mounted) {
+      _scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 700),
+        curve: Curves.easeIn,
+      );
     }
   }
 
@@ -138,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                         _onRefresh(context);
                       },
                       child: ListView.builder(
+                        controller: _scrollController,
                         padding: const EdgeInsets.only(
                           top: 12.0,
                           bottom: 12.0,
@@ -166,4 +191,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class HomePageController {
+  late void Function() refresh;
+  late void Function() scrollToTop;
 }

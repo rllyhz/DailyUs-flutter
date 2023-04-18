@@ -1,6 +1,7 @@
 import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
 import 'package:daily_us/routes/main_page_router_delegate.dart';
 import 'package:flutter/material.dart';
@@ -28,19 +29,24 @@ class _MainPageState extends State<MainPage> {
   late MainPageRouterDelegate _navBarRouterDelegate;
   late ChildBackButtonDispatcher _backButtonDispatcher;
   late DailyUsBottomNavBarController _bottomNavController;
+  late HomePageController _homePageController;
 
   @override
   void initState() {
     super.initState();
 
     _bottomNavController = DailyUsBottomNavBarController();
+    _homePageController = HomePageController();
 
     _navBarRouterDelegate = MainPageRouterDelegate(
+      homePageController: _homePageController,
       authInfo: widget.authInfo,
       onDetail: widget.onDetail,
       onLogout: widget.onLogout,
       onGoHome: () {
         _bottomNavController.clickItem(0);
+        // should refresh after uploading
+        _homePageController.refresh();
       },
     );
   }
@@ -67,6 +73,12 @@ class _MainPageState extends State<MainPage> {
           onTap: (newIndex) {
             setState(() {
               _navBarRouterDelegate.selectedPageIndex = newIndex;
+
+              if (_navBarRouterDelegate.selectedPageIndex == newIndex &&
+                  newIndex == 0) {
+                // should scroll to the top
+                _homePageController.scrollToTop();
+              }
             });
           },
           items: [

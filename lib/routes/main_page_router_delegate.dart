@@ -13,12 +13,14 @@ class MainPageRouterDelegate extends RouterDelegate
     required this.onDetail,
     required this.onLogout,
     required this.onGoHome,
+    required this.homePageController,
     required this.authInfo,
   });
 
   final void Function(String) onDetail;
   final void Function() onLogout;
   final void Function() onGoHome;
+  final HomePageController homePageController;
   final AuthInfo authInfo;
 
   int _selectedPageIndex = 0;
@@ -56,6 +58,7 @@ class MainPageRouterDelegate extends RouterDelegate
           child: HomePage(
             authInfo: authInfo,
             onDetail: onDetail,
+            controller: homePageController,
           ),
         ),
         if (_selectedPageIndex == 1)
