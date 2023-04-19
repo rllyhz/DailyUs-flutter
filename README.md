@@ -5,37 +5,15 @@ This project was part of submission projects to finish the Dicoding Indonesia's 
 # Preview
 <p align="center">
     <img src="art/splash_login_register_demo.gif"
-        alt="Splash Page"
+        alt="Auth Demo"
         width="200" />
 </p>
 
-<img src="art/login.png"
-        alt="Login Page"
+<p align="center">
+    <img src="art/home_post_profile_demo.gif"
+        alt="Home demo"
         width="200" />
-
-<img src="art/register.png"
-    alt="Register Page"
-    width="200" />
-
-<img src="art/home.png"
-    alt="Home Page"
-    width="200" />
-
-<img src="art/post.png"
-    alt="Post Story Page"
-    width="200" />
-
-<img src="art/profile_or_settings.png"
-    alt="Profile Page"
-    width="200" />
-
-<img src="art/profile_change_language.png"
-    alt="Profile Page - Change language"
-    width="200" />
-
-<img src="art/profile_logout_dialog.png"
-    alt="Profile Page - Logout"
-    width="200" />
+</p>
 
 # Tech Stack
 
