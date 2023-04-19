@@ -103,6 +103,7 @@
     "uploadFailedMessage": "Failed to add new stories",
     "noConnectionMessage": "No internet connection",
     "storyNotFoundMessage": "Story not found",
+    "storiesEmptyMessage": "No stories yet",
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",

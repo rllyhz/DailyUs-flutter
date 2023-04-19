@@ -155,34 +155,45 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   var stories = (state as HomeStateHasData).stories;
 
-                  return Expanded(
-                    child: RefreshIndicator(
-                      color: secondaryColor,
-                      onRefresh: () async {
-                        _onRefresh(context);
-                      },
-                      child: ListView.builder(
-                        controller: _scrollController,
-                        padding: const EdgeInsets.only(
-                          top: 12.0,
-                          bottom: 12.0,
+                  if (stories.isEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.storiesEmptyMessage,
+                          style: homeCardDescriptionTextStyle(),
                         ),
-                        itemCount: stories.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: DailyUsStoryItem(
-                              padding: const EdgeInsets.all(12.0),
-                              story: stories[index],
-                              onClick: (story) {
-                                widget.onDetail(story.id);
-                              },
-                            ),
-                          );
-                        },
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return Expanded(
+                      child: RefreshIndicator(
+                        color: secondaryColor,
+                        onRefresh: () async {
+                          _onRefresh(context);
+                        },
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.only(
+                            top: 12.0,
+                            bottom: 12.0,
+                          ),
+                          itemCount: stories.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: DailyUsStoryItem(
+                                padding: const EdgeInsets.all(12.0),
+                                story: stories[index],
+                                onClick: (story) {
+                                  widget.onDetail(story.id);
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  }
                 }
               },
             ),

@@ -103,6 +103,7 @@
     "uploadFailedMessage": "Gagal menambahkan story",
     "noConnectionMessage": "Tidak ada koneksi internet",
     "storyNotFoundMessage": "Cerita tidak ditemukan",
+    "storiesEmptyMessage": "Belum ada cerita",
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",
