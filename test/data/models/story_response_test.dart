@@ -8,7 +8,7 @@ import '../../utils/data_helpers.dart';
 void main() {
   group("Story Response usecases", () {
     test("Should successfully parse json test", () {
-      final storyResponse = StoryResponse.fromJson(json.decode(exampleStory1));
+      final storyResponse = StoryResponse.fromJson(exampleStory1);
 
       const expectedStoryId = "story-1";
       const expectedStoryName = "user-story-1";

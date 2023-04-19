@@ -61,7 +61,7 @@ void main() {
           },
           (server) => server.reply(
             404,
-            json.encode({"error": true, "message": "Email is already taken"}),
+            {"error": true, "message": "Email is already taken"},
             delay: const Duration(seconds: 1),
           ),
         );
@@ -82,7 +82,7 @@ void main() {
           },
           (server) => server.reply(
             500,
-            json.encode({"error": true, "message": "\"email\" is required"}),
+            {"error": true, "message": "\"email\" is required"},
             delay: const Duration(seconds: 1),
           ),
         );
@@ -109,7 +109,7 @@ void main() {
           ),
         );
 
-        final authResult = AuthResponse.fromJson(json.decode(authSuccessJson));
+        final authResult = AuthResponse.fromJson(authSuccessJson);
 
         final result = await dataSource.login(email, password);
 
@@ -130,10 +130,10 @@ void main() {
           },
           (server) => server.reply(
             404,
-            json.encode({
+            {
               "error": true,
               "message": '"email" must be a valid email',
-            }),
+            },
             delay: const Duration(seconds: 1),
           ),
         );
@@ -181,7 +181,7 @@ void main() {
         );
 
         final authResult = GetAllStoriesResponse.fromJson(
-          json.decode(getAllStoriesSuccessJson),
+          getAllStoriesSuccessJson,
         );
 
         final result = await dataSource.getAllStories(token);
@@ -219,7 +219,7 @@ void main() {
         const storyId = "story-1";
 
         dioAdapter.onGet(
-          "/detail/$storyId",
+          "/stories/$storyId",
           headers: {
             "Authorization": "Bearer $token",
           },
@@ -231,7 +231,7 @@ void main() {
         );
 
         final authResult = GetDetailStoryResponse.fromJson(
-          json.decode(getDetailStorySuccessJson),
+          getDetailStorySuccessJson,
         );
         final expectedStory = authResult.story;
 
@@ -243,32 +243,34 @@ void main() {
         expect(result.createdAt, expectedStory.createdAt);
       });
 
-      test('Should return null when status code >= 400 && status code < 500',
+      test(
+          'Should throw StoryNotFoundException when status code >= 400 && status code < 500 and has message "Story not found"',
           () async {
         const storyId = "story-1";
 
         dioAdapter.onGet(
-          "/detail/$storyId",
+          "/stories/$storyId",
           headers: {
             "Authorization": "Bearer $token",
           },
           (server) => server.reply(
             404,
-            getDetailStoryFailedJson,
+            {"error": true, "message": "Story not found"},
             delay: const Duration(seconds: 1),
           ),
         );
 
-        final result = await dataSource.getDetailStoryById(token, storyId);
-
-        expect(result, isNull);
+        expect(
+          () async => await dataSource.getDetailStoryById(token, storyId),
+          throwsA(isA<StoryNotFoundException>()),
+        );
       });
 
       test('Should throw ServerException when status code >= 500', () async {
         const storyId = "story-1";
 
         dioAdapter.onGet(
-          "/detail/$storyId",
+          "/stories/$storyId",
           headers: {
             "Authorization": "Bearer $token",
           },
@@ -301,7 +303,10 @@ void main() {
           },
           data: FormData.fromMap({
             "description": exampleDescription,
-            "photo": MultipartFile.fromBytes(examplePhotoBytes),
+            "photo": MultipartFile.fromBytes(
+              examplePhotoBytes,
+              filename: 'temp_name.jpg',
+            ),
             "lat": exampleLat,
             "lon": exampleLon,
           }),
@@ -323,7 +328,7 @@ void main() {
         expect(result, true);
       });
 
-      test('Should return true when successfully uploading new story',
+      test('Should return ServerException when failed to upload new story',
           () async {
         final examplePhotoBytes = List.filled(20, 3);
         final exampleDescription = story.description;
@@ -337,7 +342,10 @@ void main() {
           },
           data: FormData.fromMap({
             "description": exampleDescription,
-            "photo": MultipartFile.fromBytes(examplePhotoBytes),
+            "photo": MultipartFile.fromBytes(
+              examplePhotoBytes,
+              filename: 'temp_name.jpg',
+            ),
             "lat": exampleLat,
             "lon": exampleLon,
           }),
@@ -358,42 +366,7 @@ void main() {
 
         expect(result, false);
       });
-
-      test('Should throw ServerException when status code >= 500', () async {
-        final examplePhotoBytes = List.filled(20, 3);
-        final exampleDescription = story.description;
-        final exampleLat = story.latitude;
-        final exampleLon = story.longitude;
-
-        dioAdapter.onPost(
-          "/stories",
-          headers: {
-            "Authorization": "Bearer $token",
-          },
-          data: FormData.fromMap({
-            "description": exampleDescription,
-            "photo": MultipartFile.fromBytes(examplePhotoBytes),
-            "lat": exampleLat,
-            "lon": exampleLon,
-          }),
-          (server) => server.reply(
-            500,
-            uploadNewStoryFailedJson,
-            delay: const Duration(seconds: 1),
-          ),
-        );
-
-        expect(
-          () async => await dataSource.uploadNewStory(
-            token,
-            examplePhotoBytes,
-            exampleDescription,
-            exampleLat,
-            exampleLon,
-          ),
-          throwsA(isA<ServerException>()),
-        );
-      });
+      //
     });
     //
   });

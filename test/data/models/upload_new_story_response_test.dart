@@ -9,7 +9,7 @@ void main() {
   group("Upload New Story Response Usecases", () {
     test("Should return successful response test", () {
       final response = UploadNewStoryResponse.fromJson(
-        json.decode(uploadNewStorySuccessJson),
+        uploadNewStorySuccessJson,
       );
 
       expect(response.error, false);
@@ -18,7 +18,7 @@ void main() {
 
     test("Should return failed response test", () {
       final response = UploadNewStoryResponse.fromJson(
-        json.decode(uploadNewStoryFailedJson),
+        uploadNewStoryFailedJson,
       );
 
       expect(response.error, true);

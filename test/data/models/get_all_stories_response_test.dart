@@ -9,8 +9,7 @@ import '../../utils/data_helpers.dart';
 void main() {
   group("Get All Stories Response parsing json usecases", () {
     test("Should return successful response test", () {
-      final response =
-          GetAllStoriesResponse.fromJson(json.decode(getAllStoriesSuccessJson));
+      final response = GetAllStoriesResponse.fromJson(getAllStoriesSuccessJson);
 
       const expectedStoryId = "story-1"; // index-0
       const expectedTotalOfStories = 3; // 3 items in dummy json
@@ -23,8 +22,7 @@ void main() {
     });
 
     test("Should return failed response test", () {
-      final response =
-          GetAllStoriesResponse.fromJson(json.decode(getAllStoriesFailedJson));
+      final response = GetAllStoriesResponse.fromJson(getAllStoriesFailedJson);
 
       const expectedTotalOfStories = 0; // no items in failed response json
 

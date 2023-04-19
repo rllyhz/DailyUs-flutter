@@ -10,7 +10,7 @@ void main() {
   group("Get Detail Story Response Usecases", () {
     test("Should return successful response test", () {
       final response = GetDetailStoryResponse.fromJson(
-        json.decode(getDetailStorySuccessJson),
+        getDetailStorySuccessJson,
       );
 
       const expectedStoryId = "story-1";
@@ -24,7 +24,7 @@ void main() {
 
     test("Should return failed response test", () {
       final response = GetDetailStoryResponse.fromJson(
-        json.decode(getDetailStoryFailedJson),
+        getDetailStoryFailedJson,
       );
 
       final expectedStory = StoryResponse.withDefaultValues();

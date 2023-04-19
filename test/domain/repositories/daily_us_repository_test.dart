@@ -12,6 +12,8 @@ import 'daily_us_repository_test.mocks.dart';
 
 @GenerateMocks([DailyUsRepository])
 void main() {
+  // THIS IS JUST FOR CONTRACTS TESTING
+
   group("DailyUsRepository Usecases", () {
     test("Should be able to perform register contract", () async {
       final repository = MockDailyUsRepository();
@@ -188,6 +190,22 @@ void main() {
       expect(result.user.id, data_helpers.id);
     });
 
+    test("Should be able to perform getLocalizationData contract", () {
+      final repository = MockDailyUsRepository();
+      const expectedLocale = data_helpers.localeTest;
+
+      when(
+        repository.getLocalizationData(),
+      ).thenAnswer((_) => data_helpers.localization);
+
+      final result = repository.getLocalizationData();
+
+      final actualLocale = result.currentLocale;
+
+      expect(actualLocale, expectedLocale);
+      expect(actualLocale.languageCode, expectedLocale.languageCode);
+    });
+
     test("Should be able to perform updateAuthInfo contract", () async {
       final repository = MockDailyUsRepository();
 
@@ -199,5 +217,20 @@ void main() {
 
       expect(result, true);
     });
+
+    test("Should be able to perform updateLocalizationData contract", () async {
+      final repository = MockDailyUsRepository();
+
+      when(
+        repository.updateLocalizationData(data_helpers.localization),
+      ).thenAnswer((_) => Future.value(true));
+
+      final result = await repository.updateLocalizationData(
+        data_helpers.localization,
+      );
+
+      expect(result, true);
+    });
+    //
   });
 }

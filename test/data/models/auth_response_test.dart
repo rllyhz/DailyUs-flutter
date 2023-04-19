@@ -8,7 +8,7 @@ import '../../utils/data_helpers.dart';
 void main() {
   group("Auth Response parsing json usecases", () {
     test("Should return successful response test", () {
-      final response = AuthResponse.fromJson(json.decode(authSuccessJson));
+      final response = AuthResponse.fromJson(authSuccessJson);
 
       expect(response.error, false);
       expect(response.message, "success");
@@ -16,7 +16,7 @@ void main() {
     });
 
     test("Should return failed response test", () {
-      final response = AuthResponse.fromJson(json.decode(authFailedJson));
+      final response = AuthResponse.fromJson(authFailedJson);
 
       expect(response.error, true);
       expect(response.message, "failed");
@@ -25,7 +25,7 @@ void main() {
 
     test("Should return the correct LoginResult in successful response test",
         () {
-      final response = AuthResponse.fromJson(json.decode(authSuccessJson));
+      final response = AuthResponse.fromJson(authSuccessJson);
 
       const expectedUserId = "userId-example";
       const expectedName = "user_example";
@@ -38,7 +38,7 @@ void main() {
     });
 
     test("Should return the correct LoginResult in failed response test", () {
-      final response = AuthResponse.fromJson(json.decode(authFailedJson));
+      final response = AuthResponse.fromJson(authFailedJson);
       final loginResultWithDefaultValues = LoginResult.withDefaultValues();
 
       final expectedUserId = loginResultWithDefaultValues.userId;
@@ -54,8 +54,7 @@ void main() {
 
   test("Should return the same success json format when toJson getting invoked",
       () {
-    final successfulResponse =
-        AuthResponse.fromJson(json.decode(authSuccessJson));
+    final successfulResponse = AuthResponse.fromJson(authSuccessJson);
 
     final generatedAuthRegisterSuccessJson = successfulResponse.toJson();
 
@@ -80,8 +79,7 @@ void main() {
 
   test("Should return the same success json format when toJson getting invoked",
       () {
-    final successfulResponse =
-        AuthResponse.fromJson(json.decode(authSuccessJson));
+    final successfulResponse = AuthResponse.fromJson(authSuccessJson);
 
     final generatedSuccessfulJson = successfulResponse.toJson();
 
@@ -106,7 +104,7 @@ void main() {
 
   test("Should return the same failed json format when toJson getting invoked",
       () {
-    final failedResponse = AuthResponse.fromJson(json.decode(authFailedJson));
+    final failedResponse = AuthResponse.fromJson(authFailedJson);
 
     final generatedFailedJson = failedResponse.toJson();
 
