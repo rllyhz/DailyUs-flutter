@@ -9,10 +9,10 @@ class Localization extends Equatable {
   });
 
   factory Localization.fromJson(Map<String, dynamic> authJson) => Localization(
-        currentLocale: authJson["locale"] ?? const Locale('en'),
+        currentLocale: Locale(authJson["languageCode"] ?? 'en'),
       );
 
-  String toJson() => '{"locale": $currentLocale}';
+  String toJson() => '{"languageCode": "${currentLocale.languageCode}"}';
 
   @override
   List<Object?> get props => [currentLocale];

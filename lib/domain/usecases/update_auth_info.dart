@@ -6,7 +6,7 @@ class UpdateAuthInfo {
 
   const UpdateAuthInfo(this._repository);
 
-  void execute(AuthInfo authInfo) {
-    _repository.updateAuthInfo(authInfo);
+  void execute(AuthInfo authInfo) async {
+    await _repository.updateAuthInfo(authInfo);
   }
 }
