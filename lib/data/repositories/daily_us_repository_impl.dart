@@ -2,6 +2,7 @@ import 'package:daily_us/common/exception.dart';
 import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/data/datasources/daily_us_local_cache_data_source.dart';
 import 'package:daily_us/data/datasources/daily_us_remote_data_source.dart';
+import 'package:daily_us/domain/entities/localization.dart';
 import 'package:daily_us/domain/entities/user.dart';
 import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
@@ -80,6 +81,16 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   @override
   Future<bool> updateAuthInfo(AuthInfo authInfo) async {
     return await localCacheDataSource.updateAuthInfo(authInfo);
+  }
+
+  @override
+  Localization getLocalizationData() {
+    return localCacheDataSource.getLocalizationData();
+  }
+
+  @override
+  Future<bool> updateLocalizationData(Localization newLocalization) async {
+    return await localCacheDataSource.updateLocalizationData(newLocalization);
   }
 
   @override

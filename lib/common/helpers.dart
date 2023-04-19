@@ -110,3 +110,20 @@ Future<List<int>> compressImage(Uint8List bytes) async {
 
   return newByte;
 }
+
+Map<String, String> getCountryDetailOfLocale(
+  BuildContext context,
+  Locale locale,
+) {
+  Map<String, String> country = {};
+
+  if (locale.languageCode == 'en') {
+    country['language_code'] = 'en';
+    country['name'] = AppLocalizations.of(context)!.languageEn;
+  } else {
+    country['language_code'] = 'id';
+    country['name'] = AppLocalizations.of(context)!.languageId;
+  }
+
+  return country;
+}

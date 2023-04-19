@@ -14,12 +14,14 @@ class MainPageRouterDelegate extends RouterDelegate
     required this.onLogout,
     required this.onGoHome,
     required this.homePageController,
+    required this.onUpdateLocalization,
     required this.authInfo,
   });
 
   final void Function(String) onDetail;
   final void Function() onLogout;
   final void Function() onGoHome;
+  final void Function(Locale, String, String) onUpdateLocalization;
   final HomePageController homePageController;
   final AuthInfo authInfo;
 
@@ -74,6 +76,7 @@ class MainPageRouterDelegate extends RouterDelegate
             key: ProfilePage.valueKey,
             child: ProfilePage(
               authInfo: authInfo,
+              onUpdateLocalization: onUpdateLocalization,
               onLogout: onLogout,
             ),
           ),

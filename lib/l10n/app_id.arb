@@ -3,7 +3,7 @@
 
     "dateUnknown": "WaktuTidakDiketahui",
     "dateInJustNow": "Baru saja",
-    "dateInSeconds": "{second}d yang lalu",
+    "dateInSeconds": "{second} detik",
     "@dateInSeconds": {
         "placeholders": {
             "second": {
@@ -11,7 +11,7 @@
             }
         }
     },
-    "dateInMinutes": "{minute}m yang lalu",
+    "dateInMinutes": "{minute} menit",
     "@dateInMinutes": {
         "placeholders": {
             "minute": {
@@ -19,7 +19,7 @@
             }
         }
     },
-    "dateInHours": "{hour} jam yg lalu",
+    "dateInHours": "{hour} jam",
     "@dateInHours": {
         "placeholders": {
             "hour": {
@@ -27,7 +27,7 @@
             }
         }
     },
-    "dateInDays": "{day}h yang lalu",
+    "dateInDays": "{day} hari",
     "@dateInDays": {
         "placeholders": {
             "day": {
@@ -102,5 +102,11 @@
     "uploadSuccessMessage": "Berhasil menambahkan story baru",
     "uploadFailedMessage": "Gagal menambahkan story",
     "noConnectionMessage": "Tidak ada koneksi internet",
-    "storyNotFoundMessage": "Cerita tidak ditemukan"
+    "storyNotFoundMessage": "Cerita tidak ditemukan",
+
+    "updateLanguageSuccess": "Language successfully updated",
+    "updateLanguageFailed": "failed to update language",
+
+    "languageEn": "Inggris",
+    "languageId": "Indonesia"
 }

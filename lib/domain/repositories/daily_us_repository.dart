@@ -1,5 +1,6 @@
 import 'package:daily_us/common/failure.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/domain/entities/localization.dart';
 import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/domain/entities/user.dart';
 import 'package:dartz/dartz.dart';
@@ -15,6 +16,10 @@ abstract class DailyUsRepository {
   AuthInfo getAuthInfo();
 
   Future<bool> updateAuthInfo(AuthInfo authInfo);
+
+  Localization getLocalizationData();
+
+  Future<bool> updateLocalizationData(Localization newLocalization);
 
   Future<Either<Failure, List<Story>>> getAllStories(String token);
 

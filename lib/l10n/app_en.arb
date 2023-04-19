@@ -102,5 +102,11 @@
     "uploadSuccessMessage": "Succesfully added new stories",
     "uploadFailedMessage": "Failed to add new stories",
     "noConnectionMessage": "No internet connection",
-    "storyNotFoundMessage": "Story not found"
+    "storyNotFoundMessage": "Story not found",
+
+    "updateLanguageSuccess": "Language successfully updated",
+    "updateLanguageFailed": "failed to update language",
+
+    "languageEn": "English",
+    "languageId": "Indonesia"
 }

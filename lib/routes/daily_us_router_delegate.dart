@@ -16,9 +16,11 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
 
   DailyUsRouterDelegate({
     required this.getAuthInfoUsecase,
+    required this.onUpdateLocalization,
   }) : _navigatorKey = GlobalKey<NavigatorState>();
 
   final GetAuthInfo getAuthInfoUsecase;
+  final void Function(Locale, String, String) onUpdateLocalization;
 
   List<Page> historyStack = [];
   bool? isUnknown;
@@ -203,6 +205,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             key: MainPage.valueKey,
             child: MainPage(
               authInfo: authInfo!,
+              onUpdateLocalization: onUpdateLocalization,
               onDetail: (id) {
                 storyId = id;
                 notifyListeners();
@@ -221,6 +224,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             key: MainPage.valueKey,
             child: MainPage(
               authInfo: authInfo!,
+              onUpdateLocalization: onUpdateLocalization,
               onDetail: (id) {
                 storyId = id;
                 notifyListeners();

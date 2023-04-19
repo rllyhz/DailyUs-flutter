@@ -86,6 +86,8 @@ class DailyUsStoryItem extends StatelessWidget {
                 Text(
                   getFormattedDate(context, story.createdAt),
                   style: homeCardDateTextStyle(),
+                  softWrap: true,
+                  overflow: TextOverflow.fade,
                 ),
               ],
             ),

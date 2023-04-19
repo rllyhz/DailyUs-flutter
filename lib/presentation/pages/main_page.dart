@@ -15,10 +15,12 @@ class MainPage extends StatefulWidget {
     required this.onLogout,
     required this.onDetail,
     required this.authInfo,
+    required this.onUpdateLocalization,
   });
 
   final void Function() onLogout;
   final void Function(String) onDetail;
+  final void Function(Locale, String, String) onUpdateLocalization;
   final AuthInfo authInfo;
 
   @override
@@ -40,6 +42,7 @@ class _MainPageState extends State<MainPage> {
 
     _navBarRouterDelegate = MainPageRouterDelegate(
       homePageController: _homePageController,
+      onUpdateLocalization: widget.onUpdateLocalization,
       authInfo: widget.authInfo,
       onDetail: widget.onDetail,
       onLogout: widget.onLogout,
