@@ -32,3 +32,4 @@ This project was part of submission projects to finish the Dicoding Indonesia's 
 - Localization for accessibility (supports only *en* and *id*)
 - Flutter Bloc
 - Shimmer Effect
+- Widget and Transition Page animations
