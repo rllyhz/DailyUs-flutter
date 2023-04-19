@@ -15,6 +15,14 @@ This project was part of submission projects to finish the Dicoding Indonesia's 
         width="200" />
 </p>
 
+# How to run
+
+1. Clone or download this repo.
+2. Create a new `secrets.json` file by copying `secrets.test.json` file in the root folder/project.
+3. Set the `base_url` key to base url this project are using. This is basically for keeping the secret env values private.
+3. And then, open project in VS Code or Android Studio.
+4. Run the the app in IDE. You can run `flutter run --debug` command on terminal to run the project.
+
 # Tech Stack
 
 - Dart/Flutter
