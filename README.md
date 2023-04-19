@@ -1,6 +1,6 @@
 # DailyUs Flutter
 
-This project was part of submission projects to finish the Dicoding Indonesia's Flutter Intermediate course. The main purpose of this submission was to challenge students to create a posting-stories-like app. The app being built had to be using Localization.
+This project was part of submission projects to finish the Dicoding Indonesia's Flutter Intermediate course. The main purpose of this submission was to challenge students to create a posting-stories-like app. The app being built had to be using Localization. This project is duplication of my previous [repo](https://github.com/rllyhz/DailyUs) project in Android Native that has the same features.
 
 # Preview
 <p align="center">
