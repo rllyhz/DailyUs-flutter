@@ -4,7 +4,6 @@ import 'package:daily_us/data/datasources/local/localization_model.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/entities/localization.dart';
 import 'package:daily_us/domain/entities/user.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
