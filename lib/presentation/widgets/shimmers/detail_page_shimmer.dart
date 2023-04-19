@@ -19,12 +19,12 @@ class DetailPageShimmer extends StatelessWidget {
     var previewCardwidth = totalWidth;
     var previewCardHeight = totalWidth * 1 / 2;
     if (totalWidth > 620.0) {
-      previewCardHeight = totalWidth * 1 / 3;
+      previewCardHeight = totalWidth * 3 / 2;
     }
 
     return SizedBox.expand(
       child: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: screenPaddingSize),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
