@@ -1,5 +1,4 @@
 import 'package:daily_us/common/localizations.dart';
-import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
@@ -69,86 +68,62 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     _backButtonDispatcher.takePriority();
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        bottomNavigationBar: DailyUsBottomNavBar(
-          controller: _bottomNavController,
-          backgroundColor: Colors.transparent,
-          showLabel: false,
-          onTap: (newIndex) {
-            setState(() {
-              _navBarRouterDelegate.selectedPageIndex = newIndex;
+    return Scaffold(
+      bottomNavigationBar: DailyUsBottomNavBar(
+        controller: _bottomNavController,
+        backgroundColor: Colors.transparent,
+        showLabel: false,
+        onTap: (newIndex) {
+          setState(() {
+            _navBarRouterDelegate.selectedPageIndex = newIndex;
 
-              if (_navBarRouterDelegate.selectedPageIndex == newIndex &&
-                  newIndex == 0) {
-                // should scroll to the top
-                _homePageController.scrollToTop();
-              }
-            });
-          },
-          items: [
-            DailyUsBottomNavBarItem(
-              icon: SvgPicture.asset(
-                _navBarRouterDelegate.selectedPageIndex == 0
-                    ? 'assets/icon_home_filled.svg'
-                    : 'assets/icon_home_outlined.svg',
-                width: 30.0,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-              label: AppLocalizations.of(context)!.titleHome,
+            if (_navBarRouterDelegate.selectedPageIndex == newIndex &&
+                newIndex == 0) {
+              // should scroll to the top
+              _homePageController.scrollToTop();
+            }
+          });
+        },
+        items: [
+          DailyUsBottomNavBarItem(
+            icon: SvgPicture.asset(
+              _navBarRouterDelegate.selectedPageIndex == 0
+                  ? 'assets/icon_home_filled.svg'
+                  : 'assets/icon_home_outlined.svg',
+              width: 30.0,
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
-            DailyUsBottomNavBarItem(
-              icon: SvgPicture.asset(
-                _navBarRouterDelegate.selectedPageIndex == 1
-                    ? 'assets/icon_post_filled.svg'
-                    : 'assets/icon_post_outlined.svg',
-                width: 32.0,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-              label: AppLocalizations.of(context)!.titlePost,
+            label: AppLocalizations.of(context)!.titleHome,
+          ),
+          DailyUsBottomNavBarItem(
+            icon: SvgPicture.asset(
+              _navBarRouterDelegate.selectedPageIndex == 1
+                  ? 'assets/icon_post_filled.svg'
+                  : 'assets/icon_post_outlined.svg',
+              width: 32.0,
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
-            DailyUsBottomNavBarItem(
-              icon: SvgPicture.asset(
-                _navBarRouterDelegate.selectedPageIndex == 2
-                    ? 'assets/icon_settings_filled.svg'
-                    : 'assets/icon_settings_outlined.svg',
-                width: 32.0,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-              label: AppLocalizations.of(context)!.titleSettings,
+            label: AppLocalizations.of(context)!.titlePost,
+          ),
+          DailyUsBottomNavBarItem(
+            icon: SvgPicture.asset(
+              _navBarRouterDelegate.selectedPageIndex == 2
+                  ? 'assets/icon_settings_filled.svg'
+                  : 'assets/icon_settings_outlined.svg',
+              width: 32.0,
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
-          ],
-        ),
-        body: Router(
-          routerDelegate: _navBarRouterDelegate,
-          backButtonDispatcher: _backButtonDispatcher,
-        ),
+            label: AppLocalizations.of(context)!.titleSettings,
+          ),
+        ],
+      ),
+      body: Router(
+        routerDelegate: _navBarRouterDelegate,
+        backButtonDispatcher: _backButtonDispatcher,
       ),
     );
-  }
-
-  Future<bool> _onWillPop() async {
-    var result = await appDialog(
-      context: context,
-      title: AppLocalizations.of(context)!.dialogTitleQuitConfirm,
-      message: AppLocalizations.of(context)!.dialogMessageQuitConfirm,
-      negativeActionText:
-          AppLocalizations.of(context)!.dialogNegativeActionQuitConfirm,
-      positiveActionText:
-          AppLocalizations.of(context)!.dialogPositiveActionQuitConfirm,
-      postiveActionCallback: () {
-        Navigator.of(context).pop(true);
-      },
-    );
-
-    if (result == null) {
-      return Future.value(false);
-    } else {
-      return Future.value(result);
-    }
   }
 }
