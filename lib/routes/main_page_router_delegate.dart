@@ -1,10 +1,12 @@
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/change_language_dialog_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/pages/logout_dialog_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
 import 'package:daily_us/presentation/pages/profile_page.dart';
+import 'package:daily_us/injection.dart' as di;
 import 'package:flutter/material.dart';
 
 class MainPageRouterDelegate extends RouterDelegate
@@ -14,7 +16,6 @@ class MainPageRouterDelegate extends RouterDelegate
   MainPageRouterDelegate({
     required this.onDetail,
     required this.onLogout,
-    required this.onDialogLogout,
     required this.onGoHome,
     required this.homePageController,
     required this.onUpdateLocalization,
@@ -23,11 +24,11 @@ class MainPageRouterDelegate extends RouterDelegate
 
   final void Function(String) onDetail;
   final void Function() onLogout;
-  final void Function() onDialogLogout;
   final void Function() onGoHome;
   final void Function(Locale, String, String) onUpdateLocalization;
   final HomePageController homePageController;
   final AuthInfo authInfo;
+  final Logout logoutUsecase = di.locator<Logout>();
 
   List<Locale>? _locales;
   Locale? _activeLocale;
@@ -107,6 +108,9 @@ class MainPageRouterDelegate extends RouterDelegate
               onLogout: () {
                 _shouldShowLogoutConfirm = false;
                 notifyListeners();
+
+                // clear auth info state
+                logoutUsecase.execute();
 
                 onLogout();
               },
