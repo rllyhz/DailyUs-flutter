@@ -1,6 +1,8 @@
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
+import 'package:daily_us/presentation/pages/change_language_dialog_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
+import 'package:daily_us/presentation/pages/logout_dialog_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
 import 'package:daily_us/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class MainPageRouterDelegate extends RouterDelegate
   MainPageRouterDelegate({
     required this.onDetail,
     required this.onLogout,
+    required this.onDialogLogout,
     required this.onGoHome,
     required this.homePageController,
     required this.onUpdateLocalization,
@@ -20,13 +23,18 @@ class MainPageRouterDelegate extends RouterDelegate
 
   final void Function(String) onDetail;
   final void Function() onLogout;
+  final void Function() onDialogLogout;
   final void Function() onGoHome;
   final void Function(Locale, String, String) onUpdateLocalization;
   final HomePageController homePageController;
   final AuthInfo authInfo;
 
+  List<Locale>? _locales;
+  Locale? _activeLocale;
+
   int _selectedPageIndex = 0;
   bool _isLastHistoryReached = true;
+  bool _shouldShowLogoutConfirm = false;
 
   final List<int> _historyIndexes = [0];
 
@@ -76,8 +84,53 @@ class MainPageRouterDelegate extends RouterDelegate
             key: ProfilePage.valueKey,
             child: ProfilePage(
               authInfo: authInfo,
-              onUpdateLocalization: onUpdateLocalization,
-              onLogout: onLogout,
+              onShowConfirmLogout: () {
+                _shouldShowLogoutConfirm = true;
+                notifyListeners();
+              },
+              onShowLanguageChangeDialog: (supportedLocales, activeLocale) {
+                _locales = supportedLocales;
+                _activeLocale = activeLocale;
+                notifyListeners();
+              },
+            ),
+          ),
+        if (_shouldShowLogoutConfirm)
+          FadeAnimationPage(
+            opaque: false,
+            child: LogoutDialogPage(
+              key: LogoutDialogPage.valueKey,
+              onCancel: () {
+                _shouldShowLogoutConfirm = false;
+                notifyListeners();
+              },
+              onLogout: () {
+                _shouldShowLogoutConfirm = false;
+                notifyListeners();
+
+                onLogout();
+              },
+            ),
+          ),
+        if (_locales != null && _activeLocale != null)
+          FadeAnimationPage(
+            opaque: false,
+            child: ChangeLanguageDialogPage(
+              key: ChangeLanguageDialogPage.valueKey,
+              locales: _locales!,
+              activeLocale: _activeLocale!,
+              onUpdateLocalization: (newLocale, successMessage, failedMessage) {
+                _locales = null;
+                _activeLocale = null;
+                notifyListeners();
+
+                onUpdateLocalization(newLocale, successMessage, failedMessage);
+              },
+              onCancel: () {
+                _locales = null;
+                _activeLocale = null;
+                notifyListeners();
+              },
             ),
           ),
       ],

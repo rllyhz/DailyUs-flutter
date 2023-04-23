@@ -46,6 +46,9 @@ class _MainPageState extends State<MainPage> {
       authInfo: widget.authInfo,
       onDetail: widget.onDetail,
       onLogout: widget.onLogout,
+      onDialogLogout: () {
+        widget.onLogout();
+      },
       onGoHome: () {
         _bottomNavController.clickItem(0);
         // should refresh after uploading
