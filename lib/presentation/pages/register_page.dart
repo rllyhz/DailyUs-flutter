@@ -15,10 +15,10 @@ class RegisterPage extends StatefulWidget {
 
   const RegisterPage({
     super.key,
-    required this.onSuccessRegister,
+    required this.onShouldShowDialog,
   });
 
-  final void Function() onSuccessRegister;
+  final void Function() onShouldShowDialog;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -51,13 +51,8 @@ class _RegisterPageState extends State<RegisterPage>
         showToast(
           getFailureMessage(context, state.failure),
         );
-      } else if (state is RegisterStateSuccess && mounted) {
-        if (mounted) {
-          await _showDialog(context, () {
-            Navigator.of(context, rootNavigator: true).pop();
-            widget.onSuccessRegister();
-          });
-        }
+      } else if (state is RegisterStateSuccess) {
+        widget.onShouldShowDialog();
       }
     });
 
@@ -192,17 +187,5 @@ class _RegisterPageState extends State<RegisterPage>
     context
         .read<RegisterBloc>()
         .add(OnSubmitRegisterEvent(name, email, password));
-  }
-
-  FutureOr<void> _showDialog(
-      BuildContext context, void Function()? onGoLogin) async {
-    await appDialog(
-      context: context,
-      title: AppLocalizations.of(context)!.dialogTitleRegisterSuccess,
-      message: AppLocalizations.of(context)!.dialogMessageRegisterSuccess,
-      positiveActionText:
-          AppLocalizations.of(context)!.dialogPositiveActionRegisterSuccess,
-      postiveActionCallback: onGoLogin,
-    );
   }
 }

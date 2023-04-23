@@ -1,11 +1,13 @@
 import 'package:daily_us/data/models/page_configuration.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/usecases/get_auth_info.dart';
+import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/anim/slide_animation_page.dart';
 import 'package:daily_us/presentation/pages/detail_page.dart';
 import 'package:daily_us/presentation/pages/login_page.dart';
 import 'package:daily_us/presentation/pages/main_page.dart';
 import 'package:daily_us/presentation/pages/on_boarding_page.dart';
+import 'package:daily_us/presentation/pages/register_dialog_page.dart';
 import 'package:daily_us/presentation/pages/register_page.dart';
 import 'package:daily_us/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
   bool? isLoggedIn;
   bool onBoarding = false;
   bool isRegister = false;
+  bool showRegisterDialog = false;
   String? storyId;
   AuthInfo? authInfo;
 
@@ -189,7 +192,22 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
           MaterialPage(
             key: RegisterPage.valueKey,
             child: RegisterPage(
-              onSuccessRegister: () {
+              onShouldShowDialog: () {
+                showRegisterDialog = true;
+                notifyListeners();
+              },
+            ),
+          ),
+        if (onBoarding == false &&
+            isLoggedIn == false &&
+            isRegister == true &&
+            showRegisterDialog == true)
+          FadeAnimationPage(
+            opaque: false,
+            key: RegisterDialogPage.valueKey,
+            child: RegisterDialogPage(
+              onGoLogin: () {
+                showRegisterDialog = false;
                 isRegister = false;
                 onBoarding = false;
                 notifyListeners();
