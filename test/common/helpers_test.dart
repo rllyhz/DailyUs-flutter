@@ -86,5 +86,52 @@ void main() {
         expect(getFormattedName('Ahmad Syahrawi Alrahma'), 'Ahmad SA');
       });
     });
+
+    group('getFormattedLanguageOptionOf test', () {
+      Map<String, String> validCountryDetail1 = {
+        "name": "English",
+        "language_code": "en"
+      };
+
+      Map<String, String> validCountryDetail2 = {
+        "name": "Indonesia",
+        "language_code": "id"
+      };
+
+      Map<String, String> nonValidCountryDetail1 = {
+        "name": "English",
+      };
+
+      Map<String, String> nonValidCountryDetail2 = {};
+
+      test('Should return the correct format of language option', () {
+        expect(
+          getFormattedLanguageOptionOf(validCountryDetail1),
+          "English - en",
+        );
+
+        expect(
+          getFormattedLanguageOptionOf(validCountryDetail2),
+          "Indonesia - id",
+        );
+
+        expect(
+          getFormattedLanguageOptionOf(nonValidCountryDetail1),
+          "English - .",
+        );
+
+        expect(
+          getFormattedLanguageOptionOf(nonValidCountryDetail2),
+          ". - .",
+        );
+
+        expect(
+          getFormattedLanguageOptionOf(nonValidCountryDetail2,
+              defaultValue: "#"),
+          "# - #",
+        );
+        //
+      });
+    });
   });
 }

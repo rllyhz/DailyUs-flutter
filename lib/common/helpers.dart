@@ -127,3 +127,10 @@ Map<String, String> getCountryDetailOfLocale(
 
   return country;
 }
+
+String getFormattedLanguageOptionOf(Map<String, String> countryDetail,
+    {String defaultValue = "."}) {
+  var name = countryDetail["name"] ?? defaultValue;
+  var languageCode = countryDetail["language_code"] ?? defaultValue;
+  return "$name - $languageCode";
+}
