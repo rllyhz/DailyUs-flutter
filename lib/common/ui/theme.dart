@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/ui/colors.dart';
@@ -15,9 +14,7 @@ import 'package:flutter/material.dart'
         RoundedRectangleBorder,
         OutlinedButton,
         TextButton,
-        ButtonStyle,
-        showDialog,
-        AlertDialog;
+        ButtonStyle;
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -113,50 +110,6 @@ OutlinedButton appOutlinedButton({
             style: buttonTextStyle(color: color ?? secondaryColor),
           ),
         ),
-      ),
-    );
-
-Future<bool?> appDialog({
-  required BuildContext context,
-  required String title,
-  required String message,
-  String? negativeActionText,
-  String? positiveActionText,
-  void Function()? postiveActionCallback,
-}) async =>
-    await showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(
-          title,
-          style: titleTextStyle(),
-        ),
-        content: Text(
-          message,
-          style: homeCardDescriptionTextStyle(
-            fontSize: 14.0,
-          ),
-        ),
-        actions: <Widget>[
-          if (negativeActionText != null)
-            OutlinedButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop(false);
-              },
-              child: Text(
-                negativeActionText,
-                style: homeCardDescriptionTextStyle(fontSize: 14.0),
-              ),
-            ),
-          if (positiveActionText != null)
-            OutlinedButton(
-              onPressed: postiveActionCallback,
-              child: Text(
-                positiveActionText,
-                style: homeCardDescriptionTextStyle(fontSize: 14.0),
-              ),
-            ),
-        ],
       ),
     );
 

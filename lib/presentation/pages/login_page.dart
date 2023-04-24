@@ -15,9 +15,11 @@ class LoginPage extends StatefulWidget {
   const LoginPage({
     super.key,
     required this.onSuccessLogin,
+    required this.onBack,
   });
 
   final void Function(AuthInfo) onSuccessLogin;
+  final void Function() onBack;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -94,7 +96,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                 context
                                     .read<LoginBloc>()
                                     .add(OnCancelLoginEvent());
-                                Navigator.of(context).pop();
+                                widget.onBack();
                               }
                             },
                             title: AppLocalizations.of(context)!.titleLogin,

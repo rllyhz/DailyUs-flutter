@@ -16,9 +16,11 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({
     super.key,
     required this.onShouldShowDialog,
+    required this.onBack,
   });
 
   final void Function() onShouldShowDialog;
+  final void Function() onBack;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -51,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage>
         showToast(
           getFailureMessage(context, state.failure),
         );
-      } else if (state is RegisterStateSuccess) {
+      } else if (state is RegisterStateSuccess && mounted) {
         widget.onShouldShowDialog();
       }
     });
@@ -88,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage>
                               context
                                   .read<RegisterBloc>()
                                   .add(OnCancelRegisterEvent());
-                              Navigator.of(context).pop();
+                              widget.onBack();
                             }
                           },
                           title: AppLocalizations.of(context)!.titleRegister,

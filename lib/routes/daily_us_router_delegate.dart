@@ -186,6 +186,12 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
                 authInfo = newAuthInfo;
                 notifyListeners();
               },
+              onBack: () {
+                isRegister = false;
+                isLoggedIn = false;
+                onBoarding = true;
+                notifyListeners();
+              },
             ),
           ),
         if (onBoarding == false && isLoggedIn == false && isRegister == true)
@@ -194,6 +200,12 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
             child: RegisterPage(
               onShouldShowDialog: () {
                 showRegisterDialog = true;
+                notifyListeners();
+              },
+              onBack: () {
+                isRegister = false;
+                isLoggedIn = false;
+                onBoarding = true;
                 notifyListeners();
               },
             ),
