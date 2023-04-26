@@ -182,7 +182,7 @@ void main() {
           getAllStoriesSuccessJson,
         );
 
-        final result = await dataSource.getAllStories(token);
+        final result = await dataSource.getAllStories(token, 0, 0);
 
         expect(result.length, greaterThan(0));
         expect(result.length, authResult.stories.length);
@@ -205,7 +205,7 @@ void main() {
         );
 
         expect(
-          () async => await dataSource.getAllStories(token),
+          () async => await dataSource.getAllStories(token, 0, 0),
           throwsA(isA<ServerException>()),
         );
       });

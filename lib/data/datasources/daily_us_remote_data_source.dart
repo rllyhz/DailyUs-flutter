@@ -16,7 +16,7 @@ abstract class DailyUsRemoteDataSource {
 
   Future<User?> login(String email, String password);
 
-  Future<List<Story>> getAllStories(String token);
+  Future<List<Story>> getAllStories(String token, int page, int location);
 
   Future<Story> getDetailStoryById(String token, String id);
 
@@ -142,7 +142,11 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   }
 
   @override
-  Future<List<Story>> getAllStories(String token) async {
+  Future<List<Story>> getAllStories(
+    String token,
+    int page,
+    int location,
+  ) async {
     try {
       apiClient.options.headers["Authorization"] = "Bearer $token";
       final response = await apiClient.get("/stories");

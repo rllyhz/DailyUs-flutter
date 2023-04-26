@@ -94,9 +94,14 @@ class DailyUsRepositoryImpl extends DailyUsRepository {
   }
 
   @override
-  Future<Either<Failure, List<Story>>> getAllStories(String token) async {
+  Future<Either<Failure, List<Story>>> getAllStories(
+    String token,
+    int page,
+    int location,
+  ) async {
     try {
-      final result = await remoteDataSource.getAllStories(token);
+      final result =
+          await remoteDataSource.getAllStories(token, page, location);
       return Right(result);
     } on UnknownException {
       return const Left(UnknownFailure());

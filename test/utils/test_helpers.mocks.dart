@@ -218,11 +218,18 @@ class MockDailyUsRepository extends _i1.Mock implements _i8.DailyUsRepository {
       ) as _i9.Future<bool>);
   @override
   _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>> getAllStories(
-          String? token) =>
+    String? token,
+    int? page,
+    int? location,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getAllStories,
-          [token],
+          [
+            token,
+            page,
+            location,
+          ],
         ),
         returnValue:
             _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>>.value(
@@ -230,7 +237,11 @@ class MockDailyUsRepository extends _i1.Mock implements _i8.DailyUsRepository {
           this,
           Invocation.method(
             #getAllStories,
-            [token],
+            [
+              token,
+              page,
+              location,
+            ],
           ),
         )),
       ) as _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>>);
@@ -305,11 +316,18 @@ class MockGetAllStories extends _i1.Mock implements _i13.GetAllStories {
 
   @override
   _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>> execute(
-          String? token) =>
+    String? token, {
+    int? page = 0,
+    int? location = 0,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #execute,
           [token],
+          {
+            #page: page,
+            #location: location,
+          },
         ),
         returnValue:
             _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>>.value(
@@ -318,6 +336,10 @@ class MockGetAllStories extends _i1.Mock implements _i13.GetAllStories {
           Invocation.method(
             #execute,
             [token],
+            {
+              #page: page,
+              #location: location,
+            },
           ),
         )),
       ) as _i9.Future<_i2.Either<_i10.Failure, List<_i12.Story>>>);

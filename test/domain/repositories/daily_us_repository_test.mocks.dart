@@ -172,18 +172,29 @@ class MockDailyUsRepository extends _i1.Mock implements _i5.DailyUsRepository {
       ) as _i6.Future<bool>);
   @override
   _i6.Future<_i2.Either<_i7.Failure, List<_i9.Story>>> getAllStories(
-          String? token) =>
+    String? token,
+    int? page,
+    int? location,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #getAllStories,
-          [token],
+          [
+            token,
+            page,
+            location,
+          ],
         ),
         returnValue: _i6.Future<_i2.Either<_i7.Failure, List<_i9.Story>>>.value(
             _FakeEither_0<_i7.Failure, List<_i9.Story>>(
           this,
           Invocation.method(
             #getAllStories,
-            [token],
+            [
+              token,
+              page,
+              location,
+            ],
           ),
         )),
       ) as _i6.Future<_i2.Either<_i7.Failure, List<_i9.Story>>>);

@@ -102,10 +102,10 @@ void main() {
       final repository = MockDailyUsRepository();
 
       when(
-        repository.getAllStories(null),
+        repository.getAllStories(null, 0, 0),
       ).thenAnswer((_) => Future.value(Right(List.empty())));
 
-      final result = await repository.getAllStories(null);
+      final result = await repository.getAllStories(null, 0, 0);
 
       result.fold(
         (left) => {

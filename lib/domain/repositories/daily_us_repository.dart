@@ -21,7 +21,11 @@ abstract class DailyUsRepository {
 
   Future<bool> updateLocalizationData(Localization newLocalization);
 
-  Future<Either<Failure, List<Story>>> getAllStories(String token);
+  Future<Either<Failure, List<Story>>> getAllStories(
+    String token,
+    int page,
+    int location,
+  );
 
   Future<Either<Failure, Story>> getDetailStoryById(String token, String id);
 

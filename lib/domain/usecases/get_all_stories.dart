@@ -8,7 +8,15 @@ class GetAllStories {
 
   const GetAllStories(this._repository);
 
-  Future<Either<Failure, List<Story>>> execute(String token) {
-    return _repository.getAllStories(token);
+  Future<Either<Failure, List<Story>>> execute(
+    String token, {
+    int page = 0,
+    int location = 0,
+  }) {
+    return _repository.getAllStories(
+      token,
+      page,
+      location,
+    );
   }
 }

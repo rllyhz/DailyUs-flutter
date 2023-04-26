@@ -28,11 +28,11 @@ void main() {
   const stories = [story, story, story];
 
   test('Should get all stories from the repository', () async {
-    when(mockRepository.getAllStories(token)).thenAnswer(
+    when(mockRepository.getAllStories(token, 0, 0)).thenAnswer(
       (_) async => const Right(stories),
     );
 
-    final result = await usecase.execute(token);
+    final result = await usecase.execute(token, page: 0, location: 0);
 
     expect(result, const Right(stories));
   });
