@@ -1,3 +1,4 @@
+import 'package:daily_us/data/models/main_page_configuration.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
@@ -9,7 +10,7 @@ import 'package:daily_us/presentation/pages/profile_page.dart';
 import 'package:daily_us/injection.dart' as di;
 import 'package:flutter/material.dart';
 
-class MainPageRouterDelegate extends RouterDelegate
+class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -19,6 +20,7 @@ class MainPageRouterDelegate extends RouterDelegate
     required this.onGoHome,
     required this.homePageController,
     required this.onUpdateLocalization,
+    required this.onSelectedIndexChanged,
     required this.authInfo,
   });
 
@@ -26,6 +28,7 @@ class MainPageRouterDelegate extends RouterDelegate
   final void Function() onLogout;
   final void Function() onGoHome;
   final void Function(Locale, String, String) onUpdateLocalization;
+  final void Function(int) onSelectedIndexChanged;
   final HomePageController homePageController;
   final AuthInfo authInfo;
   final Logout logoutUsecase = di.locator<Logout>();
@@ -49,7 +52,7 @@ class MainPageRouterDelegate extends RouterDelegate
 
     if (newIndex == 0) {
       _historyIndexes.clear();
-      _historyIndexes.add(0);
+      _historyIndexes.add(newIndex);
       _isLastHistoryReached = true;
     } else {
       _historyIndexes.add(newIndex);
@@ -58,6 +61,7 @@ class MainPageRouterDelegate extends RouterDelegate
 
     _selectedPageIndex = newIndex;
     notifyListeners();
+    onSelectedIndexChanged(_selectedPageIndex);
   }
 
   int get selectedPageIndex => _selectedPageIndex;
@@ -144,9 +148,15 @@ class MainPageRouterDelegate extends RouterDelegate
           ),
       ],
       onPopPage: (route, result) {
+        var didPop = route.didPop(result);
+        if (!didPop) {
+          return true;
+        }
+
         if (_historyIndexes.length > 1) {
           _historyIndexes.removeLast();
           _selectedPageIndex = _historyIndexes.last;
+          onSelectedIndexChanged(_selectedPageIndex);
 
           if (_historyIndexes.length == 1) {
             // if only one index in history which is 0
@@ -165,7 +175,30 @@ class MainPageRouterDelegate extends RouterDelegate
   GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
 
   @override
-  Future<void> setNewRoutePath(configuration) async {
-    // do nothing for now
+  MainPageConfiguration? get currentConfiguration {
+    if (selectedPageIndex == 0) {
+      return MainPageConfiguration.home();
+    } else if (selectedPageIndex == 1) {
+      return MainPageConfiguration.post();
+    } else if (selectedPageIndex == 2) {
+      return MainPageConfiguration.profile();
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<void> setNewRoutePath(MainPageConfiguration configuration) async {
+    if (configuration.isHome) {
+      selectedPageIndex = 0;
+    } else if (configuration.isPost) {
+      selectedPageIndex = 1;
+    } else if (configuration.isProfile) {
+      selectedPageIndex = 2;
+    } else {
+      debugPrint(' Could not set new route');
+    }
+
+    notifyListeners();
   }
 }

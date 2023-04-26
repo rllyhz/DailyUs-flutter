@@ -1,7 +1,9 @@
 import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/data/models/main_page_configuration.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/widgets/daily_us_bottom_nav_bar.dart';
+import 'package:daily_us/routes/main_page_route_information_parser.dart';
 import 'package:daily_us/routes/main_page_router_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +30,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late MainPageRouterDelegate _navBarRouterDelegate;
+  late MainPageRouteInformationParser _navBarRouteInformationParser;
   late ChildBackButtonDispatcher _backButtonDispatcher;
   late DailyUsBottomNavBarController _bottomNavController;
   late HomePageController _homePageController;
@@ -42,6 +45,9 @@ class _MainPageState extends State<MainPage> {
     _navBarRouterDelegate = MainPageRouterDelegate(
       homePageController: _homePageController,
       onUpdateLocalization: widget.onUpdateLocalization,
+      onSelectedIndexChanged: (selectedIndex) {
+        _bottomNavController.clickItem(selectedIndex);
+      },
       authInfo: widget.authInfo,
       onDetail: widget.onDetail,
       onLogout: widget.onLogout,
@@ -51,6 +57,8 @@ class _MainPageState extends State<MainPage> {
         _homePageController.refresh();
       },
     );
+
+    _navBarRouteInformationParser = MainPageRouteInformationParser();
   }
 
   @override
@@ -117,8 +125,9 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
       ),
-      body: Router(
+      body: Router<MainPageConfiguration>(
         routerDelegate: _navBarRouterDelegate,
+        routeInformationParser: _navBarRouteInformationParser,
         backButtonDispatcher: _backButtonDispatcher,
       ),
     );
