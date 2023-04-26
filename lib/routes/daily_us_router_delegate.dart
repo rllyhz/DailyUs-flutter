@@ -88,15 +88,22 @@ class DailyUsRouterDelegate extends RouterDelegate<PageConfiguration>
       isUnknown = true;
     } else if (configuration.isOnBoardingPage) {
       onBoarding = true;
+      isUnknown = false;
+      isLoggedIn = false;
+      isRegister = false;
     } else if (configuration.isRegisterPage) {
       isRegister = true;
+      isLoggedIn = false;
+      onBoarding = false;
     } else if (configuration.isLoginPage) {
       isLoggedIn = false;
-    } else if (configuration.isMainPage ||
-        configuration.isLoginPage ||
-        configuration.isSplashPage) {
+      isRegister = false;
+      isLoggedIn = false;
+      onBoarding = false;
+    } else if (configuration.isMainPage) {
       isUnknown = false;
       storyId = null;
+      onBoarding = false;
       isRegister = false;
     } else if (configuration.isDetailPage) {
       isUnknown = false;

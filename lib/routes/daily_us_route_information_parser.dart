@@ -26,14 +26,14 @@ class DailyUsRouteInformationParser
       } else {
         return PageConfiguration.unknown();
       }
-    } else if (uri.pathSegments.length == 3) {
-      // path parameter => "/story/id"
+    } else if (uri.pathSegments.length == 2) {
+      // path parameter => "/story/{id}"
       final first = uri.pathSegments[0].toLowerCase();
       final storyId = uri.pathSegments[1].toLowerCase();
       if (first == 'story' && storyId.isNotEmpty) {
         return PageConfiguration.detail(storyId);
       } else {
-        return PageConfiguration.unknown();
+        return PageConfiguration.main();
       }
     } else {
       return PageConfiguration.unknown();
