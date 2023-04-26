@@ -42,6 +42,11 @@ class MainPageRouterDelegate extends RouterDelegate
   set selectedPageIndex(int newIndex) {
     if (_selectedPageIndex == newIndex) return;
 
+    // cancel all dialogs
+    _shouldShowLogoutConfirm = false;
+    _locales = null;
+    _activeLocale = null;
+
     if (newIndex == 0) {
       _historyIndexes.clear();
       _historyIndexes.add(0);
