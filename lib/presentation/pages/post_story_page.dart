@@ -173,7 +173,11 @@ class _PostStoryPageState extends State<PostStoryPage> {
   void _onGalleryView() async {
     final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
     final isLinux = defaultTargetPlatform == TargetPlatform.linux;
-    if (isMacOS || isLinux) return;
+
+    const isWeb = kIsWeb;
+    if (!isWeb) {
+      if (isMacOS || isLinux) return;
+    }
 
     var file = await _imagePicker.pickImage(
       source: ImageSource.gallery,
