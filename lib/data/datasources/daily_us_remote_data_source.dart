@@ -149,7 +149,15 @@ class DailyUsRemoteDataSourceImpl implements DailyUsRemoteDataSource {
   ) async {
     try {
       apiClient.options.headers["Authorization"] = "Bearer $token";
-      final response = await apiClient.get("/stories");
+      Map<String, dynamic> params = {
+        "page": page,
+        "location": location,
+      };
+
+      final response = await apiClient.get(
+        "/stories",
+        queryParameters: params,
+      );
       final responseData = GetAllStoriesResponse.fromJson(response.data);
 
       if (response.statusCode == null) {
