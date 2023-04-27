@@ -137,5 +137,8 @@ String getFormattedLanguageOptionOf(Map<String, String> countryDetail,
 
 // Validate lat and lon
 // Src: https://stackoverflow.com/questions/7780981/how-to-validate-latitude-and-longitude
-bool validateLatitude(double latitude) => latitude.abs() <= 90;
-bool validateLongitude(double longitude) => longitude.abs() <= 180;
+// And 0.0 is considered as a default value
+bool validateLatitude(double latitude) =>
+    latitude.abs() <= 90 && latitude != 0.0;
+bool validateLongitude(double longitude) =>
+    longitude.abs() <= 180 && longitude != 0.0;
