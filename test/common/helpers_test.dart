@@ -133,5 +133,73 @@ void main() {
         //
       });
     });
+
+    group('validateLatitude test', () {
+      test('Should return true if latitude is correct', () {
+        expect(
+          validateLatitude(12.4345),
+          true,
+        );
+        expect(
+          validateLatitude(80.9421),
+          true,
+        );
+        expect(
+          validateLatitude(-64.00452),
+          true,
+        );
+        //
+      });
+
+      test('Should return false if latitude is incorrect', () {
+        expect(
+          validateLatitude(102.44324),
+          false,
+        );
+        expect(
+          validateLatitude(-210.45405),
+          false,
+        );
+        expect(
+          validateLatitude(121.7765),
+          false,
+        );
+        //
+      });
+    });
+  });
+
+  group('validateLongitude test', () {
+    test('Should return true if longitude is correct', () {
+      expect(
+        validateLongitude(112.4345),
+        true,
+      );
+      expect(
+        validateLongitude(179.9421),
+        true,
+      );
+      expect(
+        validateLongitude(-164.00452),
+        true,
+      );
+      //
+    });
+
+    test('Should return false if longitude is incorrect', () {
+      expect(
+        validateLongitude(193.44324),
+        false,
+      );
+      expect(
+        validateLongitude(-210.45405),
+        false,
+      );
+      expect(
+        validateLongitude(321.7765),
+        false,
+      );
+      //
+    });
   });
 }

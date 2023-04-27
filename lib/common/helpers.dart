@@ -134,3 +134,8 @@ String getFormattedLanguageOptionOf(Map<String, String> countryDetail,
   var languageCode = countryDetail["language_code"] ?? defaultValue;
   return "$name - $languageCode";
 }
+
+// Validate lat and lon
+// Src: https://stackoverflow.com/questions/7780981/how-to-validate-latitude-and-longitude
+bool validateLatitude(double latitude) => latitude.abs() <= 90;
+bool validateLongitude(double longitude) => longitude.abs() <= 180;
