@@ -104,6 +104,7 @@
     "noConnectionMessage": "No internet connection",
     "storyNotFoundMessage": "Story not found",
     "storiesEmptyMessage": "No stories yet",
+    "failedToLoadMoreStoriesMessage": "Failed to load more stories",
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",

@@ -104,6 +104,7 @@
     "noConnectionMessage": "Tidak ada koneksi internet",
     "storyNotFoundMessage": "Cerita tidak ditemukan",
     "storiesEmptyMessage": "Belum ada cerita",
+    "failedToLoadMoreStoriesMessage": "Gagal memuat cerita",
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",
