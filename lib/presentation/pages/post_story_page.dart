@@ -6,6 +6,7 @@ import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/flavor_config.dart';
 import 'package:daily_us/presentation/bloc/post/post_bloc.dart';
 import 'package:daily_us/presentation/widgets/cards/image_preview_card.dart';
 import 'package:daily_us/presentation/widgets/daily_us_text_area.dart';
@@ -48,9 +49,14 @@ class _PostStoryPageState extends State<PostStoryPage> {
   LatLng? _selectedCoordinate;
   Map<String, String>? _placeInfo;
 
+  late bool _isUploadLocationAvailable;
+
   @override
   void initState() {
     super.initState();
+
+    _isUploadLocationAvailable =
+        FlavorConfig.instance.values.uploadWithLocationAvailable;
 
     if (widget.controller != null) {
       widget.controller!.onLatLngChange = (newLatLng, placeInfo) async {
@@ -171,49 +177,50 @@ class _PostStoryPageState extends State<PostStoryPage> {
                       const SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.addLocationHint,
-                            style: postDescriptionTextStyle(),
-                          ),
-                          Switch.adaptive(
-                            activeColor: secondaryColor,
-                            value: _isLocationAdded,
-                            onChanged: (newValue) async {
-                              if (mounted) {
-                                setState(() {
-                                  _isLocationAdded = newValue;
-                                  if (!_isLocationAdded) _placeInfo = null;
-                                });
-
-                                if (_isLocationAdded) {
-                                  // go to set location pages
-                                  await Future.delayed(
-                                      const Duration(milliseconds: 500), () {
-                                    widget.onGoGetLocation();
+                      if (_isUploadLocationAvailable)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)!.addLocationHint,
+                              style: postDescriptionTextStyle(),
+                            ),
+                            Switch.adaptive(
+                              activeColor: secondaryColor,
+                              value: _isLocationAdded,
+                              onChanged: (newValue) async {
+                                if (mounted) {
+                                  setState(() {
+                                    _isLocationAdded = newValue;
+                                    if (!_isLocationAdded) _placeInfo = null;
                                   });
-                                } else {
-                                  _selectedCoordinate = null;
+
+                                  if (_isLocationAdded) {
+                                    // go to set location pages
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 500), () {
+                                      widget.onGoGetLocation();
+                                    });
+                                  } else {
+                                    _selectedCoordinate = null;
+                                  }
                                 }
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+                              },
+                            ),
+                          ],
+                        ),
                       // selected place result
-                      if (_placeInfo != null)
+                      if (_placeInfo != null && _isUploadLocationAvailable)
                         const SizedBox(
                           height: 16.0,
                         ),
-                      if (_placeInfo != null)
+                      if (_placeInfo != null && _isUploadLocationAvailable)
                         Text(
                           _placeInfo!['street']!,
                           style: postDescriptionTextStyle(
                               fontSize: 16, color: purple200Color),
                         ),
-                      if (_placeInfo != null)
+                      if (_placeInfo != null && _isUploadLocationAvailable)
                         Text(
                           _placeInfo!['address']!,
                           style: postDescriptionTextStyle(

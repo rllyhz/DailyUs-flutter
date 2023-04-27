@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
+import 'package:daily_us/flutter_mode_config.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 
 class Logger {
   static void log(String data, {bool showPadding = false}) {
-    if (!kDebugMode) {
+    if (FlutterModeConfig.isRelease) {
       return;
     }
 
@@ -16,7 +17,7 @@ class Logger {
   }
 
   static void logWithTag(String tag, String data, {bool showPadding = false}) {
-    if (!kDebugMode) {
+    if (FlutterModeConfig.isRelease) {
       return;
     }
 

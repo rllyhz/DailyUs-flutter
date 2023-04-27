@@ -4,6 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:daily_us/injection.dart' as di;
 
 void main() async {
+  FlavorConfig(
+    flavor: FlavorType.paid,
+    values: const FlavorValues(
+      uploadWithLocationAvailable: true,
+      titleApp: 'DailyUs Paid',
+    ),
+  );
+
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
 
