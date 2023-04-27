@@ -1,34 +1,27 @@
 import 'package:daily_us/data/models/story_response.dart';
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'get_all_stories_response.g.dart';
+
+@JsonSerializable()
 class GetAllStoriesResponse extends Equatable {
   final bool error;
   final String message;
+
+  @JsonKey(name: 'listStory')
   final List<StoryResponse> stories;
 
   const GetAllStoriesResponse({
     required this.error,
     required this.message,
-    required this.stories,
+    this.stories = const <StoryResponse>[],
   });
 
-  factory GetAllStoriesResponse.fromJson(Map<String, dynamic> json) {
-    List<StoryResponse> stories;
+  factory GetAllStoriesResponse.fromJson(Map<String, dynamic> json) =>
+      _$GetAllStoriesResponseFromJson(json);
 
-    if (json.containsKey("listStory")) {
-      stories = List<StoryResponse>.from(
-        (json["listStory"] as List).map((x) => StoryResponse.fromJson(x)),
-      );
-    } else {
-      stories = List<StoryResponse>.empty();
-    }
-
-    return GetAllStoriesResponse(
-      error: json["error"],
-      message: json["message"],
-      stories: stories,
-    );
-  }
+  Map<String, dynamic> toJson() => _$GetAllStoriesResponseToJson(this);
 
   @override
   List<Object> get props => [error, message, stories];

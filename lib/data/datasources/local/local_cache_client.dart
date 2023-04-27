@@ -63,7 +63,7 @@ class DailyUsLocalCacheClient {
 
   Future<bool> updateLocalCacheData(LocalCacheModel cacheModel) async {
     try {
-      await pref.setString(_authInfoKey, cacheModel.toJson());
+      await pref.setString(_authInfoKey, json.encode(cacheModel.toJson()));
       return true;
     } catch (e) {
       return false;
@@ -74,7 +74,12 @@ class DailyUsLocalCacheClient {
     LocalizationModel localizationModel,
   ) async {
     try {
-      await pref.setString(_localizationDataKey, localizationModel.toJson());
+      await pref.setString(
+        _localizationDataKey,
+        json.encode(
+          localizationModel.toJson(),
+        ),
+      );
       return true;
     } catch (e) {
       return false;

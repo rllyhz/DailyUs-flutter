@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:daily_us/data/models/auth_response.dart';
+import 'package:daily_us/data/models/login_result_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../utils/data_helpers.dart';
@@ -59,7 +58,7 @@ void main() {
     final generatedAuthRegisterSuccessJson = successfulResponse.toJson();
 
     final generatedSuccessfulResponse =
-        AuthResponse.fromJson(json.decode(generatedAuthRegisterSuccessJson));
+        AuthResponse.fromJson(generatedAuthRegisterSuccessJson);
 
     expect(generatedSuccessfulResponse.error, successfulResponse.error);
     expect(generatedSuccessfulResponse.message, successfulResponse.message);
@@ -84,7 +83,7 @@ void main() {
     final generatedSuccessfulJson = successfulResponse.toJson();
 
     final generatedSuccessfulResponse =
-        AuthResponse.fromJson(json.decode(generatedSuccessfulJson));
+        AuthResponse.fromJson(generatedSuccessfulJson);
 
     expect(generatedSuccessfulResponse.error, successfulResponse.error);
     expect(generatedSuccessfulResponse.message, successfulResponse.message);
@@ -108,8 +107,7 @@ void main() {
 
     final generatedFailedJson = failedResponse.toJson();
 
-    final generatedFailedResponse =
-        AuthResponse.fromJson(json.decode(generatedFailedJson));
+    final generatedFailedResponse = AuthResponse.fromJson(generatedFailedJson);
 
     expect(generatedFailedResponse.error, failedResponse.error);
     expect(generatedFailedResponse.message, failedResponse.message);

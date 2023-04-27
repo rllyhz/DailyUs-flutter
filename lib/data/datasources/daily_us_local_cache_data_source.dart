@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:daily_us/common/logger.dart';
 import 'package:daily_us/data/datasources/local/local_cache_client.dart';
 import 'package:daily_us/data/datasources/local/local_cache_model.dart';
@@ -45,7 +47,7 @@ class DailyUsLocalCacheDataSourceImpl implements DailyUsLocalCacheDataSource {
 
     Logger.logWithTag(
       "getLocalizationData in datasource",
-      localization.toJson(),
+      json.encode(localization.toJson()),
     );
 
     return Localization(
@@ -74,7 +76,7 @@ class DailyUsLocalCacheDataSourceImpl implements DailyUsLocalCacheDataSource {
 
     Logger.logWithTag(
       "updateLocalizationData in datasource",
-      localizationModel.toJson(),
+      json.encode(localizationModel.toJson()),
     );
 
     return localCacheClient.updateLocalizationData(localizationModel);

@@ -1,12 +1,19 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'local_cache_model.g.dart';
+
+@JsonSerializable()
 class LocalCacheModel extends Equatable {
+  @JsonKey(name: '0')
   final bool isAlreadyLoggedIn;
+  @JsonKey(name: '1')
   final String userId;
+  @JsonKey(name: '2')
   final String userName;
+  @JsonKey(name: '3')
   final String userToken;
+  @JsonKey(name: '4')
   final String userEmail;
 
   static String isAlreadyLoggedInKey = "0";
@@ -23,22 +30,10 @@ class LocalCacheModel extends Equatable {
     required this.userEmail,
   });
 
-  factory LocalCacheModel.fromJson(Map<String, dynamic> strJson) =>
-      LocalCacheModel(
-        isAlreadyLoggedIn: strJson[LocalCacheModel.isAlreadyLoggedInKey],
-        userId: strJson[LocalCacheModel.userIdKey],
-        userName: strJson[LocalCacheModel.userNameKey],
-        userToken: strJson[LocalCacheModel.userTokenKey],
-        userEmail: strJson[LocalCacheModel.userEmailKey],
-      );
+  factory LocalCacheModel.fromJson(Map<String, dynamic> json) =>
+      _$LocalCacheModelFromJson(json);
 
-  String toJson() => json.encode({
-        LocalCacheModel.isAlreadyLoggedInKey: isAlreadyLoggedIn,
-        LocalCacheModel.userIdKey: userId,
-        LocalCacheModel.userNameKey: userName,
-        LocalCacheModel.userTokenKey: userToken,
-        LocalCacheModel.userEmailKey: userEmail,
-      });
+  Map<String, dynamic> toJson() => _$LocalCacheModelToJson(this);
 
   @override
   List<Object?> get props => [
