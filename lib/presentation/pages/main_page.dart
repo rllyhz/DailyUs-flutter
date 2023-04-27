@@ -79,6 +79,8 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.transparent,
         showLabel: false,
         onTap: (newIndex) {
+          if (!_navBarRouterDelegate.canSwitchPage) return;
+
           setState(() {
             _navBarRouterDelegate.selectedPageIndex = newIndex;
 

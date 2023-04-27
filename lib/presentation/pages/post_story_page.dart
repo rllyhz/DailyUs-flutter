@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:daily_us/common/constants.dart';
 import 'package:daily_us/common/localizations.dart';
+import 'package:daily_us/common/logger.dart';
+import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/presentation/bloc/post/post_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PostStoryPage extends StatefulWidget {
@@ -20,10 +23,14 @@ class PostStoryPage extends StatefulWidget {
   const PostStoryPage({
     super.key,
     required this.onUploadSuccess,
+    required this.onGoGetLocation,
     required this.authInfo,
+    this.controller,
   });
 
   final void Function() onUploadSuccess;
+  final void Function() onGoGetLocation;
+  final PostStoryPageController? controller;
   final AuthInfo authInfo;
 
   @override
@@ -37,9 +44,25 @@ class _PostStoryPageState extends State<PostStoryPage> {
   XFile? _result;
   String? _pathFile;
 
+  bool _isLocationAdded = false;
+  LatLng? _selectedCoordinate;
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.controller != null) {
+      widget.controller!.onLatLngChange = (newLatLng) async {
+        await Future.delayed(const Duration(milliseconds: 800), () {
+          if (mounted) {
+            setState(() {
+              _selectedCoordinate = newLatLng;
+              _isLocationAdded = newLatLng != null;
+            });
+          }
+        });
+      };
+    }
 
     context.read<PostBloc>().stream.listen((state) {
       if (state is PostStateUploadDone && mounted) {
@@ -144,6 +167,37 @@ class _PostStoryPageState extends State<PostStoryPage> {
                         hintText: AppLocalizations.of(context)!.descriptionHint,
                       ),
                       const SizedBox(
+                        height: 16.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Add location',
+                            style: postDescriptionTextStyle(),
+                          ),
+                          Switch.adaptive(
+                            activeColor: secondaryColor,
+                            value: _isLocationAdded,
+                            onChanged: (newValue) async {
+                              if (mounted) {
+                                setState(() {
+                                  _isLocationAdded = newValue;
+                                });
+
+                                // go to set location pages
+                                if (_isLocationAdded) {
+                                  await Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    widget.onGoGetLocation();
+                                  });
+                                }
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
                         height: 120.0,
                       ),
                     ],
@@ -235,13 +289,22 @@ class _PostStoryPageState extends State<PostStoryPage> {
     }
 
     if (mounted) {
+      Logger.log("lat: ${_selectedCoordinate?.latitude.toString() ?? 'null'}");
+      Logger.log("lon: ${_selectedCoordinate?.longitude.toString() ?? 'bull'}");
+
       context.read<PostBloc>().add(
             OnUploadStoryEvent(
               photoXFile: _result!,
               token: widget.authInfo.user.token,
               description: description,
+              latitude: _selectedCoordinate?.latitude,
+              longitude: _selectedCoordinate?.longitude,
             ),
           );
     }
   }
+}
+
+class PostStoryPageController {
+  late void Function(LatLng?) onLatLngChange;
 }

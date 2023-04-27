@@ -3,6 +3,7 @@ import 'package:daily_us/domain/entities/auth_info.dart';
 import 'package:daily_us/domain/usecases/logout.dart';
 import 'package:daily_us/presentation/pages/anim/fade_animation_page.dart';
 import 'package:daily_us/presentation/pages/change_language_dialog_page.dart';
+import 'package:daily_us/presentation/pages/get_location_page.dart';
 import 'package:daily_us/presentation/pages/home_page.dart';
 import 'package:daily_us/presentation/pages/logout_dialog_page.dart';
 import 'package:daily_us/presentation/pages/post_story_page.dart';
@@ -13,6 +14,9 @@ import 'package:flutter/material.dart';
 class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+
+  final PostStoryPageController postStoryPageController =
+      PostStoryPageController();
 
   MainPageRouterDelegate({
     required this.onDetail,
@@ -39,6 +43,7 @@ class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
   int _selectedPageIndex = 0;
   bool _isLastHistoryReached = true;
   bool _shouldShowLogoutConfirm = false;
+  bool _shouldShowGetLocationPage = false;
 
   final List<int> _historyIndexes = [0];
 
@@ -68,6 +73,8 @@ class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
 
   bool get isLastIndexReached => _isLastHistoryReached;
 
+  bool get canSwitchPage => !_shouldShowGetLocationPage;
+
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -87,6 +94,11 @@ class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
             child: PostStoryPage(
               authInfo: authInfo,
               onUploadSuccess: onGoHome,
+              controller: postStoryPageController,
+              onGoGetLocation: () {
+                _shouldShowGetLocationPage = true;
+                notifyListeners();
+              },
             ),
           ),
         if (_selectedPageIndex == 2)
@@ -101,6 +113,22 @@ class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
               onShowLanguageChangeDialog: (supportedLocales, activeLocale) {
                 _locales = supportedLocales;
                 _activeLocale = activeLocale;
+                notifyListeners();
+              },
+            ),
+          ),
+        if (_shouldShowGetLocationPage)
+          FadeAnimationPage(
+            opaque: false,
+            child: GetLocationPage(
+              onCancel: () {
+                _shouldShowGetLocationPage = false;
+                postStoryPageController.onLatLngChange(null);
+                notifyListeners();
+              },
+              onSuccessGetLocation: (newLatLng) {
+                _shouldShowGetLocationPage = false;
+                postStoryPageController.onLatLngChange(newLatLng);
                 notifyListeners();
               },
             ),

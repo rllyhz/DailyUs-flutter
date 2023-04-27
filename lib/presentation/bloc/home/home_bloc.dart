@@ -19,6 +19,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<OnFetchAllStoriesEvent>((event, emit) async {
       emit(HomeStateLoading());
 
+      // always reset storis and page index to 1
+      _pageIndex = 1;
+      _allStories.clear();
+
       final token = event.token;
       final result = await _getAllStoriesUsecase.execute(
         token,

@@ -250,7 +250,6 @@ class _DetailPageState extends State<DetailPage> {
                                     child: Column(
                                       children: [
                                         FloatingActionButton.small(
-                                          backgroundColor: Colors.white,
                                           heroTag: "zoom-in",
                                           onPressed: () {
                                             _mapController.animateCamera(
@@ -260,7 +259,6 @@ class _DetailPageState extends State<DetailPage> {
                                               const Icon(CupertinoIcons.plus),
                                         ),
                                         FloatingActionButton.small(
-                                          backgroundColor: Colors.white,
                                           heroTag: "zoom-out",
                                           onPressed: () {
                                             _mapController.animateCamera(
@@ -278,7 +276,6 @@ class _DetailPageState extends State<DetailPage> {
                                     right: 16.0,
                                     child: FloatingActionButton.small(
                                       onPressed: null,
-                                      backgroundColor: Colors.white,
                                       child: PopupMenuButton<MapType>(
                                         offset: const Offset(0, 54),
                                         icon: const Icon(CupertinoIcons.layers),

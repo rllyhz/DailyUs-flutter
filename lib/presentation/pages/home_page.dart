@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onRefresh(BuildContext context) {
-    if (mounted && _isCurrentlyVisible) {
+    if (mounted) {
       context.read<HomeBloc>().add(
             OnFetchAllStoriesEvent(
               widget.authInfo.user.token,
