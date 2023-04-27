@@ -123,12 +123,12 @@ class MainPageRouterDelegate extends RouterDelegate<MainPageConfiguration>
             child: GetLocationPage(
               onCancel: () {
                 _shouldShowGetLocationPage = false;
-                postStoryPageController.onLatLngChange(null);
+                postStoryPageController.onLatLngChange(null, null);
                 notifyListeners();
               },
-              onSuccessGetLocation: (newLatLng) {
+              onSuccessGetLocation: (newLatLng, placeInfo) {
                 _shouldShowGetLocationPage = false;
-                postStoryPageController.onLatLngChange(newLatLng);
+                postStoryPageController.onLatLngChange(newLatLng, placeInfo);
                 notifyListeners();
               },
             ),

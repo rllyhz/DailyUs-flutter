@@ -38,26 +38,25 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  late GoogleMapController _mapController;
+  late GoogleMapController? _mapController;
   late LatLng _storyPos;
   final Set<Marker> _markers = {};
   MapType _selectedMapType = MapType.normal;
+  bool _isMapReady = false;
 
   @override
   void initState() {
     super.initState();
-    _onRefresh(context);
+    _onRefresh();
   }
 
-  void _onRefresh(BuildContext context) {
-    if (context.mounted) {
-      context.read<DetailBloc>().add(
-            OnFetchDetailStoryEvent(
-              widget.authInfo.user.token,
-              widget.storyId,
-            ),
-          );
-    }
+  void _onRefresh() {
+    context.read<DetailBloc>().add(
+          OnFetchDetailStoryEvent(
+            widget.authInfo.user.token,
+            widget.storyId,
+          ),
+        );
   }
 
   @override
@@ -115,9 +114,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           appOutlinedButton(
                             text: AppLocalizations.of(context)!.buttonRefresh,
-                            onPressed: () {
-                              _onRefresh(context);
-                            },
+                            onPressed: _onRefresh,
                           ),
                         ],
                       ),
@@ -127,226 +124,237 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
           );
-        } else {
-          var detailStory = (state as DetailStateHasData).detailStory;
+        } else if (state is DetailStateHasData) {
+          var detailStory = state.detailStory;
           bool shouldShowMaps = false;
           _storyPos = LatLng(detailStory.latitude, detailStory.longitude);
 
           if (validateLatitude(_storyPos.latitude) &&
               validateLongitude(_storyPos.longitude)) {
-            Logger.log(_storyPos.latitude.toString());
-            Logger.log(_storyPos.longitude.toString());
-            Logger.log("show google maps!");
+            Logger.log(
+              "Lat: ${_storyPos.latitude.toString()}\nLon: ${_storyPos.longitude.toString()}\nShould show google maps!",
+              showPadding: true,
+            );
             shouldShowMaps = true;
           }
 
           return Scaffold(
-            body: SizedBox.expand(
-              child: SafeArea(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: screenPaddingSize),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        DailyUsAppBar(
-                          onBack: widget.onNavigateBack,
-                          title: AppLocalizations.of(context)!.titleDetail,
-                        ),
-                        const SizedBox(
-                          height: 12.0,
-                        ),
-                        ImagePreviewCard(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Image.network(
-                            detailStory.photoUrl,
-                            width: previewCardwidth,
-                            height: previewCardHeight,
-                            errorBuilder: (context, err, track) => Container(
-                              width: double.maxFinite,
-                              height: double.maxFinite,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: primaryColor,
-                              ),
+            body: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: screenPaddingSize),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      DailyUsAppBar(
+                        onBack: () {
+                          if (shouldShowMaps && _isMapReady) {
+                            _mapController?.dispose();
+                            _mapController = null;
+                          }
+                          widget.onNavigateBack();
+                        },
+                        title: AppLocalizations.of(context)!.titleDetail,
+                      ),
+                      const SizedBox(
+                        height: 12.0,
+                      ),
+                      ImagePreviewCard(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Image.network(
+                          detailStory.photoUrl,
+                          width: previewCardwidth,
+                          height: previewCardHeight,
+                          errorBuilder: (context, err, track) => Container(
+                            width: double.maxFinite,
+                            height: double.maxFinite,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: primaryColor,
                             ),
-                            fit: BoxFit.cover,
                           ),
+                          fit: BoxFit.cover,
                         ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              getFormattedName(detailStory.name),
-                              style: detailFullNameTextStyle(),
-                            ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            SizedBox(
-                              width: 8.0,
-                              height: 8.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 8.0,
-                            ),
-                            Text(
-                              getFormattedDate(context, detailStory.createdAt),
-                              style: detailDateTextStyle(),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16.0,
-                        ),
-                        Text(
-                          detailStory.description,
-                          style: detailDescriptionTextStyle(),
-                        ),
-                        if (shouldShowMaps)
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            getFormattedName(detailStory.name),
+                            style: detailFullNameTextStyle(),
+                          ),
                           const SizedBox(
-                            height: 32.0,
+                            width: 8.0,
                           ),
-                        if (shouldShowMaps)
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: SizedBox(
-                              height: googleMapsHeight,
-                              child: Stack(
-                                children: <Widget>[
-                                  GoogleMap(
-                                    gestureRecognizers: {
-                                      Factory<OneSequenceGestureRecognizer>(
-                                        () => EagerGestureRecognizer(),
-                                      )
-                                    },
-                                    markers: _markers,
-                                    mapType: _selectedMapType,
-                                    initialCameraPosition: CameraPosition(
-                                      zoom: 18.0,
-                                      target: _storyPos,
+                          SizedBox(
+                            width: 8.0,
+                            height: 8.0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(24.0),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8.0,
+                          ),
+                          Text(
+                            getFormattedDate(context, detailStory.createdAt),
+                            style: detailDateTextStyle(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 16.0,
+                      ),
+                      Text(
+                        detailStory.description,
+                        style: detailDescriptionTextStyle(),
+                      ),
+                      if (shouldShowMaps)
+                        const SizedBox(
+                          height: 32.0,
+                        ),
+                      Visibility(
+                        visible: shouldShowMaps,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: SizedBox(
+                            height: googleMapsHeight,
+                            child: Stack(
+                              children: <Widget>[
+                                GoogleMap(
+                                  gestureRecognizers: {
+                                    Factory<OneSequenceGestureRecognizer>(
+                                      () => EagerGestureRecognizer(),
                                     ),
-                                    myLocationButtonEnabled: false,
-                                    zoomControlsEnabled: false,
-                                    mapToolbarEnabled: false,
-                                    onMapCreated: (controller) {
-                                      _onMapReady(controller);
-                                      _showMarkerOnStoryPos(detailStory.id);
-                                    },
+                                  },
+                                  markers: _markers,
+                                  mapType: _selectedMapType,
+                                  initialCameraPosition: CameraPosition(
+                                    zoom: 18.0,
+                                    target: _storyPos,
                                   ),
-                                  // Zoom Controller
-                                  Positioned(
-                                    bottom: 16.0,
-                                    right: 16.0,
-                                    child: Column(
-                                      children: [
-                                        FloatingActionButton.small(
-                                          heroTag: "zoom-in",
-                                          onPressed: () {
-                                            _mapController.animateCamera(
-                                                CameraUpdate.zoomIn());
-                                          },
-                                          child:
-                                              const Icon(CupertinoIcons.plus),
+                                  myLocationButtonEnabled: false,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  onMapCreated: (mapController) {
+                                    if (mounted) {
+                                      setState(() {
+                                        _isMapReady = true;
+                                        _mapController = mapController;
+                                      });
+                                    }
+
+                                    if (shouldShowMaps) {
+                                      _showMarkerOnStoryPos(detailStory.id);
+                                    }
+                                  },
+                                ),
+                                // Zoom Controller
+                                Positioned(
+                                  bottom: 16.0,
+                                  right: 16.0,
+                                  child: Column(
+                                    children: [
+                                      FloatingActionButton.small(
+                                        heroTag: "zoom-in",
+                                        onPressed: () {
+                                          _mapController?.animateCamera(
+                                              CameraUpdate.zoomIn());
+                                        },
+                                        child: const Icon(CupertinoIcons.plus),
+                                      ),
+                                      FloatingActionButton.small(
+                                        heroTag: "zoom-out",
+                                        onPressed: () {
+                                          _mapController?.animateCamera(
+                                              CameraUpdate.zoomOut());
+                                        },
+                                        child: const Icon(CupertinoIcons.minus),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Map Type Menu
+                                Positioned(
+                                  top: 16.0,
+                                  right: 16.0,
+                                  child: FloatingActionButton.small(
+                                    onPressed: null,
+                                    child: PopupMenuButton<MapType>(
+                                      offset: const Offset(0, 54),
+                                      icon: const Icon(CupertinoIcons.layers),
+                                      onSelected: _onSelectedMapType,
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<MapType>>[
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.normal,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .mapTypeNormal,
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
                                         ),
-                                        FloatingActionButton.small(
-                                          heroTag: "zoom-out",
-                                          onPressed: () {
-                                            _mapController.animateCamera(
-                                                CameraUpdate.zoomOut());
-                                          },
-                                          child:
-                                              const Icon(CupertinoIcons.minus),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.satellite,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .mapTypeSatellite,
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.terrain,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .mapTypeTerrain,
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.hybrid,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .mapTypeHybrid,
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  // Map Type Menu
-                                  Positioned(
-                                    top: 16.0,
-                                    right: 16.0,
-                                    child: FloatingActionButton.small(
-                                      onPressed: null,
-                                      child: PopupMenuButton<MapType>(
-                                        offset: const Offset(0, 54),
-                                        icon: const Icon(CupertinoIcons.layers),
-                                        onSelected: _onSelectedMapType,
-                                        itemBuilder: (BuildContext context) =>
-                                            <PopupMenuEntry<MapType>>[
-                                          PopupMenuItem<MapType>(
-                                            value: MapType.normal,
-                                            child: Text(
-                                              'Normal',
-                                              style: detailDescriptionTextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          PopupMenuItem<MapType>(
-                                            value: MapType.satellite,
-                                            child: Text(
-                                              'Satellite',
-                                              style: detailDescriptionTextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          PopupMenuItem<MapType>(
-                                            value: MapType.terrain,
-                                            child: Text(
-                                              'Terrain',
-                                              style: detailDescriptionTextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                          PopupMenuItem<MapType>(
-                                            value: MapType.hybrid,
-                                            child: Text(
-                                              'Hybrid',
-                                              style: detailDescriptionTextStyle(
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ], // GoogleMap Stack Container
-                              ),
+                                ),
+                              ], // GoogleMap Stack Container
                             ),
                           ),
-                        const SizedBox(
-                          height: 32.0,
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 32.0,
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           );
+        } else {
+          return const Center();
         }
       },
     );
-  }
-
-  void _onMapReady(GoogleMapController controller) {
-    if (mounted) {
-      setState(() {
-        _mapController = controller;
-      });
-    }
   }
 
   void _onSelectedMapType(MapType selectedType) {
@@ -358,22 +366,19 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> _showMarkerOnStoryPos(String id) async {
-    final info = await geo.placemarkFromCoordinates(
+    final placemarks = await geo.placemarkFromCoordinates(
       _storyPos.latitude,
       _storyPos.longitude,
     );
 
-    final place = info[0];
-    final street = place.street;
-    final address =
-        '${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    final info = getInfoFromPlacemark(placemarks[0]);
 
     final marker = Marker(
       markerId: MarkerId(id),
       position: _storyPos,
       infoWindow: InfoWindow(
-        title: street,
-        snippet: address,
+        title: info['street'],
+        snippet: info['address'],
       ),
     );
 

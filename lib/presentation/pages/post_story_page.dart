@@ -46,16 +46,18 @@ class _PostStoryPageState extends State<PostStoryPage> {
 
   bool _isLocationAdded = false;
   LatLng? _selectedCoordinate;
+  Map<String, String>? _placeInfo;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.controller != null) {
-      widget.controller!.onLatLngChange = (newLatLng) async {
+      widget.controller!.onLatLngChange = (newLatLng, placeInfo) async {
         await Future.delayed(const Duration(milliseconds: 800), () {
           if (mounted) {
             setState(() {
+              _placeInfo = placeInfo;
               _selectedCoordinate = newLatLng;
               _isLocationAdded = newLatLng != null;
             });
@@ -173,7 +175,7 @@ class _PostStoryPageState extends State<PostStoryPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Add location',
+                            AppLocalizations.of(context)!.addLocationHint,
                             style: postDescriptionTextStyle(),
                           ),
                           Switch.adaptive(
@@ -183,20 +185,44 @@ class _PostStoryPageState extends State<PostStoryPage> {
                               if (mounted) {
                                 setState(() {
                                   _isLocationAdded = newValue;
+                                  if (!_isLocationAdded) _placeInfo = null;
                                 });
 
-                                // go to set location pages
                                 if (_isLocationAdded) {
+                                  // go to set location pages
                                   await Future.delayed(
                                       const Duration(milliseconds: 500), () {
                                     widget.onGoGetLocation();
                                   });
+                                } else {
+                                  _selectedCoordinate = null;
                                 }
                               }
                             },
                           ),
                         ],
                       ),
+                      // selected place result
+                      if (_placeInfo != null)
+                        const SizedBox(
+                          height: 16.0,
+                        ),
+                      if (_placeInfo != null)
+                        Text(
+                          _placeInfo!['street']!,
+                          style: postDescriptionTextStyle(
+                              fontSize: 16, color: purple200Color),
+                        ),
+                      if (_placeInfo != null)
+                        Text(
+                          _placeInfo!['address']!,
+                          style: postDescriptionTextStyle(
+                            fontSize: 14,
+                            color: purple200Color.withOpacity(
+                              0.7,
+                            ),
+                          ),
+                        ),
                       const SizedBox(
                         height: 120.0,
                       ),
@@ -306,5 +332,5 @@ class _PostStoryPageState extends State<PostStoryPage> {
 }
 
 class PostStoryPageController {
-  late void Function(LatLng?) onLatLngChange;
+  late void Function(LatLng?, Map<String, String>? placeInfo) onLatLngChange;
 }
