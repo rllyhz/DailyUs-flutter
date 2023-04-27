@@ -10,8 +10,10 @@ import 'package:daily_us/presentation/widgets/daily_us_app_bar.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
 import 'package:daily_us/presentation/widgets/shimmers/detail_page_shimmer.dart';
 import 'package:fade_shimmer/fade_shimmer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailPage extends StatefulWidget {
   static const valueKey = ValueKey("DetailPage");
@@ -32,6 +34,10 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  late GoogleMapController _mapController;
+  final Set<Marker> _markers = {};
+  MapType _selectedMapType = MapType.normal;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +62,10 @@ class _DetailPageState extends State<DetailPage> {
     var previewCardHeight = totalWidth * 1 / 2;
     if (totalWidth > 620.0) {
       previewCardHeight = totalWidth * 1 / 3;
+    }
+    var googleMapsHeight = totalWidth * 1.3;
+    if (totalWidth > 620.0) {
+      googleMapsHeight = totalWidth * 1 / 2;
     }
 
     return BlocBuilder<DetailBloc, DetailState>(
@@ -114,6 +124,29 @@ class _DetailPageState extends State<DetailPage> {
           );
         } else {
           var detailStory = (state as DetailStateHasData).detailStory;
+          bool shouldShowMaps = false;
+          LatLng storyPos = LatLng(detailStory.latitude, detailStory.longitude);
+
+          if (validateLatitude(storyPos.latitude) &&
+              validateLongitude(storyPos.longitude)) {
+            shouldShowMaps = true;
+
+            final storyMarker = Marker(
+                markerId: MarkerId(detailStory.id),
+                position: storyPos,
+                onTap: () {
+                  _mapController.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: storyPos,
+                        zoom: 18.0,
+                      ),
+                    ),
+                  );
+                });
+
+            _markers.add(storyMarker);
+          }
 
           return Scaffold(
             body: SizedBox.expand(
@@ -187,6 +220,120 @@ class _DetailPageState extends State<DetailPage> {
                           detailStory.description,
                           style: detailDescriptionTextStyle(),
                         ),
+                        if (shouldShowMaps)
+                          const SizedBox(
+                            height: 16.0,
+                          ),
+                        if (shouldShowMaps)
+                          SizedBox(
+                            height: googleMapsHeight,
+                            child: Stack(
+                              children: <Widget>[
+                                GoogleMap(
+                                  markers: _markers,
+                                  mapType: _selectedMapType,
+                                  initialCameraPosition: CameraPosition(
+                                    zoom: 18.0,
+                                    target: LatLng(
+                                      detailStory.latitude,
+                                      detailStory.longitude,
+                                    ),
+                                  ),
+                                  myLocationButtonEnabled: false,
+                                  zoomControlsEnabled: false,
+                                  mapToolbarEnabled: false,
+                                  onMapCreated: (controller) {
+                                    setState(() {
+                                      _mapController = controller;
+                                    });
+                                  },
+                                ),
+                                // Zoom Controller
+                                Positioned(
+                                  bottom: 16.0,
+                                  right: 16.0,
+                                  child: Column(
+                                    children: [
+                                      FloatingActionButton.small(
+                                        backgroundColor: primaryColor,
+                                        heroTag: "zoom-in",
+                                        onPressed: () {
+                                          _mapController.animateCamera(
+                                              CameraUpdate.zoomIn());
+                                        },
+                                        child: const Icon(CupertinoIcons.plus),
+                                      ),
+                                      FloatingActionButton.small(
+                                        backgroundColor: primaryColor,
+                                        heroTag: "zoom-out",
+                                        onPressed: () {
+                                          _mapController.animateCamera(
+                                              CameraUpdate.zoomOut());
+                                        },
+                                        child: const Icon(CupertinoIcons.minus),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Map Type Menu
+                                Positioned(
+                                  top: 16,
+                                  right: 16,
+                                  child: FloatingActionButton.small(
+                                    onPressed: null,
+                                    child: PopupMenuButton<MapType>(
+                                      offset: const Offset(0, 54),
+                                      icon: const Icon(CupertinoIcons.layers),
+                                      onSelected: (selectedItem) {
+                                        setState(() {
+                                          _selectedMapType = selectedItem;
+                                        });
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<MapType>>[
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.normal,
+                                          child: Text(
+                                            'Normal',
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.satellite,
+                                          child: Text(
+                                            'Satellite',
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.terrain,
+                                          child: Text(
+                                            'Terrain',
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        PopupMenuItem<MapType>(
+                                          value: MapType.hybrid,
+                                          child: Text(
+                                            'Hybrid',
+                                            style: detailDescriptionTextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ], // GoogleMap Stack Container
+                            ),
+                          ),
                         const SizedBox(
                           height: 32.0,
                         ),
