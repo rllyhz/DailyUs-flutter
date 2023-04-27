@@ -48,8 +48,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<OnLoadMoreStoriesEvent>((event, emit) async {
       emit(HomeStateLoadMoreProgress(_allStories));
 
-      await Future.delayed(const Duration(seconds: 4));
-
       isLoadingMoreStillOnProgress = true;
 
       final token = event.token;

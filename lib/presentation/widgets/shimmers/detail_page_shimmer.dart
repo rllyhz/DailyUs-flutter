@@ -72,6 +72,9 @@ class DetailPageShimmer extends StatelessWidget {
                   size: 12.0,
                 ),
               ),
+              const SizedBox(
+                height: 32.0,
+              ),
             ],
           ),
         ),

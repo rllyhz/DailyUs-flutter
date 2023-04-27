@@ -243,10 +243,11 @@ class _DetailPageState extends State<DetailPage> {
                                   zoomControlsEnabled: false,
                                   mapToolbarEnabled: false,
                                   onMapCreated: (mapController) {
+                                    _mapController = mapController;
+
                                     if (mounted) {
                                       setState(() {
                                         _isMapReady = true;
-                                        _mapController = mapController;
                                       });
                                     }
 
