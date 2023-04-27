@@ -5,11 +5,13 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class AppSecret {
   final String baseUrl;
+  final String googleMapsApi;
 
-  const AppSecret({this.baseUrl = ""});
+  const AppSecret({this.baseUrl = "", this.googleMapsApi = ""});
 
   factory AppSecret.fromJson(Map<String, dynamic> jsonMap) => AppSecret(
         baseUrl: jsonMap["base_url"],
+        googleMapsApi: jsonMap["google_maps_api"],
       );
 }
 
