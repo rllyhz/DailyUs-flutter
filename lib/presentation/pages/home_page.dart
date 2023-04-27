@@ -4,6 +4,7 @@ import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
 import 'package:daily_us/common/ui/theme.dart';
 import 'package:daily_us/domain/entities/auth_info.dart';
+import 'package:daily_us/domain/entities/story.dart';
 import 'package:daily_us/presentation/bloc/home/home_bloc.dart';
 import 'package:daily_us/presentation/widgets/daily_us_story_item.dart';
 import 'package:daily_us/presentation/widgets/decorations/text_decorations.dart';
@@ -71,7 +72,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onLoadMore(BuildContext context) {
-    //
+    final bloc = context.read<HomeBloc>();
+
+    if (mounted && !bloc.isLoadingMoreStillOnProgress) {
+      bloc.add(
+        OnLoadMoreStoriesEvent(
+          widget.authInfo.user.token,
+        ),
+      );
+    }
   }
 
   void _refresh() {
@@ -177,58 +186,78 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     );
-                  } else {
-                    var stories = (state as HomeStateHasData).stories;
-
-                    if (stories.isEmpty) {
-                      return Expanded(
-                        child: Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.storiesEmptyMessage,
-                            style: homeCardDescriptionTextStyle(),
-                          ),
+                  } else if (state is HomeStateDataEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.storiesEmptyMessage,
+                          style: homeCardDescriptionTextStyle(),
                         ),
-                      );
+                      ),
+                    );
+                  } else if (state is HomeStateHasData ||
+                      state is HomeStateLoadMoreProgress ||
+                      state is HomeStateLoadMoreError) {
+                    List<Story> stories;
+                    bool isFailedToLoadMore = false;
+                    if (state is HomeStateHasData) {
+                      stories = state.stories;
+                    } else if (state is HomeStateLoadMoreProgress) {
+                      stories = state.tempStories;
                     } else {
-                      return Expanded(
-                        child: RefreshIndicator(
-                          color: secondaryColor,
-                          onRefresh: () async {
-                            _onRefresh(context);
-                          },
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            padding: const EdgeInsets.only(
-                              top: 12.0,
-                              bottom: 12.0,
-                            ),
-                            itemCount: stories.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == stories.length) {
-                                return Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: CircularProgressIndicator(
-                                      color: primaryColor,
-                                    ),
-                                  ),
-                                );
-                              }
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: DailyUsStoryItem(
-                                  padding: const EdgeInsets.all(12.0),
-                                  story: stories[index],
-                                  onClick: (story) {
-                                    widget.onDetail(story.id);
-                                  },
+                      stories = (state as HomeStateLoadMoreError).tempStories;
+                      isFailedToLoadMore = true;
+                    }
+
+                    return Expanded(
+                      child: RefreshIndicator(
+                        color: secondaryColor,
+                        onRefresh: () async {
+                          _onRefresh(context);
+                        },
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.only(
+                            top: 12.0,
+                            bottom: 12.0,
+                          ),
+                          itemCount: stories.length + 1,
+                          itemBuilder: (context, index) {
+                            if (index == stories.length) {
+                              return Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(
+                                      isFailedToLoadMore ? 32.0 : 12.0),
+                                  child: isFailedToLoadMore
+                                      ? Text(
+                                          AppLocalizations.of(context)!
+                                              .failedToLoadMoreStoriesMessage,
+                                          style: homeCardDescriptionTextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: primaryColor,
+                                        ),
                                 ),
                               );
-                            },
-                          ),
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: DailyUsStoryItem(
+                                padding: const EdgeInsets.all(12.0),
+                                story: stories[index],
+                                onClick: (story) {
+                                  widget.onDetail(story.id);
+                                },
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    }
+                      ),
+                    );
+                  } else {
+                    return const Center();
                   }
                 },
               ),

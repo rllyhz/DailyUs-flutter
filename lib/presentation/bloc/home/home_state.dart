@@ -7,6 +7,15 @@ class HomeStateLoading extends HomeState {
   List<Object?> get props => [];
 }
 
+class HomeStateLoadMoreProgress extends HomeState {
+  final List<Story> tempStories;
+
+  HomeStateLoadMoreProgress(this.tempStories);
+
+  @override
+  List<Object?> get props => [tempStories];
+}
+
 class HomeStateError extends HomeState {
   final Failure failure;
 
@@ -16,6 +25,16 @@ class HomeStateError extends HomeState {
   List<Object?> get props => [failure];
 }
 
+class HomeStateLoadMoreError extends HomeState {
+  final Failure failure;
+  final List<Story> tempStories;
+
+  HomeStateLoadMoreError(this.failure, this.tempStories);
+
+  @override
+  List<Object?> get props => [failure, tempStories];
+}
+
 class HomeStateHasData extends HomeState {
   final List<Story> stories;
 
@@ -23,4 +42,9 @@ class HomeStateHasData extends HomeState {
 
   @override
   List<Object?> get props => [stories];
+}
+
+class HomeStateDataEmpty extends HomeState {
+  @override
+  List<Object?> get props => [];
 }

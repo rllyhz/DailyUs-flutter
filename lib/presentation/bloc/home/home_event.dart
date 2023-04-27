@@ -11,7 +11,11 @@ class OnFetchAllStoriesEvent extends HomeEvent {
   List<Object?> get props => [token];
 }
 
-class OnCancelFetchAllStoriesEvent extends HomeEvent {
+class OnLoadMoreStoriesEvent extends HomeEvent {
+  final String token;
+
+  OnLoadMoreStoriesEvent(this.token);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [token];
 }
