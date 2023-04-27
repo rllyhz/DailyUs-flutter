@@ -58,6 +58,7 @@
     "titleDetail": "Detail",
     "titlePost": "Post",
     "titleSettings": "Settings",
+    "titleLocation": "Select Location",
 
     "buttonRegister": "Register",
     "buttonLogin": "Login",
@@ -67,11 +68,13 @@
     "buttonTakePicture": "Camera",
     "buttonPickFromGallery": "Gallery",
     "buttonRefresh": "Refresh",
+    "buttonSelectLocation": "Done",
 
     "nameHint": "Name",
     "emailHint": "E-mail",
     "passwordHint": "Password",
     "descriptionHint": "Give it some description",
+    "addLocationHint": "Add location",
 
     "dialogTitleRegisterSuccess": "Succesfully registered",
     "dialogMessageRegisterSuccess": "You have been registered! \nPlease login and make your amazing story right now",
@@ -108,6 +111,17 @@
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",
+
+    "locationNotSelectedYetMessage": "Pick location first",
+    "locationServiceIsNotAvailableMessage": "Location service not available",
+    "locationPermissionIsDeniedMessage": "Location permission is denied",
+    "locationFailedToGetMyLocationDataMessage": "Failed to get my location",
+    "locationFailedToMarkPlaceMessage": "Failed to mark the place",
+
+    "mapTypeNormal": "Normal",
+    "mapTypeSatellite": "Satellite",
+    "mapTypeTerrain": "Terrain",
+    "mapTypeHybrid": "Hybrid",
 
     "languageEn": "English",
     "languageId": "Indonesia"

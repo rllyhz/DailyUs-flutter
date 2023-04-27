@@ -58,6 +58,7 @@
     "titleDetail": "Detail",
     "titlePost": "Post Story",
     "titleSettings": "Pengaturan",
+    "titleLocation": "Pilih Lokasi",
 
     "buttonRegister": "Daftar",
     "buttonLogin": "Masuk",
@@ -67,11 +68,13 @@
     "buttonTakePicture": "Kamera",
     "buttonPickFromGallery": "Galeri",
     "buttonRefresh": "Refresh",
+    "buttonSelectLocation": "Selesai",
 
     "nameHint": "Nama",
     "emailHint": "E-mail",
     "passwordHint": "Password",
     "descriptionHint": "Berikan deskripsi...",
+    "addLocationHint": "Tambahkan lokasi",
 
     "dialogTitleRegisterSuccess": "Berhasil mendaftar",
     "dialogMessageRegisterSuccess": "Kamu telah terdaftar! \nSilahkan login dan buatlah ceritamu yang berkesan",
@@ -108,6 +111,17 @@
 
     "updateLanguageSuccess": "Language successfully updated",
     "updateLanguageFailed": "failed to update language",
+
+    "locationNotSelectedYetMessage": "Silakan tentukan lokasi terlebih dahulu",
+    "locationServiceIsNotAvailableMessage": "Layanan lokasi tidak tersedia",
+    "locationPermissionIsDeniedMessage": "Perizinan lokasi tidak diberikan",
+    "locationFailedToGetMyLocationDataMessage": "Gagal memuat lokasi saya",
+    "locationFailedToMarkPlaceMessage": "Gagal menandai lokasi",
+
+    "mapTypeNormal": "Normal",
+    "mapTypeSatellite": "Satelit",
+    "mapTypeTerrain": "Medan",
+    "mapTypeHybrid": "Hybrid",
 
     "languageEn": "Inggris",
     "languageId": "Indonesia"
