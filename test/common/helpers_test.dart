@@ -1,5 +1,6 @@
 import 'package:daily_us/common/helpers.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geocoding/geocoding.dart';
 
 void main() {
   group('Helpers test', () {
@@ -169,37 +170,49 @@ void main() {
     });
   });
 
-  group('validateLongitude test', () {
-    test('Should return true if longitude is correct', () {
+  group('getInfoFromPlacemark test', () {
+    final dummyPlacemark = Placemark(
+      street: 'Street Name',
+      subLocality: 'SubLocality Test',
+      locality: 'Locality Test',
+      postalCode: '1111',
+      country: 'Country Name',
+    );
+    final dummyBlankPlacemark = Placemark();
+
+    test('Should contains the expected keys', () {
       expect(
-        validateLongitude(112.4345),
+        getInfoFromPlacemark(dummyPlacemark).containsKey('street'),
         true,
       );
       expect(
-        validateLongitude(179.9421),
-        true,
-      );
-      expect(
-        validateLongitude(-164.00452),
+        getInfoFromPlacemark(dummyPlacemark).containsKey('address'),
         true,
       );
       //
     });
 
-    test('Should return false if longitude is incorrect', () {
+    test('Should return the expected values', () {
       expect(
-        validateLongitude(193.44324),
-        false,
+        getInfoFromPlacemark(dummyPlacemark)['street'],
+        'Street Name',
       );
       expect(
-        validateLongitude(-210.45405),
-        false,
+        getInfoFromPlacemark(dummyPlacemark)['address'],
+        'SubLocality Test, Locality Test, 1111, Country Name',
       );
-      expect(
-        validateLongitude(321.7765),
-        false,
-      );
-      //
     });
+
+    test('Should return the expected values when placemark is blank', () {
+      expect(
+        getInfoFromPlacemark(dummyBlankPlacemark)['street'],
+        'Unknown Street',
+      );
+      expect(
+        getInfoFromPlacemark(dummyBlankPlacemark)['address'],
+        '-, -, -, -',
+      );
+    });
+    //
   });
 }

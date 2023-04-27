@@ -4,6 +4,7 @@ import 'package:daily_us/common/logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:geocoding/geocoding.dart' as geo;
 
 bool validateEmailFormat(String email) => RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -142,3 +143,18 @@ bool validateLatitude(double latitude) =>
     latitude.abs() <= 90 && latitude != 0.0;
 bool validateLongitude(double longitude) =>
     longitude.abs() <= 180 && longitude != 0.0;
+
+Map<String, String> getInfoFromPlacemark(
+  geo.Placemark placemark, {
+  String defaultStreetValue = 'Unknown Street',
+  String defaultAddressValue = '-',
+}) {
+  final street = placemark.street ?? defaultStreetValue;
+  final address =
+      '${placemark.subLocality ?? defaultAddressValue}, ${placemark.locality ?? defaultAddressValue}, ${placemark.postalCode ?? defaultAddressValue}, ${placemark.country ?? defaultAddressValue}';
+
+  return {
+    "street": street,
+    "address": address,
+  };
+}
