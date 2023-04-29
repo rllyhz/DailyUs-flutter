@@ -8,7 +8,7 @@ void main() async {
     flavor: FlavorType.free,
     values: const FlavorValues(
       uploadWithLocationAvailable: false,
-      titleApp: 'DailyUs Paid',
+      titleApp: 'DailyUs Free',
     ),
   );
 
