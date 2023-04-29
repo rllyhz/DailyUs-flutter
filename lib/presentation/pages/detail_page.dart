@@ -129,7 +129,7 @@ class _DetailPageState extends State<DetailPage> {
                     left: screenPaddingSize,
                     right: screenPaddingSize,
                     child: appButton(
-                      text: AppLocalizations.of(context)!.buttonSelectLocation,
+                      text: AppLocalizations.of(context)!.buttonShowDetail,
                       onPressed: () {
                         _showBottomSheet();
                       },
@@ -163,7 +163,7 @@ class _DetailPageState extends State<DetailPage> {
                                   ),
                                   appOutlinedButton(
                                     text: AppLocalizations.of(context)!
-                                        .buttonRefresh,
+                                        .buttonShowDetail,
                                     onPressed: _onRefresh,
                                   ),
                                 ],
