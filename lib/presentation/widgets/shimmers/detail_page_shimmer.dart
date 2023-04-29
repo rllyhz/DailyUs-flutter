@@ -1,7 +1,5 @@
 import 'package:daily_us/common/constants.dart';
-import 'package:daily_us/common/localizations.dart';
 import 'package:daily_us/common/ui/colors.dart';
-import 'package:daily_us/presentation/widgets/daily_us_app_bar.dart';
 import 'package:fade_shimmer/fade_shimmer.dart';
 import 'package:flutter/material.dart';
 
@@ -29,10 +27,6 @@ class DetailPageShimmer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              DailyUsAppBar(
-                onBack: () {},
-                title: AppLocalizations.of(context)!.titleDetail,
-              ),
               const SizedBox(
                 height: 12.0,
               ),

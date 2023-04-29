@@ -58,6 +58,8 @@ dependencies:
   # Maps
   google_maps_flutter: ^2.2.5
   google_maps_flutter_web: ^0.4.0+8
+  google_maps_flutter_android: ^2.4.13
+  google_maps_flutter_platform_interface: ^2.2.6
   location: ^4.4.0
   geocoding: ^2.1.0
 
